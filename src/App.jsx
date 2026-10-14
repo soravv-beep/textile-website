@@ -12,6 +12,7 @@ import Layout from "./components/Layout.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { ROUTES } from "./constants/routes.js";
 
+import DesignSystem from "./pages/DesignSystem.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
@@ -32,6 +33,7 @@ export default function App() {
             path={ROUTES.contact}
             element={<ComingSoon title="Contact" owner="Dev 1" />}
           />
+          <Route path={ROUTES.designSystem} element={<DesignSystem />} />
 
           {/* Placeholders — each owned by another developer */}
           <Route
