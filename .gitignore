@@ -1,7 +1,10 @@
 # Dependencies
 node_modules/
 
-# Next.js build output
+# Build output (Vite)
+dist/
+
+# Legacy build output (kept only so old branches don't break)
 .next/
 out/
 
