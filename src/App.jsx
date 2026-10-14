@@ -13,6 +13,7 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { ROUTES } from "./constants/routes.js";
 
 import Home from "./pages/Home.jsx";
+import About from "./pages/About.jsx";
 import DesignSystem from "./pages/DesignSystem.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
 import NotFound from "./pages/NotFound.jsx";
@@ -23,10 +24,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path={ROUTES.home} element={<Home />} />
-          <Route
-            path={ROUTES.about}
-            element={<ComingSoon title="About us" owner="Dev 1" />}
-          />
+          <Route path={ROUTES.about} element={<About />} />
           <Route
             path={ROUTES.contact}
             element={<ComingSoon title="Contact" owner="Dev 1" />}
