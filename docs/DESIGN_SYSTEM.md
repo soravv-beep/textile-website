@@ -1,6 +1,6 @@
 # WovenHaat — Design System (Dev 1)
 
-> **This replaces the old `DESIGN-SYSTEM.md`.** The site is now **Vite + React + React Router** (the Next.js app and the old static `assets/` pages are gone). Everything below is shared by all five developers. Live playground: **`/design-system`** (not linked in the nav on purpose).
+> The site is **Vite + React + React Router** (the Next.js app and the old static `assets/` pages are gone). Everything below is shared by all five developers. Live playground: **`/design-system`** (not linked in the nav on purpose).
 
 ---
 
@@ -9,7 +9,8 @@
 ```jsx
 // components + hooks
 import { Button, Tag, SectionHeading, Card, Input } from "../components/ui/index.js";
-import { Reveal, Marquee, useTilt, useSpotlight } from "../animations/index.js";
+import { Reveal, Marquee } from "../animations/index.js";
+import { useTilt, useSpotlight } from "../hooks/index.js";
 import { ROUTES, NAV_LINKS, productPath, collectionPath } from "../constants/routes.js";
 import { useCart } from "../context/CartContext.jsx";
 import { formatINR } from "../utils/format.js";
@@ -18,6 +19,29 @@ import { formatINR } from "../utils/format.js";
 **Never** hardcode a route string, a colour, or a price format. Routes come from `src/constants/routes.js`, colours from the tokens below, prices from `formatINR()` (Indian digit grouping: `₹4,890`, `₹1,29,000`).
 
 Every page renders inside `<Layout />` (navbar + `<Outlet />` + footer). Add the route in `src/App.jsx` under the existing `<Route element={<Layout />}>` — do not add a second router.
+
+### Folder layout
+
+```
+src/
+├── animations/    Reveal, Marquee, DragScroll, CustomCursor, SuccessCheck
+├── components/
+│   ├── layout/    Layout, Navbar, Footer
+│   ├── sections/  EditorialHero, Newsletter
+│   ├── contact/   EnquiryForm
+│   ├── product/   ProductCard, ProductGrid, ProductImageSlider, SaleBanner, skeletons
+│   ├── ui/        Button, Card, Tag, Field, Overlay, Rating, SectionHeading… (design-system kit)
+│   └── PageMeta.jsx
+├── constants/     routes.js — every path, nav + footer link list
+├── context/       CartContext.jsx
+├── data/          mock products, categories, journal, testimonials
+├── hooks/         useTilt, useMagnetic, useSpotlight, useParallax, useNavUnderline, useReducedMotion, useCountdown
+├── pages/         Home, About, Contact, DesignSystem, ComingSoon, NotFound
+├── styles/        globals.css — the only stylesheet, numbered sections
+└── utils/         format.js (formatINR), images.js (unsplash)
+```
+
+Shared page furniture goes in `components/layout`, a block used by one page goes in `sections`, and anything with its own CSS classes and README stays in `components/product`.
 
 ## 2. Colour tokens
 
@@ -91,7 +115,9 @@ All paths live in `src/constants/routes.js`: `/`, `/shop`, `/collections`, `/pro
 
 Unbuilt pages render `<ComingSoon />` naming the owning dev, so **no link 404s**. When your page ships, swap that element in `src/App.jsx`.
 
-## 7. Animations (`src/animations`)
+## 7. Animations (`src/animations`) and hooks (`src/hooks`)
+
+`<Reveal />`, `<Marquee />`, `<DragScroll />`, `<CustomCursor />` and `<SuccessCheck />` are components in `src/animations`; every `use*` below is a hook in `src/hooks`.
 
 | Piece | What it does |
 |---|---|
@@ -131,14 +157,14 @@ One animation library is used: **framer-motion**, and only by `<Reveal />` (scro
 
 | Variable | Used by | Notes |
 |---|---|---|
-| `VITE_FORM_ENDPOINT` | `src/components/EnquiryForm.jsx` | POST target for contact enquiries. **Unset = demo mode** (form validates and shows success without sending). |
-| `VITE_NEWSLETTER_ENDPOINT` | `src/components/Newsletter.jsx` | Optional subscribe endpoint; unset = demo mode. |
+| `VITE_FORM_ENDPOINT` | `src/components/contact/EnquiryForm.jsx` | POST target for contact enquiries. **Unset = demo mode** (form validates and shows success without sending). |
+| `VITE_NEWSLETTER_ENDPOINT` | `src/components/sections/Newsletter.jsx` | Optional subscribe endpoint; unset = demo mode. |
 
 Copy `.env.example` to `.env.local` and fill in. `VITE_*` values are inlined into the bundle — never put a secret there.
 
 ## 10. Known follow-ups
 
-- `<ProductCardStub />` (`src/components/ProductCardStub.jsx`) and `src/data/*.js` are **mock data** for Dev 2 to replace; testimonials are dummy reviews pending real ones.
+- `<ProductCard />` (`src/components/product/`) renders `src/data/mockProducts.js`, and `src/data/*.js` is **mock data** for Dev 2 to replace; testimonials are dummy reviews pending real ones.
 - Artisan photos in `About` are placeholders pending consent-cleared photography.
 - `CartContext` is a session-only stub for Dev 3 to replace (keep the hook name and shape).
 - Home bestseller `stock` is fixed at 10 (feeds the "1/10" counter) — replace with real availability.

@@ -9,12 +9,12 @@
  * Below: hours, an optional embedded map, and a short FAQ teaser that links to
  * /faq (owned by Dev 5).
  *
- * Env: VITE_FORM_ENDPOINT — see src/components/EnquiryForm.jsx.
+ * Env: VITE_FORM_ENDPOINT — see src/components/contact/EnquiryForm.jsx.
  */
 import { Link } from "react-router-dom";
 
 import PageMeta from "../components/PageMeta.jsx";
-import EnquiryForm from "../components/EnquiryForm.jsx";
+import EnquiryForm from "../components/contact/EnquiryForm.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Container from "../components/ui/Container.jsx";

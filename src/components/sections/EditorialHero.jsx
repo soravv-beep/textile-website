@@ -16,10 +16,10 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { ROUTES, SOCIALS } from "../constants/routes.js";
-import { unsplash } from "../utils/images.js";
-import { useParallax } from "../animations/useParallax.js";
-import { useReducedMotion } from "../animations/useReducedMotion.js";
+import { ROUTES, SOCIALS } from "../../constants/routes.js";
+import { unsplash } from "../../utils/images.js";
+import { useParallax } from "../../hooks/useParallax.js";
+import { useReducedMotion } from "../../hooks/useReducedMotion.js";
 
 const HEADLINE = ["Handwoven", "Warmth"];
 

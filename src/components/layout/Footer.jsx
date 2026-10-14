@@ -15,8 +15,8 @@ import {
   FOOTER_SUPPORT,
   ROUTES,
   SOCIALS
-} from "../constants/routes.js";
-import Newsletter from "./Newsletter.jsx";
+} from "../../constants/routes.js";
+import Newsletter from "../sections/Newsletter.jsx";
 
 const SOCIAL_ICONS = {
   instagram: (

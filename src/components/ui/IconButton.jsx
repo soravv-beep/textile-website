@@ -11,7 +11,7 @@
  *   ghost = transparent, themed on hover only
  * @param {boolean} [props.magnetic=false] magnetic pull toward the cursor
  */
-import { useMagnetic } from "../../animations/useMagnetic.js";
+import { useMagnetic } from "../../hooks/useMagnetic.js";
 
 export default function IconButton({
   label,

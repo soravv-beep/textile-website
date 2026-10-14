@@ -3,7 +3,7 @@
  *
  *   import { Button, Tag, SectionHeading, Card, Input } from "../components/ui/index.js";
  *
- * Full usage, tokens and do/don't rules: see DESIGN_SYSTEM.md.
+ * Full usage, tokens and do/don't rules: see docs/DESIGN_SYSTEM.md.
  * Live playground: /design-system
  */
 export { default as Button } from "./Button.jsx";

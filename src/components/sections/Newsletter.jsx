@@ -13,8 +13,8 @@
  */
 import { useState } from "react";
 
-import Button from "./ui/Button.jsx";
-import SuccessCheck from "../animations/SuccessCheck.jsx";
+import Button from "../ui/Button.jsx";
+import SuccessCheck from "../../animations/SuccessCheck.jsx";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ENDPOINT = import.meta.env.VITE_NEWSLETTER_ENDPOINT;

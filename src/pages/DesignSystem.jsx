@@ -1,6 +1,6 @@
 /**
  * /design-system — live style guide (hidden from navigation, linked from
- * DESIGN_SYSTEM.md). Shows every colour token, the type scale, spacing and
+ * docs/DESIGN_SYSTEM.md). Shows every colour token, the type scale, spacing and
  * radius tokens, and every UI component in each state so reviewing a PR is a
  * matter of opening one page.
  *
@@ -9,6 +9,9 @@
 import { useState } from "react";
 
 import PageMeta from "../components/PageMeta.jsx";
+import ProductCard from "../components/product/ProductCard.jsx";
+import ProductCardSkeleton from "../components/product/ProductCardSkeleton.jsx";
+import { MOCK_PRODUCTS } from "../data/mockProducts.js";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Container from "../components/ui/Container.jsx";
@@ -83,7 +86,7 @@ export default function DesignSystem() {
           <h1>Design system</h1>
           <p>
             Every token and component the team shares. Rules and import examples live in
-            DESIGN_SYSTEM.md — this page is the visual reference.
+            DESIGN_SYSTEM.md in docs/ — this page is the visual reference.
           </p>
         </Container>
       </section>
@@ -278,6 +281,34 @@ export default function DesignSystem() {
             />
             <Textarea id="ds-message" label="Message" placeholder="Tell us what you're planning…" hint="Max 600 characters." />
           </Card>
+        </Container>
+      </section>
+
+      {/* PRODUCT CARD STATES */}
+      <section className="section" aria-labelledby="ds-card-h">
+        <Container>
+          <SectionHeading
+            id="ds-card-h"
+            label="07 · Product card"
+            title="Every card state"
+            subtitle="The card is sold/collections-ready: props and usage are documented in src/components/product/README.md."
+          />
+          <div className="product-grid">
+            <ProductCard {...MOCK_PRODUCTS[0]} isWishlisted />
+            <ProductCard {...MOCK_PRODUCTS[2]} />
+            <ProductCard {...MOCK_PRODUCTS[7]} />
+            <ProductCard {...MOCK_PRODUCTS[6]} />
+          </div>
+          <h3 className="ds-sub">Skeleton (same dimensions — no layout shift)</h3>
+          <div className="product-grid">
+            <ProductCardSkeleton count={4} withSale />
+          </div>
+          <p className="ds-motion-note">
+            Left to right: on sale with a live countdown and a saved heart, normal
+            in-stock, out of stock (dimmed, disabled button), and a second sale item
+            ticking in the last hour. Hover a card for the tilt, glare, image zoom and
+            hover image-swap.
+          </p>
         </Container>
       </section>
 

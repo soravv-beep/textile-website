@@ -2,7 +2,8 @@
  * <Navbar /> — fixed header shared by every page (Dev 1).
  *
  * Behaviour:
- *  - fixed to the top, includes the announcement bar,
+ *  - fixed to the top (the old announcement bar was removed at the owner's
+ *    request — no "free shipping" strip above the hero),
  *  - over the HOME hero it starts fully TRANSPARENT with light text and turns
  *    solid --color-chrome (the same colour as the footer) with a soft shadow +
  *    backdrop blur after ~60px of scroll, and returns to transparent at the top,
@@ -20,11 +21,11 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { NAV_LINKS, ROUTES } from "../constants/routes.js";
-import { useCart } from "../context/CartContext.jsx";
-import { Overlay } from "./ui/index.js";
-import { IconButton } from "./ui/index.js";
-import { useNavUnderline } from "../animations/useNavUnderline.js";
+import { NAV_LINKS, ROUTES } from "../../constants/routes.js";
+import { useCart } from "../../context/CartContext.jsx";
+import { Overlay } from "../ui/index.js";
+import { IconButton } from "../ui/index.js";
+import { useNavUnderline } from "../../hooks/useNavUnderline.js";
 
 const SCROLL_THRESHOLD = 60;
 
@@ -78,6 +79,7 @@ export default function Navbar({ transparent = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [cartWiggle, setCartWiggle] = useState(false);
   const { count } = useCart();
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -99,6 +101,17 @@ export default function Navbar({ transparent = false }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [transparent, pathname]);
+
+  // <ProductCard /> dispatches `wovenhaat:cart-add` after a successful add, so the
+  // cart icon wiggles even before Dev 3 wires real cart state.
+  useEffect(() => {
+    const onCartAdd = () => {
+      setCartWiggle(true);
+      window.setTimeout(() => setCartWiggle(false), 620);
+    };
+    window.addEventListener("wovenhaat:cart-add", onCartAdd);
+    return () => window.removeEventListener("wovenhaat:cart-add", onCartAdd);
+  }, []);
 
   // Esc closes the search overlay (drawer handles its own Esc via <Overlay />)
   useEffect(() => {
@@ -122,11 +135,6 @@ export default function Navbar({ transparent = false }) {
   return (
     <>
       <header className={`site-header${scrolled ? " is-solid" : ""}`}>
-        <div className="announce">
-          Free shipping above ₹1499 · Easy 7-day returns ·{" "}
-          <Link to={ROUTES.bulkOrders}>Bulk orders → get a quote</Link>
-        </div>
-
         <div className="container nav">
           <Link to={ROUTES.home} className="nav__logo">
             Woven<span>Haat</span>
@@ -158,7 +166,7 @@ export default function Navbar({ transparent = false }) {
 
             <Link
               to={ROUTES.cart}
-              className="nav__icon"
+              className={`nav__icon${cartWiggle ? " is-wiggling" : ""}`}
               aria-label={count > 0 ? `Cart, ${count} items` : "Cart, empty"}
             >
               {ICONS.cart}

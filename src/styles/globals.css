@@ -319,14 +319,14 @@ textarea { min-height: 140px; resize: vertical; }
 }
 
 /* ---------- 7. Navbar (common — Dev 1) ----------
-   Fixed on top: announce bar + nav row. Over the Home hero it is fully
-   transparent (light text); past ~60px scroll (or on any non-home page)
-   it becomes solid --color-chrome (SAME colour as the footer) with a
-   subtle shadow + backdrop blur. 300ms ease transition.
-   Main content below gets padding-top: var(--nav-offset) except on home
-   (hero pulls up under the nav with margin-top: calc(-1 * 68px)). */
+   Fixed on top: a single nav row (the announcement bar was removed). Over the
+   Home hero it is fully transparent (light text); past ~60px scroll (or on any
+   non-home page) it becomes solid --color-chrome (SAME colour as the footer)
+   with a subtle shadow + backdrop blur. 300ms ease transition.
+   Main content below gets padding-top: var(--nav-offset) except on home (the
+   hero runs up under the transparent nav). */
 :root {
-  --nav-offset: 104px;           /* announce (~36px) + nav row (68px) */
+  --nav-offset: 68px;            /* one nav row, no announce bar */
 }
 
 .site-header {
@@ -343,24 +343,9 @@ textarea { min-height: 140px; resize: vertical; }
   backdrop-filter: blur(8px);
 }
 
-/* announce bar (part of fixed header; collapses on scroll) */
-.announce {
-  background: var(--color-chrome);
-  color: var(--color-bg);
-  font-size: 0.8rem;
-  text-align: center;
-  padding: var(--sp-2) var(--sp-4);
-  letter-spacing: 0.04em;
-  max-height: 40px;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
-}
-.site-header.is-solid .announce {
-  max-height: 0;
-  padding-block: 0;
-  opacity: 0;
-}
-.announce a { color: var(--color-tag); text-decoration: underline; }
+/* Announcement bar: REMOVED at the owner's request. The rules were kept out
+   entirely so the pattern is not copied back in; if a promo strip is ever
+   wanted again, build it inside the page (not above the navbar). */
 
 .nav {
   display: flex;
@@ -831,31 +816,10 @@ body.nav-locked { overflow: hidden; }
 }
 .cat-tile:hover .cat-tile__label { background: var(--color-primary); }
 
-/* ---------- 19. Product card (shared — Dev 2 extend karega) ---------- */
-.product-card { display: flex; flex-direction: column; position: relative; }
-.product-card__media { position: relative; display: block; overflow: hidden; }
-.product-card__media img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  transition: transform 0.35s ease;
-}
-.product-card:hover .product-card__media img { transform: scale(1.04); }
-.product-card__media .badge { position: absolute; top: var(--sp-3); left: var(--sp-3); }
-.product-card .card__body { display: flex; flex-direction: column; gap: var(--sp-2); flex: 1; }
-.product-card__title { font-size: 1.05rem; margin: 0; }
-.product-card__title a { color: var(--color-text); }
-.product-card__title a:hover { color: var(--color-primary); text-decoration: none; }
-.product-card__meta { font-size: 0.85rem; color: var(--color-muted); margin: 0; }
-.product-card__price { font-weight: 700; margin: 0 0 var(--sp-2); }
-.product-card__price s { color: var(--color-muted); font-weight: 400; font-size: 0.88rem; margin-left: var(--sp-1); }
-.product-card .btn { margin-top: auto; }
-/* Dev 2 ka hover-swap (doosri image) support */
-.product-card__media .swap {
-  position: absolute; inset: 0;
-  opacity: 0; transition: opacity 0.35s ease;
-}
-.product-card:hover .product-card__media .swap { opacity: 1; }
+/* ---------- 19. Product card ----------
+   The product card is its own component: src/components/product/ProductCard.jsx.
+   Its .pc-* styles live in section 27 below; the old .product-card* block from
+   the stub era was deleted so there is only one card. */
 
 /* ---------- 20. Split (image + text) ---------- */
 .split { display: grid; gap: var(--sp-6); align-items: center; }
@@ -1048,11 +1012,12 @@ body.nav-locked { overflow: hidden; }
    magazine-cover composition. Desktop grid + mobile bottom-pinned.
    ============================================================ */
 .ed-hero {
-  --ed-offset: 104px;                /* announce (~36px) + sticky header (68px) */
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - var(--ed-offset));
-  min-height: calc(100svh - var(--ed-offset));
+  /* One full viewport — nav floats on top; scroll once and the next section starts. */
+  height: 100svh;
+  min-height: 100svh;
+  max-height: 100svh;
   color: var(--color-bg);
 }
 
@@ -1112,14 +1077,24 @@ body.nav-locked { overflow: hidden; }
   .ed-hero__content {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: 1fr auto auto;
-    column-gap: 2rem; row-gap: 1.25rem;
+    grid-template-rows: auto 1fr auto auto;
+    column-gap: 2rem;
+    row-gap: 0.75rem;
+    padding-top: calc(var(--nav-offset) + var(--sp-3));
+    padding-bottom: var(--sp-4);
   }
-  .ed-socials { grid-column: 1; grid-row: 1; align-self: center; justify-self: start; }
-  .ed-info    { grid-column: 2; grid-row: 1; align-self: center; justify-self: end; }
-  .ed-headline{ grid-column: 1; grid-row: 2; }
+  .ed-socials { grid-column: 1; grid-row: 1; align-self: start; justify-self: start; }
+  /* Start below the fixed nav — never overlap search / cart icons */
+  .ed-info {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    justify-self: end;
+    max-width: min(380px, 42vw);
+  }
+  .ed-headline { grid-column: 1; grid-row: 2; align-self: end; }
   .ed-credit  { grid-column: 2; grid-row: 2; align-self: end; justify-self: end; text-align: right; }
-  .ed-corners { grid-column: 1 / -1; grid-row: 3; }
+  .ed-corners { grid-column: 1 / -1; grid-row: 4; align-self: end; }
 }
 
 /* socials (left) */
@@ -1130,21 +1105,35 @@ body.nav-locked { overflow: hidden; }
   transition: transform 0.25s ease, color 0.25s ease;
 }
 .ed-socials a:hover { transform: translateX(6px); color: var(--color-accent); text-decoration: none; }
-.ed-socials span { margin-left: 0.5rem; font-size: 11px; color: rgba(240,235,227,0.65); }
+.ed-socials span { margin-left: 0.5rem; font-size: 11px; color: rgba(240, 235, 227, 0.82); }
 @media (max-width: 1023px) { .ed-socials ul { flex-direction: row; flex-wrap: wrap; gap: 1.25rem; } }
 
-/* brand info (right) */
-.ed-info { max-width: 360px; font-size: 14px; line-height: 1.6; }
-.ed-info p { margin: 0 0 1.1rem; color: rgba(240,235,227,0.92); }
-.ed-info dl { font-size: 12px; margin: 0; }
+/* brand info (right)
+   Legibility pass: 16px paragraph at 0.95 opacity (was 14px/0.92), bolder
+   labels, brighter dividers, and a soft text-shadow so copy stays readable
+   over the busy parts of the photo. */
+.ed-info {
+  max-width: 380px;
+  font-size: 16px;
+  line-height: 1.6;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+.ed-info p { margin: 0 0 1.25rem; color: rgba(240, 235, 227, 0.95); }
+.ed-info dl { font-size: 12.5px; margin: 0; }
 .ed-info dl > div {
   display: flex; justify-content: space-between; gap: 1rem;
-  padding: 0.55rem 0;
-  border-top: 1px solid var(--color-accent);      /* thin Tan divider */
+  padding: 0.65rem 0;
+  border-top: 1px solid rgba(192, 143, 74, 0.85);  /* thin Tan divider, brighter */
 }
-.ed-info dl > div:last-child { border-bottom: 1px solid var(--color-accent); }
-.ed-info dt { color: var(--color-accent); letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0; }
-.ed-info dd { margin: 0; text-align: right; color: rgba(240,235,227,0.9); }
+.ed-info dl > div:last-child { border-bottom: 1px solid rgba(192, 143, 74, 0.85); }
+.ed-info dt {
+  color: var(--color-accent);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.ed-info dd { margin: 0; text-align: right; color: rgba(240, 235, 227, 0.95); }
 
 /* headline (bottom-left) */
 .ed-headline { display: flex; align-items: flex-start; gap: 1rem; }
@@ -1156,14 +1145,15 @@ body.nav-locked { overflow: hidden; }
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 700; text-transform: uppercase;
-  font-size: clamp(40px, 12vw, 172px);
+  /* Two lines only (Handwoven / Warmth) — sized to fit ~half the grid, not 12vw full viewport */
+  font-size: clamp(36px, 6.8vw, 112px);
   line-height: 0.92; letter-spacing: -0.015em;
   background: linear-gradient(180deg, #F0EBE3 30%, #DFD2BF 100%);
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
   position: relative; z-index: 3;                 /* photo subject ke upar overlap */
 }
-.ed-line { display: block; overflow: hidden; }     /* mask reveal */
+.ed-line { display: block; overflow: hidden; white-space: nowrap; } /* mask reveal; one word per line */
 .ed-line > span {
   display: block; transform: translateY(112%);
   animation: ed-reveal 0.9s cubic-bezier(0.22,0.61,0.36,1) both;
@@ -1237,7 +1227,7 @@ body.nav-locked { overflow: hidden; }
   .ed-m-cta { order: 4; }
   .ed-m-text {
     display: block; margin: 16px 0 0;              /* 16px below heading */
-    font-size: 15px; line-height: 1.5; color: rgba(240,235,227,0.85); max-width: 34ch;
+    font-size: 16px; line-height: 1.55; color: rgba(240, 235, 227, 0.94); max-width: 34ch;
   }
   .ed-m-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
   .ed-m-btns .ed-btn { width: 100%; min-height: 52px; font-size: 14px; }
@@ -1271,13 +1261,40 @@ body.nav-locked { overflow: hidden; }
   .ed-hero__bg { transition: none; }
 }
 
-/* per-letter hover on the hero headline */
-.ed-word { display: inline-block; }
+/* Per-letter hover on the hero headline.
+   NOTE: the gradient must live on the letter boxes, not on the <h1>. Once the
+   letters are inline-block, a background-clip:text gradient painted on the h1
+   no longer reaches them (the text renders fully transparent = invisible), so
+   each letter paints its own gradient and the flat Mocha gradient look is kept. */
+.ed-headline h1 { background: none; }
+.ed-word { display: inline-block; white-space: nowrap; }
 .ed-letter {
   display: inline-block;
+  background: linear-gradient(180deg, #F0EBE3 30%, #DFD2BF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   transition: transform 0.25s ease, color 0.25s ease;
 }
-.ed-word:hover .ed-letter { transform: translateY(-0.06em); color: var(--color-tag); }
+.ed-word:hover .ed-letter {
+  transform: translateY(-0.06em);
+  background: none;
+  color: var(--color-tag);
+}
+/* mobile keeps the flat Mocha headline (must come after the rules above) */
+@media (max-width: 639px) {
+  .ed-letter { background: none; color: var(--color-bg); }
+  .ed-word:hover .ed-letter { transform: none; color: var(--color-bg); }
+}
+
+/* Tablet / small laptop (flex layout): keep copy below the fixed nav */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .ed-hero__content {
+    padding-top: calc(var(--nav-offset) + var(--sp-4));
+    padding-bottom: var(--sp-4);
+  }
+  .ed-info { margin-left: auto; max-width: min(380px, 46vw); }
+}
 
 /* ============================================================
    27. UI component library (src/components/ui)
@@ -1862,14 +1879,6 @@ body.nav-locked { overflow: hidden; }
 .img-swap__alt { position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s ease; }
 .img-swap:hover .img-swap__alt { opacity: 1; }
 
-/* ---- Favourite heart pop ---- */
-.product-card__wish.is-popping svg { animation: heart-pop 0.42s ease; }
-@keyframes heart-pop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.32); }
-  70% { transform: scale(0.94); }
-  100% { transform: scale(1); }
-}
 
 /* ---- Reduced motion: everything off ---- */
 @media (prefers-reduced-motion: reduce) {
@@ -1877,61 +1886,418 @@ body.nav-locked { overflow: hidden; }
   .marquee__track { animation: none; }
   .has-tilt { transform: none; }
   .has-tilt::after, .has-spotlight::before { display: none; }
-  .product-card__wish.is-popping svg { animation: none; }
   .success-check__ring, .success-check__mark { animation-duration: 0.01ms; stroke-dashoffset: 0; }
 }
 
-/* ---- Product card stub additions (Dev 2 deletes with the stub) ---- */
-.product-card__wish {
+/* ---- Nav: light icons inside the chrome header ---- */
+.site-header .nav__icon, .site-header .nav__toggle { color: var(--color-bg); }
+
+/* cart icon wiggle after an add-to-cart (event from <ProductCard />) */
+.nav__icon.is-wiggling svg { animation: nav-cart-wiggle 0.62s ease; }
+@keyframes nav-cart-wiggle {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-13deg); }
+  45% { transform: rotate(11deg); }
+  70% { transform: rotate(-6deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav__icon.is-wiggling svg { animation: none; }
+}
+.site-header .icon-btn.nav__icon:hover { background: rgba(240, 235, 227, 0.14); color: #fff; }
+
+/* ---- Misc ---- */
+.site-footer .nav__logo { color: var(--color-bg); }
+.accordion details[open] > div { animation: overlay-fade 0.25s ease; }
+
+/* ============================================================
+   27. Product card (src/components/product/ProductCard.jsx)
+   .pc-* classes — grid, card, media slider, wishlist, badges,
+   countdown sale banner and skeletons. Design tokens only, no
+   hardcoded hex. Merged in from the old product-card.css.
+   ============================================================ */
+
+/* ---- grid ---- */
+.product-grid {
+  display: grid;
+  gap: var(--sp-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 768px) {
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.product-grid__empty:not(:empty) {
+  padding: var(--sp-7) var(--sp-4);
+  text-align: center;
+  color: var(--color-muted);
+}
+
+/* ---- outer card: white, 32px radius, beige hairline, inset photo ---- */
+.pc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 32px;
+  box-shadow: 0 10px 30px rgba(63, 58, 56, 0.08);
+  padding: 8px;
+  transition: box-shadow 0.3s ease;
+  will-change: transform;
+}
+.pc-card:hover { box-shadow: 0 18px 44px rgba(63, 58, 56, 0.14); }
+.pc-card:focus-within { box-shadow: 0 0 0 3px rgba(192, 143, 74, 0.45), 0 12px 34px rgba(63, 58, 56, 0.12); }
+.pc-card__inner { display: flex; flex-direction: column; flex: 1; }
+
+/* ---- sale strip (only rendered with a real deadline) ---- */
+.sale-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: 2px 4px 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(192, 143, 74, 0.16);          /* soft Tan tint */
+  min-height: 34px;                               /* reserved height, no shift */
+}
+.sale-banner__discount {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+.sale-banner__discount strong { font-weight: 800; }
+.sale-banner__timer { display: inline-flex; align-items: center; gap: 2px; }
+.sale-banner__group { display: inline-flex; align-items: center; gap: 2px; }
+.sale-banner__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding-inline: 4px;
+  border-radius: 6px;
+  background: var(--color-chrome);
+  color: var(--color-bg);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.sale-banner__digit { animation: pc-digit-in 0.35s ease; }
+@keyframes pc-digit-in {
+  from { opacity: 0; transform: translateY(-45%); }
+  to { opacity: 1; transform: none; }
+}
+.sale-banner__colon { color: var(--color-text); font-size: 11px; font-weight: 700; }
+.sale-banner.is-reduced .sale-banner__digit { animation: none; }
+
+/* ---- media area: 4/5, 28px radius, inset ---- */
+.pc-card__media-wrap { position: relative; }
+.pc-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  aspect-ratio: 4 / 5;                            /* reserved — no layout shift */
+  background: #EFEAE3;
+  cursor: pointer;
+}
+.pc-media:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+.pc-media__img {
   position: absolute;
-  top: var(--sp-3);
-  right: var(--sp-3);
-  width: 38px; height: 38px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+}
+.pc-media__img.is-active { opacity: 1; }
+.pc-media__swap { opacity: 0; }
+.pc-media--swap:hover .pc-media__swap { opacity: 1; }
+.pc-card:hover .pc-media__img.is-active { transform: scale(1.05); }
+.pc-media.is-out .pc-media__img { filter: grayscale(0.5) brightness(0.82); }
+.pc-media--empty { display: flex; align-items: center; justify-content: center; }
+.pc-media__placeholder { font-size: 0.78rem; color: var(--color-muted); }
+
+/* counter + arrows + dots */
+.pc-media__counter {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(63, 58, 56, 0.62);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.pc-media__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 44px; height: 44px;
+  transform: translateY(-50%);
   display: inline-flex; align-items: center; justify-content: center;
   border: none; border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
   color: var(--color-text);
   cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: color 0.2s ease, background-color 0.2s ease;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
 }
-.product-card__wish svg { width: 18px; height: 18px; }
-.product-card__wish:hover, .product-card__wish.is-wished { color: var(--color-primary); }
-.product-card__counter {
+.pc-media__arrow svg { width: 18px; height: 18px; }
+.pc-media__arrow--prev { left: 10px; }
+.pc-media__arrow--next { right: 10px; }
+.pc-media:hover .pc-media__arrow,
+.pc-media__arrow:focus-visible { opacity: 1; }
+.pc-media__arrow:hover { background: #fff; }
+.pc-media__arrow--prev:hover { transform: translateY(-50%) translateX(-2px); }
+.pc-media__arrow--next:hover { transform: translateY(-50%) translateX(2px); }
+.pc-media__dots {
   position: absolute;
-  bottom: var(--sp-3);
-  right: var(--sp-3);
-  background: rgba(63, 58, 56, 0.78);
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: var(--radius-pill);
+  left: 50%;
+  bottom: 10px;
+  z-index: 3;
+  transform: translateX(-50%);
+  display: inline-flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
-.product-card__eco {
+.pc-media:hover .pc-media__dots { opacity: 1; }
+.pc-media__dot {
+  width: 22px; height: 22px;                      /* 44px target with padding */
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+.pc-media__dot::after {
+  content: "";
   position: absolute;
-  bottom: var(--sp-3);
-  left: var(--sp-3);
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--color-text);
-  font-size: 0.66rem;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 1px rgba(63, 58, 56, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.pc-media__dot.is-active::after { background: var(--color-primary); transform: translate(-50%, -50%) scale(1.35); }
+
+/* ---- wishlist heart (top-left, above the stretched link) ---- */
+.pc-wish {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 4;
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(63, 58, 56, 0.28);
+  color: #fff;                                     /* outline white on the photo */
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.pc-wish svg { width: 20px; height: 20px; }
+.pc-wish:hover { background: rgba(63, 58, 56, 0.45); }
+.pc-wish:active { transform: scale(0.92); }
+.pc-wish.is-wished { color: var(--color-primary); } /* filled Burnt Orange */
+.pc-wish.is-animated svg { animation: pc-heart-pop 0.42s ease; }
+@keyframes pc-heart-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  70% { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+.pc-wish__burst { position: absolute; inset: 0; pointer-events: none; }
+.pc-wish__particle {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--color-tag);
+  opacity: 0;
+  animation: pc-particle 0.5s ease-out forwards;
+  transform: rotate(calc(var(--i) * 60deg)) translateY(0);
+}
+@keyframes pc-particle {
+  0% { opacity: 1; transform: rotate(calc(var(--i) * 60deg)) translateY(-4px) scale(0.6); }
+  100% { opacity: 0; transform: rotate(calc(var(--i) * 60deg)) translateY(-18px) scale(1); }
+}
+
+/* ---- sold-out + badge overlays ---- */
+.pc-card__soldout {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(63, 58, 56, 0.85);
+  color: var(--color-bg);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(192, 143, 74, 0.5);
 }
-.product-card__divider { border: none; border-top: 1px dashed var(--color-border); margin: var(--sp-2) 0; }
-.product-card__now { font-weight: 700; }
-.product-card__price { display: flex; align-items: baseline; gap: var(--sp-2); }
+.pc-card__badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-tag);                   /* Light Coral, dark text */
+  color: var(--color-text);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
-/* ---- Nav: light icons inside the chrome header ---- */
-.site-header .nav__icon, .site-header .nav__toggle { color: var(--color-bg); }
-.site-header .icon-btn.nav__icon:hover { background: rgba(240, 235, 227, 0.14); color: #fff; }
+/* ---- stretched hit area ---- */
+.pc-card__hit { position: absolute; inset: 0; z-index: 2; }
 
-/* ---- Misc ---- */
-.announce a:hover { color: #fff; }
-.site-footer .nav__logo { color: var(--color-bg); }
-.accordion details[open] > div { animation: overlay-fade 0.25s ease; }
+/* ---- eco / certification pill ---- */
+.pc-eco {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  margin: 12px 6px 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #EAF1E6;                            /* light sage tint (eco signal) */
+  color: #3E6B3F;                                 /* darker green leaf */
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(62, 107, 63, 0.25);
+}
+.pc-eco svg { width: 13px; height: 13px; }
 
+/* ---- name / meta / divider / footer ---- */
+.pc-name {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 10px 6px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.5em;                              /* reserved: 2 lines always */
+}
+@media (min-width: 1024px) { .pc-name { font-size: 21px; } }
+.pc-name a { color: var(--color-text); }
+.pc-name a:hover { color: var(--color-primary); text-decoration: none; }
+.pc-meta {
+  margin: 4px 6px 0;
+  font-size: 13.5px;
+  color: var(--color-muted);
+}
+.pc-divider {
+  border: none;
+  border-top: 1px dashed var(--color-border);
+  margin: 12px 6px;
+}
+.pc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin: auto 6px 6px;
+}
+.pc-price { display: flex; flex-direction: column; margin: 0; line-height: 1.2; }
+.pc-price s { font-size: 13.5px; color: var(--color-muted); }
+.pc-price strong { font-size: 21px; font-weight: 700; }
+.pc-add-wrap { display: inline-flex; flex-shrink: 0; }
+.pc-add {
+  border-radius: 999px !important;
+  padding: 0.6rem 1.1rem !important;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+  gap: 6px;
+}
+.pc-add__icon svg, .pc-add__check { width: 16px; height: 16px; }
+.pc-add__icon { display: inline-flex; transition: transform 0.25s ease; }
+.pc-add:hover .pc-add__icon { transform: translateX(3px); }
+.pc-add__check { animation: pc-check-in 0.3s ease; }
+@keyframes pc-check-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
 
+/* ---- very small screens: icon-only button, tighter padding ---- */
+@media (max-width: 400px) {
+  .pc-card { border-radius: 24px; padding: 6px; }
+  .pc-media { border-radius: 20px; }
+  .pc-add { padding: 0.55rem !important; }
+  .pc-add > .btn__label { display: none; }
+  .pc-add__icon svg { width: 18px; height: 18px; }
+  .pc-eco { margin-top: 10px; font-size: 10px; }
+  .pc-name { font-size: 18px; }
+  .pc-price strong { font-size: 18px; }
+}
+
+/* ---- skeleton (same boxes as the real card) ---- */
+.pc-skeleton .pc-card__inner { display: flex; flex-direction: column; flex: 1; }
+.pc-skeleton__sale { display: block; height: 34px; border-radius: 999px; margin: 2px 4px 8px; }
+.pc-skeleton__media { border-radius: 28px; aspect-ratio: 4 / 5; }
+.pc-skeleton__pill { height: 22px; width: 108px; border-radius: 999px; margin: 12px 6px 0; }
+.pc-skeleton__line { height: 16px; border-radius: 6px; margin: 10px 6px 0; }
+.pc-skeleton__line--short { width: 55%; }
+.pc-skeleton__foot { display: flex; align-items: center; justify-content: space-between; margin: auto 6px 6px; }
+.pc-skeleton__price { height: 24px; width: 84px; border-radius: 6px; }
+.pc-skeleton__button { height: 34px; width: 118px; border-radius: 999px; }
+.pc-skeleton__media,
+.pc-skeleton__sale,
+.pc-skeleton__pill,
+.pc-skeleton__line,
+.pc-skeleton__price,
+.pc-skeleton__button {
+  background: linear-gradient(90deg, #EDE7DF 25%, #F6F2EC 37%, #EDE7DF 63%);
+  background-size: 400% 100%;
+  animation: pc-shimmer 1.4s ease-in-out infinite;
+}
+.pc-skeleton-wrap.is-reduced .pc-skeleton__media,
+.pc-skeleton-wrap.is-reduced .pc-skeleton__sale,
+.pc-skeleton-wrap.is-reduced .pc-skeleton__pill,
+.pc-skeleton-wrap.is-reduced .pc-skeleton__line,
+.pc-skeleton-wrap.is-reduced .pc-skeleton__price,
+.pc-skeleton-wrap.is-reduced .pc-skeleton__button { animation: none; }
+
+@keyframes pc-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* ---- reduced motion: no tilt, zoom, particles or shimmer ---- */
+@media (prefers-reduced-motion: reduce) {
+  .pc-card { transform: none !important; }
+  .pc-card:hover .pc-media__img.is-active { transform: none; }
+  .pc-wish.is-animated svg { animation: none; }
+  .pc-wish__particle { animation: none; opacity: 0; }
+  .sale-banner__digit { animation: none; }
+  .pc-skeleton__media,
+  .pc-skeleton__sale,
+  .pc-skeleton__pill,
+  .pc-skeleton__line,
+  .pc-skeleton__price,
+  .pc-skeleton__button { animation: none; }
+}

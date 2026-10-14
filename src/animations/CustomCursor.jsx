@@ -11,7 +11,7 @@
  * cursor is never hidden, so the site stays usable if this fails.
  */
 import { useEffect, useRef, useState } from "react";
-import { useMotionEnabled } from "./useReducedMotion.js";
+import { useMotionEnabled } from "../hooks/useReducedMotion.js";
 
 export default function CustomCursor() {
   const dotRef = useRef(null);

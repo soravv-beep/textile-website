@@ -9,7 +9,7 @@
  * @param {boolean} [props.tilt=false] subtle 3D tilt + glare on hover (auto-off on touch)
  * @param {boolean} [props.spotlight=false] cursor-following soft glow on the card
  */
-import { useTilt } from "../../animations/useTilt.js";
+import { useTilt } from "../../hooks/useTilt.js";
 
 export default function Card({
   as: Tag = "div",

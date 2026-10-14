@@ -13,9 +13,9 @@
  */
 import { useState } from "react";
 
-import Button from "./ui/Button.jsx";
-import SuccessCheck from "../animations/SuccessCheck.jsx";
-import { CONTACT, ROUTES } from "../constants/routes.js";
+import Button from "../ui/Button.jsx";
+import SuccessCheck from "../../animations/SuccessCheck.jsx";
+import { CONTACT, ROUTES } from "../../constants/routes.js";
 import { Link } from "react-router-dom";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -34,7 +34,7 @@ export const ROUTES = {
   journalPost: "/journal/:slug",
   about: "/about",
   contact: "/contact",
-  /** hidden live style guide — linked from DESIGN_SYSTEM.md only */
+  /** hidden live style guide — linked from docs/DESIGN_SYSTEM.md only */
   designSystem: "/design-system"
 };
 

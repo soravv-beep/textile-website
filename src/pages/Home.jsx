@@ -5,7 +5,7 @@
  *   1. Editorial hero (full-bleed photo, transparent nav)
  *   2. Trust strip — OEKO-TEX · GOTS · GRS · 18+ countries
  *   3. Shop by category tiles → /collections#<slug>
- *   4. Featured / bestsellers (TEMPORARY <ProductCardStub /> — Dev 2 replaces)
+ *   4. Featured / bestsellers — the real <ProductCard /> (mock data for now)
  *   5. Craft story — Panipat artisan families
  *   6. Testimonials — "What homes are saying" (gold stars, portrait cards)
  *   7. Bulk / custom orders CTA → /bulk-orders
@@ -14,11 +14,12 @@
  *
  * SEO title/description are set through <PageMeta />.
  */
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import PageMeta from "../components/PageMeta.jsx";
-import ProductCardStub from "../components/ProductCardStub.jsx";
-import Newsletter from "../components/Newsletter.jsx";
+import ProductGrid from "../components/product/ProductGrid.jsx";
+import Newsletter from "../components/sections/Newsletter.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Container from "../components/ui/Container.jsx";
@@ -27,11 +28,12 @@ import SectionHeading from "../components/ui/SectionHeading.jsx";
 import Tag from "../components/ui/Tag.jsx";
 import Reveal from "../animations/Reveal.jsx";
 import Marquee from "../animations/Marquee.jsx";
-import { useSpotlight } from "../animations/useSpotlight.js";
+import { useSpotlight } from "../hooks/useSpotlight.js";
 
-import EditorialHero from "../components/EditorialHero.jsx";
+import EditorialHero from "../components/sections/EditorialHero.jsx";
 import { CATEGORIES } from "../data/categories.js";
-import { BESTSELLERS } from "../data/products.js";
+import { MOCK_BESTSELLERS, MOCK_PRODUCTS } from "../data/mockProducts.js";
+import { useCart } from "../context/CartContext.jsx";
 import { JOURNAL_POSTS, INSTAGRAM_POSTS } from "../data/journal.js";
 import { TESTIMONIALS } from "../data/testimonials.js";
 import { ROUTES, SOCIALS } from "../constants/routes.js";
@@ -140,6 +142,15 @@ function Categories() {
 }
 
 function Bestsellers() {
+  const { addItem } = useCart();
+  const [wishlist, setWishlist] = useState(() =>
+    MOCK_PRODUCTS.filter((product) => product.isWishlisted).map((product) => product.id)
+  );
+
+  // Demo wishlist source — Dev 4 owns the real one (see the product README).
+  const toggleWishlist = (id) =>
+    setWishlist((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
+
   return (
     <section className="section section--alt texture" aria-labelledby="best-h">
       <Container>
@@ -150,12 +161,16 @@ function Bestsellers() {
           title="Bestsellers"
           subtitle="Every weave has its own name, its own story."
         />
-        {/* NOTE: temporary stub grid — Dev 2's <ProductCard /> replaces <ProductCardStub /> */}
-        <Reveal stagger={0.1} className="grid grid--4">
-          {BESTSELLERS.map((product, index) => (
-            <ProductCardStub key={product.slug} product={product} index={index} total={10} />
-          ))}
-        </Reveal>
+        {/* Real <ProductCard /> (was the temporary stub). Mock data until the
+            product API lands — see src/components/product/README.md. */}
+        <ProductGrid
+          products={MOCK_BESTSELLERS.map((product) => ({
+            ...product,
+            isWishlisted: wishlist.includes(product.id)
+          }))}
+          onAddToCart={(id, product) => addItem(product)}
+          onToggleWishlist={toggleWishlist}
+        />
         <div className="section-cta">
           <Button as={Link} to={ROUTES.shop} variant="outline">
             View all products

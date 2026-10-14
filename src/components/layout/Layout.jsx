@@ -17,8 +17,8 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import Navbar from "./Navbar.jsx";
 import Footer from "./Footer.jsx";
-import CustomCursor from "../animations/CustomCursor.jsx";
-import { ROUTES } from "../constants/routes.js";
+import CustomCursor from "../../animations/CustomCursor.jsx";
+import { ROUTES } from "../../constants/routes.js";
 
 /** Routes whose first screen is a dark full-bleed hero. */
 const TRANSPARENT_NAV_ROUTES = [ROUTES.home];
