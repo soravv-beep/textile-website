@@ -374,13 +374,34 @@ body.nav-locked { overflow: hidden; }
 }
 
 /* hamburger */
-.nav__toggle { display: inline-flex; }
+.nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--color-bg);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.nav__toggle:hover { background: rgba(240, 235, 227, 0.14); color: #fff; }
+.nav__toggle:active { transform: scale(0.92); }
+.nav__toggle svg { width: 24px; height: 24px; }
 
-/* mobile drawer – slide-in from right */
+/* ──────────────────────────────────────────────
+   Mobile navigation drawer – slide‑in from right
+   ────────────────────────────────────────────── */
 .nav__drawer {
   position: fixed;
-  inset: 0 0 0 auto;
-  width: min(340px, 86vw);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(90vw, 480px);          /* 90 % of viewport, max 480 px */
+  max-height: 100vh;                /* fallback for browsers without dvh */
+  max-height: 100dvh;               /* dynamic viewport height (mobile address bar) */
   z-index: 120;
   background: var(--color-chrome);
   color: var(--color-bg);
@@ -389,10 +410,26 @@ body.nav-locked { overflow: hidden; }
   visibility: hidden;
   transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
               visibility 0.32s;
-  overflow-y: auto;
+  overflow-y: auto;                 /* <-- makes the list scrollable */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;     /* prevents pull‑to‑refresh on the page */
+  will-change: transform;
 }
-.nav__drawer.is-open { transform: translateX(0); visibility: visible; }
-.nav__drawer nav { display: flex; flex-direction: column; }
+
+/* open state */
+.nav__drawer.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+/* inner vertical list */
+.nav__drawer nav {
+  display: flex;
+  flex-direction: column;           /* guarantees a column layout */
+  gap: 0;
+}
+
+/* each link */
 .nav__drawer a {
   display: flex;
   align-items: center;
@@ -401,26 +438,62 @@ body.nav-locked { overflow: hidden; }
   min-height: 53px;
   padding: 10px 0;
   border-bottom: 1px solid var(--color-border);
-  color: inherit;
+  color: var(--color-bg);           /* explicit – guarantees contrast */
   font-size: 0.96rem;
   text-decoration: none;
   transition: color 160ms ease, padding 160ms ease;
 }
 .nav__drawer a:hover,
-.nav__drawer a.active { padding-left: 4px; color: var(--color-primary); }
+.nav__drawer a.active {
+  padding-left: 4px;
+  color: var(--color-primary);
+}
 .nav__drawer a:hover > svg,
-.nav__drawer a.active > svg { color: var(--color-primary); }
+.nav__drawer a.active > svg {
+  color: var(--color-primary);
+}
 
+/* close button (X) */
 .nav__drawer-close {
   position: absolute;
-  top: var(--sp-3); right: var(--sp-3);
-  width: 44px; height: 44px;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: transparent; border: none; cursor: pointer;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   color: var(--color-bg);
   border-radius: 50%;
 }
-.nav__drawer-close:hover { background: rgba(240, 235, 227, 0.14); }
+.nav__drawer-close:hover {
+  background: rgba(240, 235, 227, 0.14);
+}
+
+/* ──────────────────────────────────────────────
+   Extra small phones (≤480 px) – tighter padding,
+   larger tap targets, safe‑area inset for notch phones
+   ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .nav__drawer {
+    width: 90vw;
+    max-width: 480px;
+    padding: calc(var(--nav-height) + var(--sp-4)) var(--sp-4)
+             calc(var(--sp-5) + env(safe-area-inset-bottom)) var(--sp-4);
+  }
+  .nav__drawer a {
+    font-size: 1rem;
+    min-height: 48px;
+    padding: 12px 0;
+  }
+  .nav__drawer-close {
+    top: var(--sp-2);
+    right: var(--sp-2);
+  }
+}
 
 /* scrim behind drawer */
 .nav__scrim {
@@ -481,6 +554,29 @@ body.nav-locked { overflow: hidden; }
   .nav__menu { display: flex; }
   .nav__toggle { display: none; }
   .nav__drawer, .nav__scrim { display: none !important; }
+}
+
+/* Small phones – ensure drawer uses full width and readable text */
+@media (max-width: 480px) {
+  .nav__drawer {
+    width: 100vw;
+    max-width: none;
+    padding: calc(var(--nav-height) + var(--sp-4)) var(--sp-4) var(--sp-4);
+  }
+  .nav__drawer a {
+    font-size: 1rem;
+    min-height: 48px;
+    padding: 12px 0;
+  }
+  .nav__drawer-close {
+    top: var(--sp-2);
+    right: var(--sp-2);
+  }
+  .nav__toggle {
+    width: 40px;
+    height: 40px;
+  }
+  .nav__toggle svg { width: 22px; height: 22px; }
 }
 
 .skip-link {

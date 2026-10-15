@@ -816,3 +816,50 @@
     min-width: 0;
   }
 }
+
+/* ==========================================================================
+   RESPONSIVE COMPONENTS: ≤480px
+   ========================================================================== */
+@media (max-width: 480px) {
+  .product-grid,
+  .shop-layout > .product-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-media {
+    aspect-ratio: 4/5;
+  }
+
+  .add-to-cart-btn {
+    padding: 0 12px;
+    font-size: 0.78rem;
+  }
+
+  .sticky-buy {
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+  }
+
+  .sticky-buy small {
+    max-width: 60vw;
+  }
+
+  .compare-bar {
+    width: calc(100% - 24px);
+    left: 12px;
+    transform: none;
+  }
+
+  .whatsapp-fab {
+    right: 12px;
+    bottom: 12px;
+    height: 48px;
+    padding: 0 14px 0 10px;
+    font-size: 0.8rem;
+  }
+
+  .compare-items span {
+    max-width: 140px;
+  }
+}
