@@ -1,0 +1,470 @@
+/* ==========================================================================
+   SHOP.CSS - Shop Page & Product Listing Styles
+   ==========================================================================
+   Shop page layout, product filtering, sorting, product grids,
+   and shop-specific responsive styling.
+   ========================================================================== */
+
+/* ==========================================================================
+   SHOP TOOLS (Search, Sort, Filter Toggle)
+   ========================================================================== */
+.shop-tools {
+  margin-bottom: 25px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.shop-search {
+  max-width: 660px;
+  height: 50px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: white;
+}
+
+.shop-search svg {
+  width: 19px;
+  color: var(--muted);
+}
+
+.shop-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.sort-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.sort-select select {
+  height: 46px;
+  min-width: 150px;
+  padding: 0 35px 0 13px;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.filter-mobile {
+  display: none;
+}
+
+.result-line {
+  margin: 0 0 16px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.result-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   ACTIVE FILTERS
+   ========================================================================== */
+.active-filters {
+  margin: -5px 0 20px 255px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.active-filters span {
+  padding: 7px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--mocha);
+  color: var(--ink);
+}
+
+.active-filters svg {
+  width: 13px;
+}
+
+.active-filters button {
+  border: 0;
+  background: transparent;
+  color: var(--orange);
+  text-decoration: underline;
+}
+
+.active-filters .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--white);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.active-filters .chip svg {
+  width: 13px;
+}
+
+/* ==========================================================================
+   SHOP LAYOUT (Sidebar + Product Grid)
+   ========================================================================== */
+.shop-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.shop-layout > .product-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Sticky filter sidebar */
+.desktop-filters {
+  position: sticky;
+  top: 120px;
+  align-self: start;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px 16px 0;
+  /* hide scrollbar */
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE/Edge */
+}
+
+.desktop-filters::-webkit-scrollbar {
+  display: none;                  /* Chrome/Safari */
+  width: 0;
+  height: 0;
+}
+
+.desktop-filters .filter-panel {
+  border-top: none;
+}
+
+.desktop-filters .filter-group:last-of-type {
+  padding-bottom: 24px;
+}
+
+/* Ensure product column can shrink and doesn't cause horizontal overflow */
+.shop-layout > div:last-child {
+  min-width: 0;
+}
+
+/* ==========================================================================
+   FILTER PANEL
+   ========================================================================== */
+.filter-panel {
+  border-top: 1px solid var(--line);
+}
+
+.filter-title {
+  padding: 16px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.filter-title button {
+  border: 0;
+  background: transparent;
+  color: var(--orange);
+  font-size: 0.73rem;
+}
+
+.filter-group {
+  border-bottom: 1px solid var(--line);
+}
+
+.filter-group summary {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.filter-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter-group summary svg {
+  width: 16px;
+}
+
+.filter-group > div {
+  padding-bottom: 17px;
+  display: grid;
+  gap: 8px;
+}
+
+.filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.filter-group input {
+  accent-color: var(--orange);
+}
+
+.swatches {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  gap: 9px !important;
+}
+
+.swatch {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 2px solid var(--white);
+  outline: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 0.58rem;
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.swatch.all {
+  width: 38px;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.swatch.terracotta {
+  background: var(--orange);
+}
+
+.swatch.mocha {
+  background: var(--mocha);
+}
+
+.swatch.coral {
+  background: var(--coral);
+}
+
+.swatch.turquoise {
+  background: var(--turquoise);
+}
+
+.swatch.natural {
+  background: var(--tan-soft);
+}
+
+.swatch.white {
+  background: white;
+}
+
+.swatch.selected {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.swatch-caption {
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.swatches .swatch {
+  transition: transform 0.15s;
+}
+
+.swatches .swatch:hover {
+  transform: scale(1.12);
+}
+
+.mobile-filter-wrap {
+  display: none;
+  margin-bottom: 25px;
+  padding: 18px;
+  background: var(--mocha);
+}
+
+/* ==========================================================================
+   CATEGORY GRID (used on shop/home)
+   ========================================================================== */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.category-card {
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: white;
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  opacity: 0.86;
+  transition: 500ms ease;
+}
+
+.category-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 38%, rgb(63 58 56 / 0.8));
+}
+
+.category-card > div {
+  position: absolute;
+  z-index: 1;
+  inset: auto 28px 24px;
+}
+
+.category-card h3 {
+  margin-bottom: 7px;
+  font: 400 1.8rem var(--font-display);
+}
+
+.category-card p {
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.category-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.category-card span svg {
+  width: 16px;
+}
+
+.category-card:hover img {
+  transform: scale(1.035);
+  opacity: 0.96;
+}
+
+/* ==========================================================================
+   RESPONSIVE SHOP: ≤1150px
+   ========================================================================== */
+@media (max-width: 1150px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .category-card {
+    min-height: 360px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE SHOP: ≤900px
+   ========================================================================== */
+@media (max-width: 900px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .desktop-filters {
+    display: none;
+  }
+
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-layout > .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-mobile {
+    display: inline-flex;
+  }
+
+  .shop-tools {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .active-filters {
+    margin-left: 0;
+  }
+
+  .mobile-filter-wrap {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE SHOP: ≤640px
+   ========================================================================== */
+@media (max-width: 640px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    min-height: 390px;
+  }
+
+  .shop-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .shop-search {
+    grid-column: 1/-1;
+  }
+
+  .filter-panel {
+    max-width: 100%;
+  }
+
+  .sort-select {
+    display: grid;
+    gap: 4px;
+  }
+
+  .sort-select select {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .filter-mobile {
+    width: 100%;
+  }
+}

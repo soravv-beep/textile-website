@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   DESIGN TOKENS & CSS VARIABLES
+   ========================================================================== */
+:root {
+  /* Brand colors (DMC thread references) */
+  --ink: #3f3a38;               /* DMC 844  Ultra Dark Beaver Gray */
+  --orange: #c8421f;            /* DMC 900  Dark Burnt Orange */
+  --tan: #c08f4a;               /* DMC 436  Tan */
+  --coral: #ee8f80;             /* DMC 352  Light Coral */
+  --mocha: #f0ebe3;             /* DMC 3866 Ultra Very Light Mocha */
+  --turquoise: #5c9fae;         /* DMC 597  Turquoise */
+  --white: #ffffff;
+
+  /* Derived colors using color-mix for consistency */
+  --muted: color-mix(in srgb, var(--ink) 80%, var(--mocha));
+  --line: rgb(63 58 56 / 0.16);
+  --orange-dark: color-mix(in srgb, var(--orange) 84%, var(--ink));
+  --tan-soft: color-mix(in srgb, var(--tan) 28%, var(--mocha));
+  --coral-soft: color-mix(in srgb, var(--coral) 28%, var(--white));
+  --mocha-deep: color-mix(in srgb, var(--ink) 9%, var(--mocha));
+
+  /* Semantic color aliases (reference design) */
+  --color-text: var(--ink);
+  --color-primary: var(--orange);
+  --color-primary-hover: var(--orange-dark);
+  --color-accent: var(--tan);
+  --color-tag: var(--coral);
+  --color-bg: var(--mocha);
+  --color-surface: var(--white);
+  --color-link: var(--turquoise);
+  --color-link-hover: color-mix(in srgb, var(--turquoise) 78%, var(--ink));
+  --color-muted: var(--muted);
+  --color-border: var(--line);
+  --color-chrome: var(--ink);
+
+  /* Semantic status colors */
+  --color-success: #4C7A5A;
+  --color-error: #B23A1E;
+
+  /* Shadows */
+  --shadow: 0 14px 40px rgb(63 58 56 / 0.1);
+  --shadow-soft: 0 6px 22px rgb(63 58 56 / 0.08);
+  --shadow-lg: 0 12px 32px rgba(63, 58, 56, 0.14);
+
+  /* Border radius */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Typography */
+  --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-body: 1rem;
+  --lh-body: 1.6;
+
+  /* Spacing scale */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  /* Layout */
+  --maxw: 1200px;
+  --nav-height: 68px;
+  --nav-offset: 68px;
+}
+
+/* ==========================================================================
+   BASE & RESET
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, p {
+  margin-top: 0;
+}
+
+h1, h2, .brand {
+  font-family: var(--font-heading), serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: clamp(2.7rem, 6vw, 6rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  line-height: 1.25;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-tag);
+  color: var(--color-text);
+}
+
+main {
+  animation: fade-up 0.45s ease both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==========================================================================
+   GLOBAL UTILITIES
+   ========================================================================== */
+/* Layout utilities are in layout.css */
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: var(--sp-4);
+  top: -100px;
+  z-index: 200;
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.skip-link:focus {
+  top: 0;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

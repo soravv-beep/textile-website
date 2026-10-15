@@ -1,0 +1,872 @@
+/* ==========================================================================
+   ACCOUNT.CSS - Cart, Wishlist, Checkout, Account Pages
+   ==========================================================================
+   Cart layout, wishlist, checkout flow, order tracking, and account dashboard.
+   ========================================================================== */
+
+/* ==========================================================================
+   CART & CHECKOUT LAYOUTS
+   ========================================================================== */
+.cart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 70px;
+  align-items: start;
+}
+
+.cart-list {
+  border-top: 1px solid var(--line);
+}
+
+.cart-list article {
+  padding: 22px 0;
+  display: grid;
+  grid-template-columns: 125px 1fr auto;
+  gap: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-list img {
+  width: 125px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.cart-list h3 {
+  margin: 4px 0;
+}
+
+.cart-list p {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.cart-list .quantity {
+  margin-top: 16px;
+  min-height: 38px;
+}
+
+.cart-list .quantity button {
+  height: 36px;
+}
+
+.remove {
+  align-self: start;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.remove svg {
+  width: 14px;
+}
+
+.order-summary {
+  padding: 30px;
+  background: var(--mocha);
+  position: sticky;
+  top: 130px;
+}
+
+.order-summary h2 {
+  font-size: 1.8rem;
+}
+
+.order-summary > div {
+  padding: 13px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.82rem;
+}
+
+.order-summary .summary-total {
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.order-summary > p {
+  margin: 18px 0 0;
+  display: flex;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.order-summary svg {
+  width: 16px;
+}
+
+/* ==========================================================================
+   CHECKOUT LAYOUT
+   ========================================================================== */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 70px;
+  align-items: start;
+}
+
+.checkout-layout > form {
+  display: grid;
+  gap: 18px;
+}
+
+.checkout-layout h1 {
+  font-size: 3.8rem;
+}
+
+.checkout-layout h2 {
+  margin-top: 30px;
+  font-size: 1.8rem;
+}
+
+.payment-options {
+  display: grid;
+  gap: 10px;
+}
+
+.payment-options label {
+  padding: 16px;
+  border: 1px solid var(--line);
+}
+
+.payment-options input {
+  width: auto;
+  min-height: auto;
+  margin-right: 8px;
+  accent-color: var(--orange);
+}
+
+/* ==========================================================================
+   CART & CHECKOUT EXTRAS (from features.css)
+   ========================================================================== */
+.ship-progress {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.ship-progress p {
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+.ship-progress svg {
+  width: 18px;
+  color: var(--tan);
+}
+
+.bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--mocha);
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--orange);
+  transition: width 0.4s ease;
+}
+
+.cart-list {
+  border-top: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.cart-list article {
+  padding: 16px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.coupon-form {
+  margin-block: 14px;
+  display: grid;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+
+.coupon-form .pin-ok {
+  font-size: 0.76rem;
+}
+
+.order-summary .line-size {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.stepper {
+  margin: 0 0 40px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 30px;
+  list-style: none;
+}
+
+.stepper li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stepper b {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.stepper b svg {
+  width: 16px;
+}
+
+.stepper li.current {
+  color: var(--ink);
+}
+
+.stepper li.current b {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.stepper li.done b {
+  background: var(--tan);
+  color: var(--ink);
+}
+
+.checkout-main > form,
+.review-step {
+  display: grid;
+  gap: 18px;
+}
+
+.checkout-main h1 {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  margin-bottom: 0;
+}
+
+.checkout-layout > .checkout-main {
+  min-width: 0;
+}
+
+.payment-options label span {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  gap: 12px;
+}
+
+.payment-options label {
+  display: flex;
+  align-items: center;
+}
+
+.payment-options small {
+  color: var(--muted);
+}
+
+.pay-detail {
+  display: grid;
+  gap: 14px;
+}
+
+.pay-detail label {
+  display: grid;
+  gap: 7px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.checkout-layout .pay-detail input,
+.checkout-layout .pay-detail select {
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.step-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.review-card {
+  position: relative;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.review-card h3 {
+  margin: 0 0 6px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.review-card p {
+  margin: 0;
+}
+
+.review-card .text-link {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-size: 0.78rem;
+}
+
+.confirm-card {
+  text-align: center;
+}
+
+.confirm-tick {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--turquoise);
+  color: var(--ink);
+}
+
+.confirm-tick svg {
+  width: 30px;
+}
+
+.order-no {
+  font-size: 1.05rem;
+}
+
+.order-no strong {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--tan);
+}
+
+.confirm-items {
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  display: grid;
+  gap: 12px;
+}
+
+.confirm-items li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.confirm-items img {
+  width: 56px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.confirm-items span {
+  flex: 1;
+  display: grid;
+  font-weight: 600;
+}
+
+.confirm-items small {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.confirm-total {
+  margin-block: 22px;
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   ACCOUNT LAYOUT
+   ========================================================================== */
+.account-layout {
+  min-height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 9vw;
+  align-items: center;
+}
+
+.account-layout > div > p:not(.kicker) {
+  max-width: 520px;
+  color: var(--muted);
+}
+
+.account-features {
+  margin-top: 35px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.account-features span {
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mocha);
+  font-size: 0.78rem;
+}
+
+.account-features svg {
+  width: 17px;
+  color: var(--orange);
+}
+
+/* ==========================================================================
+   ACCOUNT DASHBOARD
+   ========================================================================== */
+.account-dash {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.dash-nav {
+  padding: 28px;
+  display: grid;
+  gap: 6px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.dash-nav h2 {
+  margin: 12px 0 0;
+  font-size: 1.6rem;
+}
+
+.dash-nav p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  word-break: break-all;
+}
+
+.dash-nav button:not(.text-link),
+.dash-link {
+  min-height: 44px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.dash-nav button.on,
+.dash-nav button:hover,
+.dash-link:hover {
+  background: var(--mocha);
+}
+
+.dash-nav svg {
+  width: 18px;
+  color: var(--tan);
+}
+
+.dash-panel h1 {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  margin-bottom: 24px;
+}
+
+.order-row {
+  margin-bottom: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 20px;
+  align-items: center;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.order-row small {
+  display: block;
+  color: var(--muted);
+}
+
+.mini-steps {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  list-style: none;
+}
+
+.mini-steps li {
+  flex: 1;
+  padding-top: 8px;
+  border-top: 4px solid var(--mocha);
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+
+.mini-steps li.on {
+  border-top-color: var(--tan);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.address-grid {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.address-grid article {
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  font: 500 1.2rem var(--font-display);
+}
+
+.avatar.orange {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.avatar.turquoise {
+  background: var(--turquoise);
+  color: var(--ink);
+}
+
+.avatar.tan {
+  background: var(--tan);
+  color: var(--ink);
+}
+
+.avatar.coral {
+  background: var(--coral);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   ORDER TRACKING
+   ========================================================================== */
+.track-card {
+  padding: clamp(32px, 6vw, 70px);
+  background: var(--mocha);
+  text-align: center;
+}
+
+.track-card > svg {
+  width: 48px;
+  height: 48px;
+  color: var(--tan);
+}
+
+.track-card > p:not(.kicker) {
+  color: var(--muted);
+}
+
+.track-card form {
+  max-width: 580px;
+  margin: 34px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 9px;
+  text-align: left;
+}
+
+.track-card label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.track-card input {
+  min-height: 50px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+}
+
+.track-card form .button {
+  align-self: end;
+}
+
+.timeline {
+  max-width: 580px;
+  margin: 50px auto 0;
+  text-align: left;
+}
+
+.timeline > div {
+  min-height: 85px;
+  display: flex;
+  gap: 18px;
+  position: relative;
+}
+
+.timeline > div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 49px;
+  left: 18px;
+  top: 38px;
+  background: var(--line);
+}
+
+.timeline i {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 37px;
+  border-radius: 50%;
+  background: white;
+  color: var(--muted);
+}
+
+.timeline i svg {
+  width: 17px;
+}
+
+.timeline .done i {
+  background: var(--tan);
+  color: white;
+}
+
+.timeline .current i {
+  background: var(--orange);
+  color: white;
+}
+
+.timeline span {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline small {
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   FORM NOTE
+   ========================================================================== */
+.form-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+/* ==========================================================================
+   SEGMENTED CONTROL
+   ========================================================================== */
+.seg {
+  display: flex;
+  padding: 4px;
+  gap: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--mocha);
+}
+
+.seg button {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.seg button.on {
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ==========================================================================
+   OR DIVIDER
+   ========================================================================== */
+.or-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.or-line::before,
+.or-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ==========================================================================
+   GOOGLE BUTTON
+   ========================================================================== */
+.google-btn b {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--mocha);
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE ACCOUNT: ≤900px
+   ========================================================================== */
+@media (max-width: 900px) {
+  .cart-layout,
+  .checkout-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .order-summary {
+    position: static;
+  }
+
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-dash {
+    grid-template-columns: 1fr;
+  }
+
+  .order-row {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-bar {
+    width: calc(100% - 24px);
+    bottom: 78px;
+    flex-wrap: wrap;
+  }
+
+  .compare-bar.lifted {
+    bottom: 140px;
+  }
+
+  .whatsapp-fab {
+    right: 12px;
+    bottom: 14px;
+  }
+
+  .modal {
+    padding: 0;
+  }
+
+  .modal-card {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE ACCOUNT: ≤640px
+   ========================================================================== */
+@media (max-width: 640px) {
+  .cart-list article {
+    grid-template-columns: 90px 1fr;
+  }
+
+  .cart-list img {
+    width: 90px;
+    height: 115px;
+  }
+
+  .cart-list .remove {
+    grid-column: 2;
+  }
+
+  .checkout-layout h1 {
+    font-size: 3rem;
+  }
+
+  .track-card {
+    padding-inline: 18px;
+  }
+
+  .track-card form {
+    grid-template-columns: 1fr;
+  }
+
+  .track-card form .button {
+    margin-top: 5px;
+  }
+
+  .step-actions {
+    flex-direction: column-reverse;
+  }
+
+  .stepper {
+    gap: 8px 14px;
+  }
+
+  .stepper li {
+    font-size: 0.74rem;
+  }
+
+  .stepper b {
+    width: 26px;
+    height: 26px;
+  }
+
+  .address-grid {
+    grid-template-columns: 1fr;
+  }
+}
