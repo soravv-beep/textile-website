@@ -15,7 +15,7 @@ export function useIntersectionObserver({ threshold = 0.1, rootMargin = "100px",
   return [setNode, isIntersecting];
 }
 
-export function useProgressiveRender(items, initialCount = 8, batchSize = 8, loadDelay = 2000) {
+export function useProgressiveRender(items, initialCount = 12, batchSize = 12, loadDelay = 3000) {
   const [state, setState] = useState(() => ({ source: items, count: initialCount, loading: false, revealFrom: Infinity }));
   const timer = useRef(null);
   const generation = useRef(0);

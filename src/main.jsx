@@ -1,20 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
-import "./styles/global.css";
-import "./styles/layout.css";
-import "./styles/components.css";
+import "./styles/globals.css";
+// Shop-side styles (Dev 2) — imported after globals.css so scoped shop rules win ties.
 import "./styles/shop.css";
-import "./styles/product.css";
-import "./styles/account.css";
-import "./styles/pages.css";
-import "./styles/features.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
