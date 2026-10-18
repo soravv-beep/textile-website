@@ -15,6 +15,10 @@ import { ROUTES } from "./constants/routes.js";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import Sustainability from "./pages/Sustainability.jsx";
+import Lookbook from "./pages/Lookbook.jsx";
+import Journal from "./pages/Journal.jsx";
+import JournalPost from "./pages/JournalPost.jsx";
 import DesignSystem from "./pages/DesignSystem.jsx";
 import ComingSoon from "./pages/ComingSoon.jsx";
 import NotFound from "./pages/NotFound.jsx";
@@ -27,6 +31,10 @@ export default function App() {
           <Route path={ROUTES.home} element={<Home />} />
           <Route path={ROUTES.about} element={<About />} />
           <Route path={ROUTES.contact} element={<Contact />} />
+          <Route path={ROUTES.sustainability} element={<Sustainability />} />
+          <Route path={ROUTES.lookbook} element={<Lookbook />} />
+          <Route path={ROUTES.journal} element={<Journal />} />
+          <Route path={ROUTES.journalPost} element={<JournalPost />} />
           <Route path={ROUTES.designSystem} element={<DesignSystem />} />
 
           {/* Placeholders — each owned by another developer */}
@@ -54,10 +62,6 @@ export default function App() {
           <Route path={ROUTES.bulkOrders} element={<ComingSoon title="Bulk & custom orders" owner="Dev 5" />} />
           <Route path={ROUTES.faq} element={<ComingSoon title="FAQ" owner="Dev 5" />} />
           <Route path={ROUTES.shippingReturns} element={<ComingSoon title="Shipping & returns" owner="Dev 5" />} />
-          <Route path={ROUTES.sustainability} element={<ComingSoon title="Sustainability" owner="Dev 5" />} />
-          <Route path={ROUTES.lookbook} element={<ComingSoon title="Lookbook" owner="Dev 5" />} />
-          <Route path={ROUTES.journal} element={<ComingSoon title="Journal" owner="Dev 5" />} />
-          <Route path={ROUTES.journalPost} element={<ComingSoon title="Journal article" owner="Dev 5" />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>
