@@ -1,248 +1,544 @@
+
 /**
- * <Navbar /> — fixed header shared by every page (Dev 1).
+ * WOVENHAAT Navbar
  *
- * Behaviour:
- *  - fixed to the top (the old announcement bar was removed at the owner's
- *    request — no "free shipping" strip above the hero),
- *  - over the HOME hero it starts fully TRANSPARENT with light text and turns
- *    solid --color-chrome (the same colour as the footer) with a soft shadow +
- *    backdrop blur after ~60px of scroll, and returns to transparent at the top,
- *  - on every other route it is solid from the first paint,
- *  - active route gets the burnt-orange underline,
- *  - cart icon shows the item count from CartContext (Dev 3 replaces the source).
+ * Stage 1 (0–40px):
+ * Announcement + logo + navigation visible.
  *
- * Accessibility: aria-labels on icon buttons, Esc closes the drawer/search,
- * focus trap + body scroll lock while open (provided by <Overlay />), skip link
- * lives in <Layout />.
+ * Stage 2 (41–350px):
+ * Announcement slides away; logo + navigation remain visible.
  *
- * Props: `transparent` — set by Layout on routes with a hero (home) so the nav
- * knows it may start transparent.
+ * Stage 3 (351px+):
+ * Desktop: only navigation remains fixed at the top.
+ * Mobile/tablet: compact header controls remain available.
  */
-import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { MAIN_NAV, MEGA } from '../../data/navigation.js';
+import { CATEGORIES } from '../../data/collections.js';
+import { useCart } from '../../context/CartContext.jsx';
+import SearchModal from '../sections/SearchModal.jsx';
+import './Navbar.css';
 
-import { NAV_LINKS, ROUTES } from "../../constants/routes.js";
-import { useCart } from "../../context/CartContext.jsx";
-import { Overlay } from "../ui/index.js";
-import { IconButton } from "../ui/index.js";
-import { useNavUnderline } from "../../hooks/useNavUnderline.js";
-
-const SCROLL_THRESHOLD = 60;
-
-const ICONS = {
-  search: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" />
-    </svg>
-  ),
-  wishlist: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M12 21s-7.5-4.8-9.5-9A5.4 5.4 0 0 1 12 6.5 5.4 5.4 0 0 1 21.5 12c-2 4.2-9.5 9-9.5 9Z" />
-    </svg>
-  ),
-  cart: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M6 6h15l-1.5 9h-12z" />
-      <path d="M6 6 5 3H2" />
-      <circle cx="9" cy="20" r="1.5" />
-      <circle cx="18" cy="20" r="1.5" />
-    </svg>
-  ),
-  menu: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </svg>
-  )
+const MENU_IMAGES = {
+  rugs: {
+    feature: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=850&q=85',
+    detail: 'https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=450&q=85',
+    side: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=85',
+  },
+  carpets: {
+    feature: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=850&q=85',
+    detail: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=450&q=85',
+    side: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=600&q=85',
+  },
+  throws: {
+    feature: 'https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&w=850&q=85',
+    detail: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=450&q=85',
+    side: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=85',
+  },
+  'table-linen': {
+    feature: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=850&q=85',
+    detail: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=450&q=85',
+    side: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=85',
+  },
+  'bath-mats': {
+    feature: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=850&q=85',
+    detail: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=450&q=85',
+    side: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=600&q=85',
+  },
 };
 
-/** One nav link with the underline that slides in from the cursor's side. */
-function NavItem({ link, onClick }) {
-  const attachUnderline = useNavUnderline();
-  return (
-    <li>
-      <NavLink
-        ref={attachUnderline}
-        to={link.to}
-        end={link.to === "/"}
-        onClick={onClick}
-        className="nav__link"
-      >
-        {link.label}
-      </NavLink>
-    </li>
-  );
-}
-
-export default function Navbar({ transparent = false }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [cartWiggle, setCartWiggle] = useState(false);
+export default function Navbar() {
   const { count } = useCart();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  // reset panels on navigation
+  const isHomePage = pathname === '/';
+
+  const [row, setRow] = useState(false);
+  const [cat, setCat] = useState(null);
+  const [drawer, setDrawer] = useState(false);
+  const [acc, setAcc] = useState(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrollStage, setScrollStage] = useState(0);
+
+  // Three-stage scroll detection.
+  // Stage 2 now lasts until the user scrolls beyond 350px.
   useEffect(() => {
-    setMenuOpen(false);
-    setSearchOpen(false);
+    let ticking = false;
+
+    const updateStage = () => {
+      const scrollY = window.scrollY;
+
+      if (scrollY <= 40) {
+        setScrollStage(0);
+      } else if (scrollY <= 550) {
+        setScrollStage(1);
+      } else {
+        setScrollStage(2);
+      }
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateStage);
+        ticking = true;
+      }
+    };
+
+    updateStage();
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [pathname]);
 
-  // transparent → solid on scroll (only meaningful when the route has a hero)
-  useEffect(() => {
-    if (!transparent) {
-      setScrolled(true);
-      return undefined;
-    }
-    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [transparent, pathname]);
-
-  // <ProductCard /> dispatches `wovenhaat:cart-add` after a successful add, so the
-  // cart icon wiggles even before Dev 3 wires real cart state.
-  useEffect(() => {
-    const onCartAdd = () => {
-      setCartWiggle(true);
-      window.setTimeout(() => setCartWiggle(false), 620);
-    };
-    window.addEventListener("wovenhaat:cart-add", onCartAdd);
-    return () => window.removeEventListener("wovenhaat:cart-add", onCartAdd);
-  }, []);
-
-  // Esc closes the search overlay (drawer handles its own Esc via <Overlay />)
-  useEffect(() => {
-    if (!searchOpen) return undefined;
-    const onKey = (event) => {
-      if (event.key === "Escape") setSearchOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [searchOpen]);
-
-  const submitSearch = (event) => {
-    event.preventDefault();
-    if (!query.trim()) return;
-    setSearchOpen(false);
-    // Search results page is owned by Dev 2 — route the query to the shop page.
-    navigate(`${ROUTES.shop}?q=${encodeURIComponent(query.trim())}`);
-    setQuery("");
+  const closeMega = () => {
+    setRow(false);
+    setCat(null);
   };
 
+  const closeAll = () => {
+    closeMega();
+    setDrawer(false);
+    setAcc(null);
+    setSearchOpen(false);
+  };
+
+  const go = () => {
+    closeAll();
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeAll();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = drawer ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [drawer]);
+
+  const openCategory = (slug) => {
+    setCat(slug);
+    setRow(true);
+  };
+
+  const activeCategory = CATEGORIES.find(
+    (category) => category.slug === cat
+  );
+
+  const activeImages = MENU_IMAGES[cat] || MENU_IMAGES.rugs;
+  const activeGroups = cat ? MEGA[cat] || [] : [];
+
+  const stageClass = ['stage-1', 'stage-2', 'stage-3'][scrollStage];
+
+  const navbarClass = [
+    'nav',
+    isHomePage ? '' : 'solid',
+    stageClass,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <>
-      <header className={`site-header${scrolled ? " is-solid" : ""}`}>
-        <div className="container nav">
-          <Link to={ROUTES.home} className="nav__logo">
-            Woven<span>Haat</span>
-          </Link>
+    <header
+      className={navbarClass}
+      onMouseLeave={closeMega}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          closeMega();
+        }
+      }}
+    >
+      <div className="announcement-bar">
+        <span>CRAFTED WITH CARE · WOVEN WITH HERITAGE</span>
 
-          <nav aria-label="Main">
-            <ul className="nav__menu">
-              {NAV_LINKS.map((link) => (
-                <NavItem key={link.to} link={link} />
-              ))}
-            </ul>
-          </nav>
+        <Link to="/shop" onClick={go}>
+          EXPLORE COLLECTION <span aria-hidden="true">→</span>
+        </Link>
+      </div>
 
-          <div className="nav__actions">
-            <IconButton
-              label="Search products"
-              tone="light"
-              className="nav__icon"
-              aria-haspopup="dialog"
-              aria-expanded={searchOpen}
-              onClick={() => setSearchOpen(true)}
-            >
-              {ICONS.search}
-            </IconButton>
+      <div className="container navin">
+        <button
+          className="burger"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded={drawer}
+          onClick={() => setDrawer(true)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
 
-            <Link to={ROUTES.wishlist} className="nav__icon" aria-label="Wishlist">
-              {ICONS.wishlist}
-            </Link>
+        <Link to="/" className="logo" onClick={go}>
+          WOVENHAAT
+        </Link>
 
-            <Link
-              to={ROUTES.cart}
-              className={`nav__icon${cartWiggle ? " is-wiggling" : ""}`}
-              aria-label={count > 0 ? `Cart, ${count} items` : "Cart, empty"}
-            >
-              {ICONS.cart}
-              {count > 0 && (
-                <span className="nav__badge" aria-hidden="true">
-                  {count > 99 ? "99+" : count}
-                </span>
-              )}
-            </Link>
-
-            <IconButton
-              label={menuOpen ? "Close menu" : "Open menu"}
-              tone="light"
-              className="nav__icon nav__toggle"
-              aria-haspopup="dialog"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(true)}
-            >
-              {ICONS.menu}
-            </IconButton>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile slide-in drawer (focus trap, Esc, body scroll lock via Overlay) */}
-      <Overlay
-        open={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        label="Site menu"
-        position="drawer-right"
-        className="nav-drawer"
-      >
-        <nav aria-label="Mobile">
-          <ul className="nav-drawer__list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.to}>
-                <NavLink to={link.to} end={link.to === "/"} onClick={() => setMenuOpen(false)}>
-                  {link.label}
-                </NavLink>
+        <nav className="desk" aria-label="Main navigation">
+          <ul>
+            {MAIN_NAV.map(([label, target]) => (
+              <li
+                key={label}
+                className={label === 'Collection' ? 'nav-collection' : ''}
+                onMouseEnter={() => {
+                  if (label === 'Collection') {
+                    setRow(true);
+                    setCat((current) => current || CATEGORIES[0]?.slug);
+                  } else {
+                    closeMega();
+                  }
+                }}
+              >
+                {label === 'Collection' ? (
+                  <NavLink
+                    to={target}
+                    aria-haspopup="true"
+                    aria-expanded={row}
+                    className={row ? 'active' : ''}
+                    onFocus={() => {
+                      setRow(true);
+                      setCat((current) => current || CATEGORIES[0]?.slug);
+                    }}
+                    onClick={closeMega}
+                  >
+                    Collection
+                    <span className="nav-chevron" aria-hidden="true">
+                      ⌄
+                    </span>
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    to={target}
+                    end={target === '/'}
+                    onFocus={closeMega}
+                    onClick={closeMega}
+                  >
+                    {label}
+                  </NavLink>
+                )}
               </li>
             ))}
-            <li>
-              <NavLink to={ROUTES.account} onClick={() => setMenuOpen(false)}>
-                My Account
-              </NavLink>
-            </li>
           </ul>
         </nav>
-      </Overlay>
 
-      {/* Search overlay */}
-      <Overlay
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        label="Search products"
-        position="modal"
-        className="nav-search-overlay"
-      >
-        <form className="nav__search" onSubmit={submitSearch} role="search">
-          <label className="visually-hidden" htmlFor="nav-search-input">
-            Search products
-          </label>
-          <input
-            id="nav-search-input"
-            type="search"
-            name="q"
-            placeholder="Search rugs, cushions, throws…"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            autoComplete="off"
-          />
-          <button className="btn btn-primary" type="submit">
-            Search
+        <div className="icons">
+          <button
+            type="button"
+            aria-label="Toggle search"
+            aria-expanded={searchOpen}
+            onClick={() => {
+              setSearchOpen((current) => !current);
+              closeMega();
+            }}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.5" />
+              <path d="m16 16 4.2 4.2" />
+            </svg>
           </button>
-        </form>
-      </Overlay>
-    </>
+
+          <Link to="/account" aria-label="My account" onClick={go}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="7.5" r="3.2" />
+              <path d="M5.5 20c.3-4 2.7-6.1 6.5-6.1s6.2 2.1 6.5 6.1" />
+            </svg>
+          </Link>
+
+          <Link
+            to="/cart"
+            className="bag-link"
+            aria-label={`Shopping bag, ${count} items`}
+            onClick={go}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5.5 8.5h13l1 12h-15z" />
+              <path d="M9 8.5V6a3 3 0 0 1 6 0v2.5" />
+            </svg>
+
+            {count > 0 && <span className="bag-count">{count}</span>}
+          </Link>
+        </div>
+      </div>
+
+      {/* Search Modal */}
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      {row && (
+        <div
+          className="collection-menu"
+          onMouseEnter={() => setRow(true)}
+        >
+          <div className="catrow">
+            <div className="catrow-inner container">
+              <span className="catrow-label">Explore</span>
+
+              <ul>
+                {CATEGORIES.map((category) => (
+                  <li key={category.slug}>
+                    <button
+                      type="button"
+                      className={
+                        cat === category.slug
+                          ? 'category-tab on'
+                          : 'category-tab'
+                      }
+                      onMouseEnter={() => openCategory(category.slug)}
+                      onFocus={() => openCategory(category.slug)}
+                      onClick={() => {
+                        navigate(`/collections/${category.slug}`);
+                        closeAll();
+                      }}
+                      aria-expanded={cat === category.slug}
+                    >
+                      {category.name}
+                      <span className="tab-line" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {activeCategory && (
+            <div className="mega">
+              <div className="container mega-topline">
+                <Link
+                  to={`/collections/${activeCategory.slug}`}
+                  className="mega-back"
+                  onClick={go}
+                >
+                  <span aria-hidden="true">←</span>
+                  {activeCategory.name}
+                </Link>
+
+                <Link
+                  to={`/collections/${activeCategory.slug}`}
+                  className="mega-view-all"
+                  onClick={go}
+                >
+                  Shop all {activeCategory.name}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+              </div>
+
+              <div className="container megain">
+                <Link
+                  to={`/collections/${activeCategory.slug}`}
+                  className="mega-feature"
+                  style={{
+                    backgroundImage: `url("${activeImages.feature}")`,
+                  }}
+                  onClick={go}
+                >
+                  <span className="mega-feature-shade" />
+                  <span className="mega-feature-caption">
+                    {activeCategory.tagline}
+                  </span>
+                </Link>
+
+                {activeGroups.map((group, index) => (
+                  <div className="mega-group" key={group.title}>
+                    <h4>{group.title}</h4>
+
+                    <ul>
+                      {group.links.map(([label, target]) => (
+                        <li key={`${label}-${target}`}>
+                          <Link to={target} onClick={go}>
+                            {label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {(index === 1 || index === 2) && (
+                      <Link
+                        to={`/collections/${activeCategory.slug}`}
+                        className={`mega-detail-image detail-${index}`}
+                        style={{
+                          backgroundImage: `url("${activeImages.detail}")`,
+                        }}
+                        aria-label={`Explore ${activeCategory.name}`}
+                        onClick={go}
+                      />
+                    )}
+                  </div>
+                ))}
+
+                <Link
+                  to={`/collections/${activeCategory.slug}`}
+                  className="mega-side-image"
+                  style={{
+                    backgroundImage: `url("${activeImages.side}")`,
+                  }}
+                  aria-label={`Shop ${activeCategory.name}`}
+                  onClick={go}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {drawer && (
+        <div
+          className="drawer-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setDrawer(false);
+            }
+          }}
+        >
+          <div
+            className="drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+          >
+            <div className="dhead">
+              <Link to="/" className="logo" onClick={go}>
+                WOVENHAAT
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Close navigation menu"
+                onClick={() => setDrawer(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <form className="drawer-search" onSubmit={submitSearch}>
+              <input
+                type="search"
+                value={searchText}
+                onChange={(event) => setSearchText(event.target.value)}
+                placeholder="Search products"
+                aria-label="Search products"
+              />
+
+              <button type="submit" aria-label="Submit search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="10.8" cy="10.8" r="6.5" />
+                  <path d="m16 16 4.2 4.2" />
+                </svg>
+              </button>
+            </form>
+
+            <ul className="drawer-main-list">
+              {MAIN_NAV.map(([label, target]) =>
+                label === 'Collection' ? (
+                  <li key={label}>
+                    <button
+                      type="button"
+                      className="drow"
+                      aria-expanded={acc === 'collections'}
+                      onClick={() =>
+                        setAcc(
+                          acc === 'collections' ? null : 'collections'
+                        )
+                      }
+                    >
+                      <span>Collection</span>
+                      <span className="drawer-plus">
+                        {acc === 'collections' ? '−' : '+'}
+                      </span>
+                    </button>
+
+                    {acc === 'collections' && (
+                      <ul className="sub">
+                        {CATEGORIES.map((category) => (
+                          <li key={category.slug}>
+                            <button
+                              type="button"
+                              className="drow"
+                              aria-expanded={acc === category.slug}
+                              onClick={() =>
+                                setAcc(
+                                  acc === category.slug
+                                    ? 'collections'
+                                    : category.slug
+                                )
+                              }
+                            >
+                              <span>{category.name}</span>
+                              <span className="drawer-plus">
+                                {acc === category.slug ? '−' : '+'}
+                              </span>
+                            </button>
+
+                            {acc === category.slug && (
+                              <div className="sub2">
+                                <Link
+                                  to={`/collections/${category.slug}`}
+                                  onClick={go}
+                                >
+                                  Shop All {category.name}
+                                </Link>
+
+                                {MEGA[category.slug]
+                                  ?.flatMap((group) => group.links)
+                                  .map(([linkLabel, linkTarget]) => (
+                                    <Link
+                                      key={`${linkLabel}-${linkTarget}`}
+                                      to={linkTarget}
+                                      onClick={go}
+                                    >
+                                      {linkLabel}
+                                    </Link>
+                                  ))}
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ) : (
+                  <li key={label}>
+                    <Link className="drow" to={target} onClick={go}>
+                      <span>{label}</span>
+                      <span className="drawer-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </Link>
+                  </li>
+                )
+              )}
+            </ul>
+
+            <div className="drawer-bottom">
+              <Link to="/account" onClick={go}>
+                My Account
+              </Link>
+
+              <Link to="/cart" onClick={go}>
+                Shopping Bag ({count})
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

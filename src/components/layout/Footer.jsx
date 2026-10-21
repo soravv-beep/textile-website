@@ -63,7 +63,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link to={ROUTES.home} className="nav__logo">
+            <Link to={ROUTES.home} className="logo">
               Woven<span>Haat</span>
             </Link>
             <p>

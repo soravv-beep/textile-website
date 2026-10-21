@@ -160,6 +160,7 @@ export default function ProductBrowser({ list, initialSearch = "", showSearch = 
           {visibleItems.length > 0 ? (
             <ProductGrid
               progressive
+              flip
               tilt={false}
               className="product-grid--shop"
               products={cards(visibleItems)}

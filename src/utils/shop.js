@@ -44,6 +44,7 @@ export const toCardProps = (product, { wished = false, compared = false } = {}) 
   id: product.id,
   slug: product.slug,
   name: product.name,
+  description: product.description,
   images: [...new Set([product.image, product.altImage].filter(Boolean))],
   price: product.price,
   compareAtPrice: product.oldPrice,

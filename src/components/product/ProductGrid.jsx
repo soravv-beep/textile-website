@@ -25,9 +25,14 @@
  * @param {number} [props.revealFrom=Infinity]
  * @param {React.ReactNode} [props.emptyState] shown when there are no products
  * @param {boolean} [props.tilt=true] pass false inside dense layouts
+ * @param {boolean} [props.flip=false] render <FlipProductCard /> (hover / tap flips to a 2nd design of
+ *   the same product) instead of the regular <ProductCard />
  * @param {string} [props.className]
  */
+import { Fragment } from "react";
+
 import ProductCard from "./ProductCard.jsx";
+import FlipProductCard from "./FlipProductCard.jsx";
 import ProductCardSkeleton from "./ProductCardSkeleton.jsx";
 
 export default function ProductGrid({
@@ -42,9 +47,28 @@ export default function ProductGrid({
   revealFrom = Infinity,
   emptyState = null,
   tilt = true,
+  flip = false,
   className = ""
 }) {
   const gridClass = ["product-grid", className].filter(Boolean).join(" ");
+
+  const renderCard = (product) =>
+    flip ? (
+      <FlipProductCard
+        front={product}
+        onAddToCart={onAddToCart}
+        onToggleWishlist={onToggleWishlist}
+        onToggleCompare={onToggleCompare}
+      />
+    ) : (
+      <ProductCard
+        {...product}
+        tilt={tilt}
+        onAddToCart={onAddToCart}
+        onToggleWishlist={onToggleWishlist}
+        onToggleCompare={onToggleCompare}
+      />
+    );
 
   if (loading) {
     return (
@@ -83,13 +107,7 @@ export default function ProductGrid({
                 aria-hidden={pending ? "true" : undefined}
                 inert={pending ? "" : undefined}
               >
-                <ProductCard
-                  {...product}
-                  tilt={tilt}
-                  onAddToCart={onAddToCart}
-                  onToggleWishlist={onToggleWishlist}
-                  onToggleCompare={onToggleCompare}
-                />
+                {renderCard(product)}
               </div>
               {pending && <ProductCardSkeleton />}
             </div>
@@ -102,14 +120,7 @@ export default function ProductGrid({
   return (
     <div className={gridClass}>
       {products.map((product) => (
-        <ProductCard
-          key={product.id ?? product.slug}
-          {...product}
-          tilt={tilt}
-          onAddToCart={onAddToCart}
-          onToggleWishlist={onToggleWishlist}
-          onToggleCompare={onToggleCompare}
-        />
+        <Fragment key={product.id ?? product.slug}>{renderCard(product)}</Fragment>
       ))}
     </div>
   );

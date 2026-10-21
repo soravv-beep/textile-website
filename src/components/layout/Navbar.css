@@ -1,0 +1,1220 @@
+
+/* =========================================
+   WOVENHAAT — COMPLETE NAVBAR CSS
+   Three-stage scroll behavior
+   ========================================= */
+
+/* =========================================
+   1. MAIN FIXED NAVBAR
+   ========================================= */
+
+header.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #704D44;
+  color: var(--ivory);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 260ms ease,
+    color 260ms ease,
+    box-shadow 260ms ease;
+  isolation: isolate;
+}
+
+.nav button,
+.nav input {
+  font: inherit;
+}
+
+.nav button {
+  color: inherit;
+}
+
+.nav button,
+.nav a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav .collection-menu {
+  color: var(--ink);
+}
+
+/* =========================================
+   2. ANNOUNCEMENT STRIP
+   ========================================= */
+
+.announcement-bar {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 34px;
+  max-height: 100px;
+  padding: 7px clamp(16px, 4vw, 56px);
+  overflow: hidden;
+  background: #A93617;
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  letter-spacing: 0.045em;
+  text-align: center;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    max-height 450ms ease,
+    min-height 450ms ease,
+    padding-top 450ms ease,
+    padding-bottom 450ms ease,
+    transform 400ms ease,
+    opacity 300ms ease,
+    visibility 300ms ease;
+}
+
+.announcement-bar a {
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.announcement-bar a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* =========================================
+   3. MAIN NAVIGATION GRID
+   ========================================= */
+
+.navin {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  min-height: 108px;
+  gap: 0 var(--s2);
+  padding-top: 12px;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  transition:
+    min-height 450ms ease,
+    padding 450ms ease,
+    grid-template-rows 450ms ease;
+}
+
+/* Logo */
+
+.logo {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  line-height: 1.5;
+  text-decoration: none;
+  transition:
+    transform 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 350ms ease,
+    visibility 350ms ease;
+}
+
+/* Desktop navigation */
+
+.desk {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  align-self: end;
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    transform 300ms ease,
+    opacity 250ms ease,
+    visibility 250ms ease;
+}
+
+.desk ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 2.6vw, 42px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desk li {
+  position: relative;
+}
+
+.desk a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 10px 0 8px;
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+
+.desk a:hover,
+.desk a.active {
+  color: var(--brown);
+}
+
+.nav-chevron {
+  display: inline-block;
+  margin-top: -3px;
+  font-size: 0.9rem;
+}
+
+/* Header icons */
+
+.icons {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition:
+    transform 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 350ms ease,
+    visibility 350ms ease;
+}
+
+.icons button,
+.icons > a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.icons svg,
+.drawer-search svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Shopping bag counter */
+
+.bag-link {
+  position: relative;
+}
+
+.bag-count {
+  position: absolute;
+  top: 1px;
+  right: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--ivory);
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* Mobile menu button */
+
+.burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    transform 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 350ms ease,
+    visibility 350ms ease;
+}
+
+.burger span {
+  display: block;
+  width: 21px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* =========================================
+   4. STAGE 1 — TOP OF PAGE
+   Announcement + logo + navigation visible
+   ========================================= */
+
+header.nav.stage-1 {
+  background: transparent;
+  box-shadow: none;
+}
+
+header.nav.stage-1 .announcement-bar {
+  max-height: 100px;
+  min-height: 34px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin: 0;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+header.nav.stage-1 .navin {
+  opacity: 1;
+  visibility: visible;
+}
+
+header.nav.stage-1 .logo,
+header.nav.stage-1 .icons,
+header.nav.stage-1 .burger {
+  color: var(--ivory);
+}
+
+header.nav.stage-1 .icons svg,
+header.nav.stage-1 .burger span {
+  stroke: currentColor;
+}
+
+header.nav.stage-1 .desk a {
+  color: var(--ivory);
+}
+
+header.nav.stage-1 .desk a:hover,
+header.nav.stage-1 .desk a.active {
+  color: var(--ivory);
+}
+
+/* =========================================
+   5. STAGE 2 — ANNOUNCEMENT HIDDEN
+   Logo + navigation remain visible
+   ========================================= */
+
+header.nav.stage-2 {
+  background: #704D44;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+
+header.nav.stage-2 .announcement-bar {
+  max-height: 0;
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  border: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+header.nav.stage-2 .navin {
+  opacity: 1;
+  visibility: visible;
+}
+
+header.nav.stage-2 .logo,
+header.nav.stage-2 .icons,
+header.nav.stage-2 .burger {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  color: #fff;
+}
+
+header.nav.stage-2 .icons svg,
+header.nav.stage-2 .burger span {
+  stroke: #fff;
+}
+
+header.nav.stage-2 .desk a {
+  color: #fff;
+}
+
+header.nav.stage-2 .desk a:hover,
+header.nav.stage-2 .desk a.active {
+  color: #fff;
+}
+
+/* =========================================
+   6. STAGE 3 — DESKTOP NAVIGATION ONLY
+   Announcement + logo row collapse away
+   Navigation stays fixed at the top
+   ========================================= */
+
+header.nav.stage-3 {
+  background: #704D44;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+
+/* Fully collapse announcement space */
+
+header.nav.stage-3 .announcement-bar {
+  max-height: 0;
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  border: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Collapse the first grid row */
+
+header.nav.stage-3 .navin {
+  min-height: 60px;
+  padding-top: 0;
+  padding-bottom: 0;
+  grid-template-rows: 0 minmax(60px, auto);
+  align-items: center;
+  overflow: visible;
+}
+
+/* Hide logo, account/search/cart icons, and burger on desktop */
+
+header.nav.stage-3 .navin > .logo,
+header.nav.stage-3 .navin > .icons,
+header.nav.stage-3 .navin > .burger {
+  grid-row: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-18px);
+  pointer-events: none;
+}
+
+/* Move navigation into the remaining row */
+
+header.nav.stage-3 .desk {
+  display: block;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+header.nav.stage-3 .desk ul {
+  align-items: center;
+  justify-content: center;
+}
+
+header.nav.stage-3 .desk a {
+  color: #fff;
+}
+
+header.nav.stage-3 .desk a:hover,
+header.nav.stage-3 .desk a.active {
+  color: #fff;
+}
+
+/* =========================================
+   7. SOLID NAVBAR ON NON-HOME PAGES
+   ========================================= */
+
+header.nav.solid {
+  background: #704D44;
+  color: var(--ivory);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+  border-bottom-color: transparent;
+}
+
+header.nav.solid.stage-1 {
+  background: #704D44;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+
+header.nav.solid.stage-1 .logo,
+header.nav.solid.stage-1 .icons,
+header.nav.solid.stage-1 .burger,
+header.nav.solid.stage-1 .desk a {
+  color: #fff;
+}
+
+/* =========================================
+   8. SEARCH BAR (inline - deprecated, replaced by SearchModal)
+   ========================================= */
+/* .sbar and .search-close styles removed - now using SearchModal component */
+
+/* =========================================
+   9. COLLECTION CATEGORY TABS
+   ========================================= */
+
+.collection-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--ivory);
+  box-shadow: var(--shadow);
+  border-top: 1px solid var(--border);
+}
+
+.catrow {
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+}
+
+.catrow-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 44px);
+  min-height: 47px;
+}
+
+.catrow-label {
+  color: var(--taupe);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.catrow ul {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(20px, 3.5vw, 52px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 47px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-family: var(--serif) !important;
+  font-size: 0.98rem !important;
+  cursor: pointer;
+}
+
+.tab-line {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  left: 0;
+  height: 1px;
+  background: var(--brown);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.category-tab:hover .tab-line,
+.category-tab.on .tab-line {
+  transform: scaleX(1);
+}
+
+/* =========================================
+   10. MEGA MENU
+   ========================================= */
+
+.mega {
+  max-height: min(72vh, 650px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ivory);
+}
+
+.mega-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.mega-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.78rem;
+}
+
+.mega-back span {
+  font-size: 1.2rem;
+}
+
+.mega-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.mega-view-all:hover,
+.mega-back:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.megain {
+  display: grid;
+  grid-template-columns:
+    minmax(155px, 1.18fr)
+    repeat(4, minmax(105px, 0.8fr))
+    minmax(90px, 0.48fr);
+  align-items: stretch;
+  gap: clamp(14px, 1.6vw, 25px);
+  padding-top: 0;
+  padding-bottom: 20px;
+}
+
+.mega-feature {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 265px;
+  overflow: hidden;
+  background-color: var(--cream);
+  background-position: center;
+  background-size: cover;
+  color: #fff !important;
+}
+
+.mega-feature::after,
+.mega-feature-shade {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    to top,
+    rgba(35, 27, 19, 0.58),
+    rgba(35, 27, 19, 0.06) 58%,
+    transparent
+  );
+  transition: opacity 250ms ease;
+}
+
+.mega-feature:hover::after {
+  opacity: 0.85;
+}
+
+.mega-feature-caption {
+  position: relative;
+  z-index: 1;
+  max-width: 230px;
+  padding: 16px;
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1.5vw, 1.55rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.mega-group {
+  min-width: 0;
+  padding-top: 5px;
+}
+
+.mega-group h4 {
+  margin: 0 0 13px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.mega-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mega-group li {
+  margin: 0;
+  padding: 0;
+}
+
+.mega-group li a {
+  display: block;
+  padding: 5px 0;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  transition: color 150ms ease;
+}
+
+.mega-group li a:hover {
+  color: var(--taupe);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mega-detail-image {
+  display: block;
+  width: 100%;
+  height: 84px;
+  margin-top: 15px;
+  background-color: var(--cream);
+  background-position: center;
+  background-size: cover;
+  transition: opacity 180ms ease;
+}
+
+.mega-detail-image:hover,
+.mega-side-image:hover {
+  opacity: 0.82;
+}
+
+.detail-2 {
+  height: 105px;
+}
+
+.mega-side-image {
+  display: block;
+  min-width: 0;
+  min-height: 265px;
+  background-color: var(--cream);
+  background-position: center;
+  background-size: cover;
+  transition: opacity 180ms ease;
+}
+
+/* =========================================
+   11. MOBILE DRAWER
+   ========================================= */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(25, 22, 18, 0.38);
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  padding: 18px 24px 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ivory);
+  box-shadow: var(--shadow);
+  animation: drawer-in 220ms ease both;
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0.75;
+    transform: translateX(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.dhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 55px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dhead .logo {
+  font-size: 1.2rem;
+  letter-spacing: 0.19em;
+}
+
+.dhead button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.drawer-search {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.drawer-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 4px;
+  border: 0;
+  outline-offset: -2px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.drawer-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.drawer-main-list,
+.sub {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.drow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 54px;
+  padding: 9px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font-family: var(--serif) !important;
+  font-size: 1.35rem !important;
+  font-weight: 400;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.drawer-plus,
+.drawer-arrow {
+  padding-left: 12px;
+  font-family: var(--sans);
+  font-size: 1.1rem;
+}
+
+.sub {
+  padding-left: 15px;
+}
+
+.sub .drow {
+  min-height: 47px;
+  font-size: 1.08rem !important;
+}
+
+.sub2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 7px 0 12px 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sub2 a {
+  display: block;
+  padding: 9px 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.sub2 a:hover,
+.drawer-bottom a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.drawer-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 28px;
+}
+
+.drawer-bottom a {
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   12. LARGE DESKTOP
+   ========================================= */
+
+@media (min-width: 1500px) {
+  .megain {
+    grid-template-columns:
+      minmax(190px, 1.2fr)
+      repeat(4, minmax(130px, 0.8fr))
+      minmax(100px, 0.48fr);
+    gap: 25px;
+  }
+
+  .mega-feature,
+  .mega-side-image {
+    min-height: 300px;
+  }
+
+  .mega-group li a {
+    font-size: 0.76rem;
+    padding: 6px 0;
+  }
+}
+
+/* =========================================
+   13. SMALLER DESKTOP
+   ========================================= */
+
+@media (max-width: 1199px) {
+  .desk ul {
+    gap: 24px;
+  }
+
+  .megain {
+    grid-template-columns:
+      minmax(135px, 1.05fr)
+      repeat(4, minmax(90px, 0.8fr))
+      minmax(75px, 0.45fr);
+    gap: 13px;
+  }
+
+  .mega-feature,
+  .mega-side-image {
+    min-height: 250px;
+  }
+
+  .mega-group li a {
+    font-size: 0.67rem;
+  }
+
+  .mega-group h4 {
+    font-size: 0.69rem;
+  }
+}
+
+/* =========================================
+   14. TABLET AND MOBILE — MAX 991px
+   ========================================= */
+
+@media (max-width: 991px) {
+  .navin {
+    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-rows: auto;
+    min-height: 76px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .burger {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .navin > .logo {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    font-size: 1.28rem;
+    letter-spacing: 0.18em;
+  }
+
+  .desk,
+  .collection-menu {
+    display: none;
+  }
+
+  .icons {
+    grid-column: 3;
+    grid-row: 1;
+    gap: 12px;
+  }
+
+  .icons button,
+  .icons > a {
+    width: 23px;
+  }
+
+  /* Stage 1 */
+
+  header.nav.stage-1 .navin {
+    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-rows: auto;
+    min-height: 76px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  header.nav.stage-1 .logo,
+  header.nav.stage-1 .icons,
+  header.nav.stage-1 .burger {
+    color: var(--ivory);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* Stage 2 */
+
+  header.nav.stage-2 .navin {
+    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-rows: auto;
+    min-height: 76px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  header.nav.stage-2 .navin > .logo,
+  header.nav.stage-2 .icons,
+  header.nav.stage-2 .burger {
+    color: #fff;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  header.nav.stage-2 .icons svg,
+  header.nav.stage-2 .burger span {
+    stroke: #fff;
+  }
+
+  /* Stage 3: compact mobile header */
+
+  header.nav.stage-3 .navin {
+    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-rows: auto;
+    min-height: 60px;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
+  header.nav.stage-3 .navin > .logo {
+    grid-column: 2;
+    grid-row: 1;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    color: #fff;
+  }
+
+  header.nav.stage-3 .navin > .burger {
+    grid-column: 1;
+    grid-row: 1;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    color: #fff;
+  }
+
+  header.nav.stage-3 .navin > .icons {
+    grid-column: 3;
+    grid-row: 1;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    color: #fff;
+  }
+
+  header.nav.stage-3 .icons svg,
+  header.nav.stage-3 .burger span {
+    stroke: #fff;
+  }
+
+  header.nav.stage-3 .desk {
+    display: none;
+  }
+}
+
+/* =========================================
+   15. SMALL PHONES — MAX 575px
+   ========================================= */
+
+@media (max-width: 575px) {
+  .announcement-bar {
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 0.57rem;
+    letter-spacing: 0.02em;
+    gap: 8px;
+  }
+
+  .announcement-bar a {
+    display: none;
+  }
+
+  .navin {
+    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-rows: auto;
+    min-height: 68px;
+    gap: 0 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .burger {
+    width: 38px;
+    height: 42px;
+    padding: 8px;
+  }
+
+  .navin > .logo {
+    font-size: 1.05rem;
+    letter-spacing: 0.13em;
+  }
+
+  .icons {
+    gap: 8px;
+  }
+
+  .icons button,
+  .icons > a {
+    width: 21px;
+    height: 32px;
+  }
+
+  .icons svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Preserve original compact height in stages 1 and 2 */
+
+  header.nav.stage-1 .navin,
+  header.nav.stage-2 .navin {
+    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-rows: auto;
+    min-height: 68px;
+    gap: 0 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Stage 3: compact controls remain usable */
+
+  header.nav.stage-3 .navin {
+    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-rows: auto;
+    min-height: 60px;
+    gap: 0 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .drawer {
+    padding: 12px 19px 24px;
+  }
+
+  .dhead .logo {
+    font-size: 1.08rem;
+  }
+}
+
+/* =========================================
+   16. KEYBOARD FOCUS
+   ========================================= */
+
+.nav a:focus-visible,
+.nav button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.drawer a:focus-visible,
+.drawer button:focus-visible,
+.drawer input:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   17. REDUCED MOTION ACCESSIBILITY
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav *,
+  .drawer {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * <Layout /> — the wrapper every page renders inside (Dev 1).
+ * <Layout /> — the wrapper every page renders inside.
  *
  *   <Route element={<Layout />}>
  *     <Route path={ROUTES.shop} element={<Shop />} />
@@ -8,9 +8,10 @@
  * Renders: skip-to-content link → <Navbar /> → <main id="main"> <Outlet /> </main>
  * → <Footer />, plus the custom cursor and scroll restoration.
  *
- * `transparentNav` marks the routes whose first screen is a full-bleed hero
- * (only Home today) so the navbar can start transparent and become solid on
- * scroll. Add a new path to TRANSPARENT_NAV_ROUTES when a hero page ships.
+ * The Navbar handles its own transparency logic internally (transparent on
+ * Home page, solid on scroll > 40px, solid on all other pages).
+ * Layout adds `has-hero` class on routes with full-bleed heroes so the
+ * hero section can sit behind the transparent navbar.
  */
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -20,8 +21,8 @@ import Footer from "./Footer.jsx";
 import CustomCursor from "../../animations/CustomCursor.jsx";
 import { ROUTES } from "../../constants/routes.js";
 
-/** Routes whose first screen is a dark full-bleed hero. */
-const TRANSPARENT_NAV_ROUTES = [ROUTES.home];
+/** Routes whose first screen is a full-bleed hero (transparent navbar). */
+const HERO_ROUTES = [ROUTES.home];
 
 /** Scroll to the top on route change (but not on hash links within a page). */
 function ScrollToTop() {
@@ -35,16 +36,16 @@ function ScrollToTop() {
 
 export default function Layout() {
   const { pathname } = useLocation();
-  const transparentNav = TRANSPARENT_NAV_ROUTES.includes(pathname);
+  const hasHero = HERO_ROUTES.includes(pathname);
 
   return (
-    <div className={`app-shell${transparentNav ? " has-hero" : ""}`}>
+    <div className={`app-shell${hasHero ? " has-hero" : ""}`}>
       <ScrollToTop />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
 
-      <Navbar transparent={transparentNav} />
+      <Navbar />
 
       <main id="main" className="app-main">
         <Outlet />
