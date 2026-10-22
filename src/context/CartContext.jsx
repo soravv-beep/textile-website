@@ -1,61 +1,84 @@
 /**
- * CartContext — lightweight stub that Dev 3 replaces with the real cart.
- *
- * What it gives you today (used by the Navbar badge and the Home bestsellers):
- *   const { items, count, addItem, removeItem, clear } = useCart();
- *
- * It is intentionally NOT a full cart: no server sync, no variant handling, no
- * persistence beyond a session-scoped React state. Dev 3 should keep the same
- * hook name and return shape so no consumer has to change.
+ * CartContext — WovenHaat cart with persistence and updateQty support.
+ * API: { items, count, addItem, removeItem, updateQty, clear }
  */
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 const CartContext = createContext(null);
+const STORAGE_KEY = "wovenhaat_cart";
+
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(loadCart);
+
+  // Persist on every change
+  const persist = (next) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    return next;
+  };
 
   const addItem = useCallback((product, qty = 1) => {
     setItems((prev) => {
       const found = prev.find((i) => i.slug === product.slug);
-      if (found) {
-        return prev.map((i) =>
-          i.slug === product.slug ? { ...i, qty: i.qty + qty } : i
-        );
-      }
-      return [...prev, { slug: product.slug, name: product.name, price: product.price, qty }];
+      const next = found
+        ? prev.map((i) => i.slug === product.slug ? { ...i, qty: i.qty + qty } : i)
+        : [...prev, {
+            slug: product.slug,
+            name: product.name,
+            price: product.price,
+            qty,
+            image: product.image || null,
+            variant: product.variant || null,
+            stock: product.stock || 99,
+          }];
+      return persist(next);
     });
   }, []);
 
   const removeItem = useCallback((slug) => {
-    setItems((prev) => prev.filter((i) => i.slug !== slug));
+    setItems((prev) => persist(prev.filter((i) => i.slug !== slug)));
   }, []);
 
-  const clear = useCallback(() => setItems([]), []);
+  // Alias for pages that use remove() instead of removeItem()
+  const remove = removeItem;
+
+  const updateQty = useCallback((slug, qty) => {
+    if (qty < 1) return;
+    setItems((prev) => persist(prev.map((i) => i.slug === slug ? { ...i, qty } : i)));
+  }, []);
+
+  const clear = useCallback(() => {
+    setItems([]);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
 
   const value = useMemo(() => {
     const count = items.reduce((n, i) => n + i.qty, 0);
-    return { items, count, addItem, removeItem, clear };
-  }, [items, addItem, removeItem, clear]);
+    return { items, count, addItem, removeItem, remove, updateQty, clear };
+  }, [items, addItem, removeItem, remove, updateQty, clear]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
-/**
- * Read the cart. Safe outside a provider (returns a zeroed stub) so shared
- * components like <ProductCard /> never crash in isolation.
- */
 export function useCart() {
   const ctx = useContext(CartContext);
-  return (
-    ctx ?? {
-      items: [],
-      count: 0,
-      addItem: () => {},
-      removeItem: () => {},
-      clear: () => {}
-    }
-  );
+  return ctx ?? {
+    items: [],
+    count: 0,
+    addItem: () => {},
+    removeItem: () => {},
+    remove: () => {},
+    updateQty: () => {},
+    clear: () => {},
+  };
 }
 
 export default CartContext;
