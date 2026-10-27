@@ -18,7 +18,6 @@ import { MAIN_NAV, MEGA } from '../../data/navigation.js';
 import { CATEGORIES } from '../../data/collections.js';
 import { useCart } from '../../context/CartContext.jsx';
 import SearchModal from '../sections/SearchModal.jsx';
-import './Navbar.css';
 
 const MENU_IMAGES = {
   rugs: {
@@ -169,6 +168,30 @@ export default function Navbar() {
         }
       }}
     >
+      {/* Displacement map behind the navbar's liquid-glass hover layer
+          (globals.css, section 7b). `filter: url(#nav-liquid-glass)` with no
+          matching node makes Chrome drop that layer entirely, so this has to
+          stay mounted for as long as the bar is. */}
+      <svg className="nav-glass-defs" aria-hidden="true" focusable="false">
+        <filter id="nav-liquid-glass" x="-25%" y="-25%" width="150%" height="150%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.009 0.03"
+            numOctaves="2"
+            seed="7"
+            result="ripple"
+          />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.1" result="soft" />
+          <feDisplacementMap
+            in="soft"
+            in2="ripple"
+            scale="38"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
+
       <div className="announcement-bar">
         <span>CRAFTED WITH CARE · WOVEN WITH HERITAGE</span>
 
@@ -428,22 +451,26 @@ export default function Navbar() {
               </button>
             </div>
 
-            <form className="drawer-search" onSubmit={submitSearch}>
-              <input
-                type="search"
-                value={searchText}
-                onChange={(event) => setSearchText(event.target.value)}
-                placeholder="Search products"
-                aria-label="Search products"
-              />
+            {/* Mobile search entry. This used to be a live <form> bound to
+                submitSearch/searchText — leftovers of the inline search bar that
+                SearchModal replaced, so rendering the drawer threw a
+                ReferenceError and React unmounted the whole tree. It now opens
+                the same SearchModal the desktop icon uses. */}
+            <button
+              type="button"
+              className="drawer-search"
+              onClick={() => {
+                closeAll();
+                setSearchOpen(true);
+              }}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.5" />
+                <path d="m16 16 4.2 4.2" />
+              </svg>
 
-              <button type="submit" aria-label="Submit search">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="10.8" cy="10.8" r="6.5" />
-                  <path d="m16 16 4.2 4.2" />
-                </svg>
-              </button>
-            </form>
+              Search products
+            </button>
 
             <ul className="drawer-main-list">
               {MAIN_NAV.map(([label, target]) =>

@@ -1,10 +1,10 @@
 /**
- * <Hero /> — WOVENHAAT exact replica hero section.
+ * <Hero /> — WOVENHAAT editorial hero section.
  *
  * Features:
  *  - Full-screen height (100svh, min 520px)
- *  - Background video (with poster fallback) — uses Unsplash video source
- *  - Dark cinematic overlay (dual gradient matching WOVENHAAT)
+ *  - Background video (with poster fallback) at full opacity — no darkening layer,
+ *    so the footage keeps its original colours
  *  - Fine film-grain texture overlay
  *  - Magazine-style absolute-positioned content layout
  *  - Responsive breakpoints matching WOVENHAAT (1000px, 700px, 420px)
@@ -16,10 +16,6 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useReducedMotion } from "../../hooks/useReducedMotion.js";
 import { ROUTES } from "../../constants/routes.js";
-import "./Hero.css";
-
-// WOVENHAAT headline text
-const HEADLINE = ["HANDWOVEN", "WARMTH"];
 
 // Local video file copied to public/hero-video.mp4
 const HERO_VIDEO = "/hero-video.mp4";
@@ -64,41 +60,13 @@ export default function Hero() {
         <source src={HERO_VIDEO} type="video/mp4" />
       </video>
 
-      {/* Dark cinematic overlay */}
-      <div className="hero__overlay" aria-hidden="true" />
-
       {/* Fine texture overlay */}
       <div className="hero__grain" aria-hidden="true" />
 
       <div className="hero__content">
-        {/* Upper-right brand introduction */}
-        <div className="hero__intro">
-          <p className="hero__description">
-            WovenHaat is a house of handwoven rugs, cushions and throws,
-            made by artisan families in Panipat and shipped to 18+ countries —
-            slow craft, certified materials, colours drawn from real dyed yarn.
-          </p>
-
-          <div className="hero__detail">
-            <span>CRAFT</span>
-            <p>Handloom, handtufted and hand-knotted pieces</p>
-          </div>
-
-          <div className="hero__detail">
-            <span>CERTIFIED</span>
-            <p>OEKO-TEX, GOTS and GRS certified</p>
-          </div>
-        </div>
-
-       
-
-        {/* Main headline */}
-        <div className="hero__headline">
-          <h1>
-            <span>HANDWOVEN</span>
-            <span>WARMTH</span>
-          </h1>
-        </div>
+        {/* No visible headline any more, but the page still needs its h1 for
+            screen readers and search results. */}
+        <h1 className="visually-hidden">WovenHaat — handwoven rugs, cushions and throws</h1>
 
         {/* Collection signature */}
         <div className="hero__signature">

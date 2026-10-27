@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Container from "../ui/Container.jsx";
 import Rating from "../ui/Rating.jsx";
 import { TESTIMONIALS } from "../../data/testimonials.js";
-import "./Testimonials.css";
 
 /**
  * Premium Testimonials Section — WovenHaat
@@ -135,7 +134,7 @@ export default function Testimonials() {
 
   return (
     <section
-      className="testimonials-premium section texture"
+      className="testimonials-premium section"
       aria-labelledby="testimonials-heading"
     >
       <Container>
