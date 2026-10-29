@@ -17,6 +17,7 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { OrdersProvider } from "./context/OrdersContext.jsx";
 import { ShopProvider } from "./context/ShopProvider.jsx";
 import { WishlistProvider } from "./context/WishlistContext.jsx";
+import { AddressProvider } from "./context/AddressContext.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { ROUTES } from "./constants/routes.js";
 
@@ -80,8 +81,9 @@ export default function App() {
       <CartProvider>
         <ShopProvider>
           <WishlistProvider>
-            <OrdersProvider>
-              <Routes>
+            <AddressProvider>
+              <OrdersProvider>
+                <Routes>
                 <Route element={<Layout />}>
                   <Route path={ROUTES.home} element={<Home />} />
                   <Route path={ROUTES.about} element={<About />} />
@@ -118,7 +120,8 @@ export default function App() {
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
-            </OrdersProvider>
+              </OrdersProvider>
+            </AddressProvider>
           </WishlistProvider>
         </ShopProvider>
       </CartProvider>

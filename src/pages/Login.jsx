@@ -9,9 +9,9 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { ROUTES } from "../constants/routes.js";
 import PageMeta from "../components/PageMeta.jsx";
 
-import loginBg from "../assets/login-bg.jpg";
+import loginBg from "../assets/login-carpet.png";
 
-/* Textile fabric image — user-supplied reference photograph */
+/* Textile fabric image — rolled carpet reference photograph */
 const TEXTILE_IMG = loginBg;
 
 function EyeIcon({ open }) {
