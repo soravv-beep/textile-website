@@ -3,9 +3,9 @@
  *
  * Section order:
  *   1. Editorial hero (full-bleed photo, transparent nav)
- *   2. Trust strip — OEKO-TEX · GOTS · GRS · 18+ countries
- *   3. Shop by category tiles → /collections#<slug>
- *   4. Featured / bestsellers — <FlipProductCard /> (same product, two designs)
+ *   2. Trust strip — coral bar: certified safe · organic fibres · recycled yarn · 18+ countries
+ *   3. Shop by category — full-bleed 4-column grid with the painted heading overlay
+ *   4. Featured / bestsellers — <FlipProductCard /> (photo opens behind the text on hover)
  *   5. Craft story — Panipat artisan families
  *   6. Testimonials — "What homes are saying" (gold stars, portrait cards)
  *   7. Bulk / custom orders CTA → /bulk-orders
@@ -26,130 +26,18 @@ import Rating from "../components/ui/Rating.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import Tag from "../components/ui/Tag.jsx";
 import Reveal from "../animations/Reveal.jsx";
-import Marquee from "../animations/Marquee.jsx";
 import { useSpotlight } from "../hooks/useSpotlight.js";
 
 import Hero from "../components/sections/Hero.jsx";
 import Testimonials from "../components/sections/Testimonials.jsx";
+import TrustStrip from "../components/sections/TrustStrip.jsx";
+import CategoryGrid from "../components/sections/CategoryGrid.jsx";
 import { CATEGORIES } from "../data/categories.js";
 import { products } from "../data/catalog.js";
 import { useShop } from "../context/shopContext.js";
 import { JOURNAL_POSTS, INSTAGRAM_POSTS } from "../data/journal.js";
 import { ROUTES, SOCIALS } from "../constants/routes.js";
 import { unsplash } from "../utils/images.js";
-
-const TRUST = [
-  {
-    title: "Certified safe",
-    caption: "OEKO-TEX Standard 100",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-        <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    )
-  },
-  {
-    title: "Organic fibres",
-    caption: "GOTS certified cotton",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-        <path d="M12 21c0-9 4-13 9-15-1 8-4 12-9 15Z" />
-        <path d="M12 21C7 18 4 14 3 6c5 2 9 6 9 15Z" />
-      </svg>
-    )
-  },
-  {
-    title: "Recycled yarn",
-    caption: "GRS certified",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-        <path d="M3 12a9 9 0 1 0 3-6.7" />
-        <path d="M3 4v5h5" />
-      </svg>
-    )
-  },
-  {
-    title: "18+ countries",
-    caption: "Shipped worldwide",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18-2.5-3-2.5-15.5 0-18Z" />
-      </svg>
-    )
-  }
-];
-
-function TrustStrip() {
-  return (
-    <section className="section section--tight" aria-label="Certifications and reach">
-      <Container>
-        <Reveal stagger={0.08} className="trust-strip">
-          {TRUST.map((item) => (
-            <div className="trust-item" key={item.title}>
-              {item.icon}
-              <strong>{item.title}</strong>
-              <span>{item.caption}</span>
-            </div>
-          ))}
-        </Reveal>
-        <Marquee speed={38} className="trust-marquee">
-          <span>OEKO-TEX Standard 100</span>
-          <span className="trust-marquee__dot">·</span>
-          <span>GOTS</span>
-          <span className="trust-marquee__dot">·</span>
-          <span>GRS</span>
-          <span className="trust-marquee__dot">·</span>
-          <span>Shipped to 18+ countries</span>
-          <span className="trust-marquee__dot">·</span>
-        </Marquee>
-      </Container>
-    </section>
-  );
-}
-
-function Categories() {
-  return (
-    <section className="collections-section section" aria-labelledby="collections-h">
-      <Container>
-        <SectionHeading
-          id="collections-h"
-          align="center"
-          label="Shop by collection"
-          title="Find your weave"
-          subtitle="Rugs, cushions, throws and bath mats — every piece woven on a handloom in Panipat."
-        />
-        <Reveal stagger={0.1} className="collections-grid">
-          {CATEGORIES.map((category) => (
-            <Link
-              key={category.slug}
-              to={category.to}
-              className="collection-card"
-              data-cursor="Shop"
-              aria-label={`Shop ${category.name}`}
-            >
-              <div className="collection-card__media">
-                <img
-                  src={category.image}
-                  alt={category.alt}
-                  width="600"
-                  height="600"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="collection-card__overlay" />
-              </div>
-              <div className="collection-card__content">
-                <h3 className="collection-card__name">{category.name}</h3>
-              </div>
-            </Link>
-          ))}
-        </Reveal>
-      </Container>
-    </section>
-  );
-}
 
 /** The first four catalogue products flagged "Bestseller" (Shop catalogue, src/data/catalog.js). */
 const BESTSELLERS = products.filter((product) => product.badge === "Bestseller").slice(0, 4);
@@ -168,7 +56,7 @@ function Bestsellers() {
           title="Bestsellers"
           subtitle="Every weave has its own name, its own story."
         />
-        {/* Flip cards: hover (or tap on mobile) flips to the second design of the SAME product. */}
+        {/* Hover-reveal cards: the white block slides away and the photo opens behind the text. */}
         <div className="fpc-grid">
           {cards(BESTSELLERS).map((card) => (
             <FlipProductCard
@@ -217,27 +105,26 @@ function CraftStory() {
 function BulkCta() {
   const ref = useSpotlight();
   return (
-    <section className="section" aria-labelledby="bulk-h">
-      <Container>
-        <div className="cta-band has-spotlight" ref={ref}>
-          <div>
-            <span className="eyebrow">Retailers, designers & hotels</span>
-            <h2 id="bulk-h">Bulk &amp; custom orders</h2>
-            <p>
-              Custom sizes, DMC-matched colourways and volume pricing — with samples
-              before you commit.
-            </p>
-          </div>
-          <div className="btn-group">
-            <Button as={Link} to={ROUTES.bulkOrders} variant="primary" arrow>
-              Request a quote
-            </Button>
-            <Button as={Link} to={ROUTES.contact} variant="outline" className="btn-outline-light">
-              Talk to us
-            </Button>
-          </div>
+    <section className="section cta-band-section" aria-labelledby="bulk-h">
+      {/* No <Container> here on purpose — the band is meant to run edge to edge. */}
+      <div className="cta-band cta-band--bulk has-spotlight" ref={ref}>
+        <div>
+          <span className="eyebrow">Retailers, designers & hotels</span>
+          <h2 id="bulk-h">Bulk &amp; custom orders</h2>
+          <p>
+            Custom sizes, DMC-matched colourways and volume pricing — with samples
+            before you commit.
+          </p>
         </div>
-      </Container>
+        <div className="btn-group">
+          <Button as={Link} to={ROUTES.bulkOrders} variant="primary" arrow>
+            Request a quote
+          </Button>
+          <Button as={Link} to={ROUTES.contact} variant="outline" className="btn-outline-light">
+            Talk to us
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }
@@ -327,7 +214,7 @@ export default function Home() {
 
       <Hero />
       <TrustStrip />
-      <Categories />
+      <CategoryGrid categories={CATEGORIES} />
       <Bestsellers />
       <CraftStory />
       <Testimonials />

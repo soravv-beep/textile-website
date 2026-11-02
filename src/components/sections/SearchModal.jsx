@@ -4,7 +4,6 @@ import { products } from "../../data/catalog.js";
 import { productPath } from "../../constants/routes.js";
 import { formatINR } from "../../utils/format.js";
 import Overlay from "../ui/Overlay.jsx";
-import "./SearchModal.css";
 
 /**
  * Search Modal — WovenHaat Custom Design

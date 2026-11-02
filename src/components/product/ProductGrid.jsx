@@ -25,8 +25,8 @@
  * @param {number} [props.revealFrom=Infinity]
  * @param {React.ReactNode} [props.emptyState] shown when there are no products
  * @param {boolean} [props.tilt=true] pass false inside dense layouts
- * @param {boolean} [props.flip=false] render <FlipProductCard /> (hover / tap flips to a 2nd design of
- *   the same product) instead of the regular <ProductCard />
+ * @param {boolean} [props.flip=false] render <FlipProductCard /> (its white block slides away on
+ *   hover / tap, revealing the photo behind the text) instead of the regular <ProductCard />
  * @param {string} [props.className]
  */
 import { Fragment } from "react";

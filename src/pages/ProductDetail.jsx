@@ -241,7 +241,7 @@ export default function ProductDetail() {
 
       <section className="section related">
         <SectionHeading label="You may also like" title="Related pieces" />
-        <ProductGrid products={cards(related)} {...cardHandlers} />
+        <ProductGrid products={cards(related)} flip {...cardHandlers} />
       </section>
       <RecentlyViewed ids={recent} excludeId={product.id} />
 

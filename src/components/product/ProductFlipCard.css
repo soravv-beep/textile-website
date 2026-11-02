@@ -1,0 +1,537 @@
+
+/* ==========================================================================
+   WovenHaat — Premium Product Card
+   Matches the reference design:
+   White rounded card · large product image · coral badge · compare/wishlist
+   · product title · rating · description · price · Add to cart button
+   ========================================================================== */
+
+/* ---------- 1. Main card ---------- */
+
+.pfc {
+  --pfc-pad: 9px;
+  --pfc-radius: 34px;
+  --pfc-img-radius: 26px;
+
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 0.56;
+  container-type: inline-size;
+
+  font-family: var(--sans, "Inter", system-ui, sans-serif);
+  color: #443e3b;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pfc__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  padding: var(--pfc-pad);
+  border: 1px solid #f8f5f0;
+  border-radius: var(--pfc-radius);
+
+  background: #fff;
+  color: #443e3b;
+
+  box-shadow:
+    0 10px 28px rgba(73, 56, 42, 0.11),
+    0 2px 7px rgba(73, 56, 42, 0.04);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+@media (hover: hover) {
+  .pfc:hover .pfc__face {
+    transform: translateY(-3px);
+
+    box-shadow:
+      0 15px 32px rgba(73, 56, 42, 0.15),
+      0 3px 8px rgba(73, 56, 42, 0.05);
+  }
+}
+
+/* ---------- 2. Product image ---------- */
+
+.pfc__media {
+  position: absolute;
+
+  top: var(--pfc-pad);
+  left: var(--pfc-pad);
+  right: var(--pfc-pad);
+
+  height: 60%;
+
+  overflow: hidden;
+  border-radius: var(--pfc-img-radius);
+
+  background: #f1ece4;
+}
+
+.pfc__img {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  user-select: none;
+  pointer-events: none;
+}
+
+.pfc__img--primary,
+.pfc__img--secondary {
+  transition: opacity 0.3s ease;
+}
+
+.pfc__img--primary {
+  opacity: 1;
+}
+
+.pfc__img--secondary {
+  opacity: 0;
+}
+
+/* Show the second product image on hover when available. */
+@media (hover: hover) {
+  .pfc__media:hover .pfc__img--primary {
+    opacity: 0;
+  }
+
+  .pfc__media:hover .pfc__img--secondary {
+    opacity: 1;
+  }
+}
+
+.pfc__img--fallback {
+  background: linear-gradient(
+    135deg,
+    var(--cream, #f2ebdd),
+    var(--border, #e2d8c6)
+  );
+}
+
+.pfc__cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  display: block;
+  border-radius: inherit;
+}
+
+/* ---------- 3. Coral product badge ---------- */
+
+.pfc__badge {
+  position: absolute;
+  top: 23px;
+  left: 23px;
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: calc(100% - 130px);
+  overflow: hidden;
+
+  padding: 6px 11px;
+  border-radius: 30px;
+
+  background: #f18f80;
+  color: #443e3b;
+
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+/* ---------- 4. Compare and wishlist buttons ---------- */
+
+.pfc__actions {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pfc__icon-btn {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 15px;
+
+  background: rgba(195, 188, 178, 0.88);
+  color: #fff;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pfc__icon-btn svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+}
+
+.pfc__icon-btn:hover {
+  background: #aaa095;
+}
+
+.pfc__icon-btn:active {
+  transform: scale(0.95);
+}
+
+.pfc__heart.is-wished {
+  background: #f18f80;
+  color: #fff;
+}
+
+.pfc__compare.is-compared {
+  background: #704d44;
+  color: #fff;
+}
+
+/* ---------- 5. Product information ---------- */
+
+.pfc__body {
+  position: absolute;
+  right: 21px;
+  bottom: 15px;
+  left: 21px;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  min-width: 0;
+
+  pointer-events: none;
+}
+
+.pfc__body a,
+.pfc__body button {
+  pointer-events: auto;
+}
+
+/* Product title */
+
+.pfc__name {
+  display: -webkit-box;
+  overflow: hidden;
+
+  margin: 0;
+
+  color: #443e3b;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.pfc__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pfc__name a:hover {
+  color: #704d44;
+}
+
+/* ---------- 6. Star rating ---------- */
+
+.pfc__rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  min-height: 16px;
+
+  color: #554d47;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.pfc__star {
+  color: #c08f4a;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.pfc__rating strong {
+  font-weight: 700;
+}
+
+.pfc__reviews {
+  color: #82766d;
+  font-weight: 400;
+}
+
+/* ---------- 7. Product description ---------- */
+
+.pfc__desc {
+  display: -webkit-box;
+  overflow: hidden;
+
+  margin: 0;
+
+  color: #796e66;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ---------- 8. Price and cart button ---------- */
+
+.pfc__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  min-width: 0;
+  margin-top: 5px;
+}
+
+.pfc__price {
+  min-width: 0;
+  margin: 0;
+
+  color: #443e3b;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.pfc__price strong {
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+.pfc__buy {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+  padding: 0 20px;
+
+  border: 0;
+  border-radius: 30px;
+
+  background: #403b39;
+  color: #fff;
+
+  font-family: var(--sans, "Inter", system-ui, sans-serif);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow: 0 7px 16px rgba(43, 34, 26, 0.22);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pfc__buy:hover {
+  background: #704d44;
+  transform: translateY(-1px);
+
+  box-shadow: 0 9px 20px rgba(43, 34, 26, 0.25);
+}
+
+.pfc__buy:active {
+  transform: scale(0.97);
+}
+
+/* ---------- 9. Keyboard accessibility ---------- */
+
+.pfc__name a:focus-visible,
+.pfc__buy:focus-visible,
+.pfc__icon-btn:focus-visible {
+  outline: 2px solid #c8421f;
+  outline-offset: 3px;
+}
+
+/* ---------- 10. Compact cards ---------- */
+
+@container (max-width: 250px) {
+  .pfc {
+    --pfc-pad: 6px;
+    --pfc-radius: 23px;
+    --pfc-img-radius: 18px;
+  }
+
+  .pfc__media {
+    height: 54%;
+  }
+
+  .pfc__body {
+    right: 8px;
+    bottom: 9px;
+    left: 8px;
+    gap: 6px;
+  }
+
+  .pfc__name {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .pfc__rating {
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .pfc__star {
+    font-size: 13px;
+  }
+
+  .pfc__desc {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .pfc__foot {
+    gap: 5px;
+    margin-top: 3px;
+  }
+
+  .pfc__price strong {
+    font-size: 15px;
+    letter-spacing: -0.3px;
+  }
+
+  .pfc__buy {
+    min-height: 35px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .pfc__actions {
+    top: 12px;
+    right: 12px;
+    gap: 5px;
+  }
+
+  .pfc__icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 11px;
+  }
+
+  .pfc__icon-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pfc__badge {
+    top: 13px;
+    left: 13px;
+
+    max-width: calc(100% - 90px);
+    padding: 5px 7px;
+
+    font-size: 8px;
+    letter-spacing: 0.6px;
+  }
+}
+
+/* ---------- 11. Medium and large cards ---------- */
+
+@container (min-width: 330px) {
+  .pfc__name {
+    font-size: 18px;
+  }
+
+  .pfc__price strong {
+    font-size: 21px;
+  }
+}
+
+/* ---------- 12. Small-screen adjustments ---------- */
+
+@media (max-width: 560px) {
+  .pfc {
+    aspect-ratio: 0.54;
+  }
+}
+
+@media (max-width: 380px) {
+  .pfc__body {
+    right: 10px;
+    left: 10px;
+  }
+
+  .pfc__foot {
+    gap: 5px;
+  }
+
+  .pfc__buy {
+    padding-right: 12px;
+    padding-left: 12px;
+    font-size: 12px;
+  }
+
+  .pfc__price strong {
+    font-size: 17px;
+  }
+}
+
+/* ---------- 13. Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .pfc__face,
+  .pfc__img--primary,
+  .pfc__img--secondary,
+  .pfc__icon-btn,
+  .pfc__buy {
+    transition: none;
+  }
+
+  .pfc:hover .pfc__face {
+    transform: none;
+  }
+}

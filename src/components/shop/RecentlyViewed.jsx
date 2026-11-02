@@ -15,7 +15,7 @@ export default function RecentlyViewed({ ids, excludeId }) {
   return (
     <section className="section">
       <SectionHeading label="Pick up where you left off" title="Recently viewed" />
-      <ProductGrid products={cards(list)} {...cardHandlers} />
+      <ProductGrid products={cards(list)} flip {...cardHandlers} />
     </section>
   );
 }

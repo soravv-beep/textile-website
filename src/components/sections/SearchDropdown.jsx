@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { products, categories } from "../../data/catalog.js";
 import { productPath } from "../../constants/routes.js";
 import { formatINR } from "../../utils/format.js";
-import "./SearchDropdown.css";
 
 /**
  * Search Dropdown — premium dropdown from navbar search icon.
