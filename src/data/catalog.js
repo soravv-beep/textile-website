@@ -34,41 +34,41 @@ const photos = [
 // Matched local WebP assets live in public/product-images-v2/. Only this existing code file changes.
 // Existing product IDs/slugs are retained for saved carts, routes and lookbook links.
 const productPhotos = {
-  "1": "/product-images-v2/jaipur-handwoven-cotton-rug.webp",
-  "2": "/product-images-v2/malwa-textured-cushion.webp",
-  "3": "/product-images-v2/kutch-handwoven-throw.webp",
-  "4": "/product-images-v2/dhurrie-bath-mat.webp",
+  "1": "/product-images-v2/jaipur-handwoven-cotton-rug-room-image.jpg",
+  "2": "/product-images-v2/malwa-textured-cushion.jpg",
+  "3": "/product-images-v2/kutch-handwoven-throw.jpg",
+  "4": "/product-images-v2/dhurrie-bath-mat.jpg",
   "5": "/product-images-v2/sanganeri-table-runner.webp",
   "6": "/product-images-v2/linen-blend-curtain.webp",
-  "7": "/product-images-v2/boho-jute-area-rug.webp",
-  "8": "/product-images-v2/indigo-lumbar-cushion.webp",
+  "7": "/product-images-v2/boho-jute-area-rug.jpg",
+  "8": "/product-images-v2/indigo-lumbar-cushion.avif",
   "9": "/product-images-v2/himalayan-wool-throw.webp",
-  "10": "/product-images-v2/coral-waffle-bath-mat.webp",
-  "11": "/product-images-v2/minimal-linen-napkin-set.webp",
+  "10": "/product-images-v2/coral-waffle-bath-mat.avif",
+  "11": "/product-images-v2/minimal-linen-napkin-set.avif",
   "12": "/product-images-v2/woven-sheer-curtain.webp",
-  "13": "/product-images-v2/soft-chenille-throw.webp",
-  "14": "/product-images-v2/chenille-bolster-cushion.webp",
-  "15": "/product-images-v2/coral-cotton-accent-rug.webp",
-  "16": "/product-images-v2/charcoal-wool-area-rug.webp",
+  "13": "/product-images-v2/soft-chenille-throw.jpg",
+  "14": "/product-images-v2/chenille-bolster-cushion.jpg",
+  "15": "/product-images-v2/coral-cotton-accent-rug.jpg",
+  "16": "/product-images-v2/charcoal-wool-area-rug..webp",
   "17": "/product-images-v2/turquoise-cotton-dhurrie-rug.webp",
-  "18": "/product-images-v2/tan-jute-runner-rug.webp",
-  "19": "/product-images-v2/terracotta-cotton-cushion-cover.webp",
+  "18": "/product-images-v2/tan-jute-runner-rug.avif",
+  "19": "/product-images-v2/terracotta-cotton-cushion-cover.jpg",
   "20": "/product-images-v2/white-linen-cushion-cover.webp",
-  "21": "/product-images-v2/coral-chenille-floor-cushion.webp",
-  "22": "/product-images-v2/turquoise-cotton-summer-throw.webp",
-  "23": "/product-images-v2/natural-linen-throw.webp",
+  "21": "/product-images-v2/coral-chenille-floor-cushion.jpg",
+  "22": "/product-images-v2/turquoise-cotton-summer-throw.jpg",
+  "23": "/product-images-v2/natural-linen-throw.jpg",
   "24": "/product-images-v2/terracotta-wool-blanket.webp",
   "25": "/product-images-v2/white-cotton-loop-bath-mat.webp",
-  "26": "/product-images-v2/charcoal-chenille-bath-mat.webp",
+  "26": "/product-images-v2/charcoal-chenille-bath-mat.jpg",
   "27": "/product-images-v2/tan-premium-cotton-spa-mat.webp",
-  "28": "/product-images-v2/mocha-cotton-pebble-bath-mat.webp",
+  "28": "/product-images-v2/mocha-cotton-pebble-bath-mat.jpg",
   "29": "/product-images-v2/coral-cotton-table-runner.webp",
-  "30": "/product-images-v2/charcoal-linen-tablecloth.webp",
+  "30": "/product-images-v2/charcoal-linen-tablecloth.avif",
   "31": "/product-images-v2/terracotta-linen-placemat-set.webp",
-  "32": "/product-images-v2/turquoise-cotton-napkin-set.webp",
-  "33": "/product-images-v2/coral-cotton-cafe-curtain.webp",
-  "34": "/product-images-v2/charcoal-linen-curtain.webp",
-  "35": "/product-images-v2/turquoise-cotton-curtain.webp",
+  "32": "/product-images-v2/turquoise-cotton-napkin-set.jpg",
+  "33": "/product-images-v2/coral-cotton-cafe-curtain.avif",
+  "34": "/product-images-v2/charcoal-linen-curtain.avif",
+  "35": "/product-images-v2/turquoise-cotton-curtain.jpg",
   "36": "/product-images-v2/tan-linen-room-darkening-curtain.webp"
 };
 
@@ -719,6 +719,90 @@ const rawProducts = [
 ];
 
 /* ------------------------------------------------------------------ */
+/* Derived product attributes for filtering                           */
+/* ------------------------------------------------------------------ */
+
+/** Map a product to its type based on category + material + name. */
+const deriveProductType = (product) => {
+  const { category, material, name } = product;
+  const lowerName = name.toLowerCase();
+
+  if (category === "Throws") {
+    if (material === "Wool") return "Wool Throws";
+    if (material === "Linen") return "Linen Throws";
+    if (material === "Chenille") return "Chenille Throws";
+    if (material === "Cotton") {
+      if (lowerName.includes("knit")) return "Knit Throws";
+      return "Woven Throws";
+    }
+  }
+  if (category === "Rugs") {
+    if (material === "Jute") return "Jute & Plant-Based Rugs";
+    if (lowerName.includes("runner")) return "Runners";
+    if (lowerName.includes("accent") || product.sizeClass === "Small") return "Accent Rugs";
+    if (lowerName.includes("washable")) return "Washable Rugs";
+    return "Area Rugs";
+  }
+  if (category === "Cushions") {
+    if (lowerName.includes("lumbar")) return "Lumbar Cushions";
+    if (lowerName.includes("bolster")) return "Bolster Cushions";
+    if (lowerName.includes("floor")) return "Floor Cushions";
+    if (lowerName.includes("outdoor")) return "Outdoor Cushions";
+    return "Square Cushions";
+  }
+  if (category === "Bath Mats") {
+    if (lowerName.includes("memory") || lowerName.includes("foam")) return "Memory Foam Mats";
+    if (material === "Cotton" && lowerName.includes("organic")) return "Organic Bath Mats";
+    if (lowerName.includes("anti-slip") || lowerName.includes("pebble")) return "Anti-Slip Mats";
+    return "Bath Mats";
+  }
+  if (category === "Table Linen") {
+    if (lowerName.includes("tablecloth")) return "Tablecloths";
+    if (lowerName.includes("runner")) return "Table Runners";
+    if (lowerName.includes("placemat")) return "Placemats";
+    if (lowerName.includes("napkin")) return "Napkins";
+    if (lowerName.includes("kitchen") || lowerName.includes("towel")) return "Kitchen Towels";
+    return "Table Runners";
+  }
+  if (category === "Curtains") {
+    if (lowerName.includes("sheer")) return "Sheer Curtains";
+    if (lowerName.includes("room-darkening") || lowerName.includes("darkening")) return "Room-Darkening Curtains";
+    if (lowerName.includes("cafe")) return "Cafe Curtains";
+    if (material === "Linen") return "Linen Curtains";
+    return "Light-Filtering Curtains";
+  }
+  return "";
+};
+
+/** Map a product to its style based on category + material + color + name. */
+const deriveStyle = (product) => {
+  const { category, material, color, name } = product;
+  const lowerName = name.toLowerCase();
+
+  // Classic: neutral colors, traditional materials, simple names
+  const classicColors = ["Natural", "White", "Charcoal", "Tan", "Mocha"];
+  const classicMaterials = ["Wool", "Linen", "Jute"];
+  const modernColors = ["Turquoise", "Coral", "Indigo"];
+  const texturedMaterials = ["Chenille", "Jute"];
+
+  if (classicMaterials.includes(material) || classicColors.includes(color)) {
+    if (!modernColors.includes(color) && !texturedMaterials.includes(material)) {
+      return "Classic";
+    }
+  }
+  if (modernColors.includes(color) || lowerName.includes("modern") || lowerName.includes("minimal")) {
+    return "Modern";
+  }
+  if (texturedMaterials.includes(material) || lowerName.includes("textured") || lowerName.includes("waffle") || lowerName.includes("chenille") || lowerName.includes("boucle")) {
+    return "Textured";
+  }
+  // Default fallback
+  if (classicColors.includes(color)) return "Classic";
+  if (modernColors.includes(color)) return "Modern";
+  return "Classic";
+};
+
+/* ------------------------------------------------------------------ */
 /* Colour system – six DMC thread shades from the project document     */
 /* ------------------------------------------------------------------ */
 export const dmcPalette = [
@@ -817,24 +901,30 @@ const weightByCategory = {
   Curtains: "220 gsm",
 };
 
-export const products = rawProducts.map((product) => ({
-  ...product,
-  sizePrices: sizePrices[product.id],
-  price: sizePrices[product.id]?.[product.sizes[0]] ?? product.price,
-  sizeClass: product.sizeClass,
-  image: productPhotos[product.id],
-  // A matching second thumbnail; no unrelated lifestyle image is substituted.
-  altImage: productPhotos[product.id],
-  imageKind: "AI-generated demo product photo",
-  dmc: colorSwatches[product.color]?.dmc ?? "—",
-  fabric: {
-    material: product.material,
-    weave: weaveByMaterial[product.material],
-    pile: pileByCategory[product.category],
-    weight: weightByCategory[product.category],
-    care: careByMaterial[product.material],
-  },
-}));
+export const products = rawProducts.map((product) => {
+  const productType = deriveProductType(product);
+  const style = deriveStyle(product);
+  return {
+    ...product,
+    productType,
+    style,
+    sizePrices: sizePrices[product.id],
+    price: sizePrices[product.id]?.[product.sizes[0]] ?? product.price,
+    sizeClass: product.sizeClass,
+    image: productPhotos[product.id],
+    // A matching second thumbnail; no unrelated lifestyle image is substituted.
+    altImage: productPhotos[product.id],
+    imageKind: "AI-generated demo product photo",
+    dmc: colorSwatches[product.color]?.dmc ?? "—",
+    fabric: {
+      material: product.material,
+      weave: weaveByMaterial[product.material],
+      pile: pileByCategory[product.category],
+      weight: weightByCategory[product.category],
+      care: careByMaterial[product.material],
+    },
+  };
+});
 
 export const categories = [
   {

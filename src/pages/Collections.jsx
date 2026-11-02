@@ -6,7 +6,7 @@
  * Old anchor links (/collections#rugs) are redirected to /collections/rugs.
  */
 import { ArrowRight } from "lucide-react";
-import { Link, Navigate, useLocation, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams, useSearchParams } from "react-router-dom";
 
 import PageMeta from "../components/PageMeta.jsx";
 import Breadcrumb from "../components/shop/Breadcrumb.jsx";
@@ -31,6 +31,7 @@ const CollectionCard = ({ collection }) => (
 export default function Collections() {
   const { slug } = useParams();
   const { hash } = useLocation();
+  const [searchParams] = useSearchParams();
 
   if (!slug) {
     const anchor = hash.replace("#", "");
@@ -38,7 +39,7 @@ export default function Collections() {
       return <Navigate to={`${ROUTES.collections}/${anchor}`} replace />;
     }
     return (
-      <div className="shop-scope">
+      <div className="shop-scope collections-page">
         <PageMeta
           title="Collections | WovenHaat"
           description="Shop by category or explore seasonal and themed collections of handwoven home textiles."
@@ -83,7 +84,7 @@ export default function Collections() {
 
   if (!category && !collection) {
     return (
-      <div className="shop-scope">
+      <div className="shop-scope collections-page">
         <PageMeta title="Collection not found | WovenHaat" description="This collection does not exist." />
         <div className="page-main shell">
           <Breadcrumb items={["Collections"]} />
@@ -102,9 +103,52 @@ export default function Collections() {
   const title = category?.name || collection?.name || "Textile Collection";
   const description = category?.description || collection?.description || "Handcrafted texture for considered homes.";
   const image = category?.image || collection?.image || imageUrls.hero;
-  const list = category
+
+  // Base list filtered by category or collection
+  const baseList = category
     ? products.filter((product) => product.category === category.name)
     : products.filter((product) => collection.match.includes(product.category));
+
+  // Extract initial filters from URL params for pre-selecting in sidebar
+  const initialFilters = {};
+  if (category) {
+    initialFilters.category = category.name;
+  }
+  searchParams.forEach((value, key) => {
+    if (key === "sub") {
+      initialFilters.type = value;
+    } else if (key === "type") {
+      initialFilters.type = value;
+    } else if (key === "style") {
+      initialFilters.style = value;
+    } else if (key === "size") {
+      initialFilters.size = value;
+    } else if (key === "material") {
+      initialFilters.material = value;
+    } else if (key === "color") {
+      initialFilters.color = value;
+    } else if (key === "price") {
+      initialFilters.price = value;
+    } else if (key === "rating") {
+      initialFilters.rating = value;
+    } else if (key === "sort") {
+      initialFilters.sort = value;
+    }
+  });
+
+  // Dynamic subtitle based on active filters
+  const getSubtitle = () => {
+    const parts = [];
+    if (initialFilters.type && initialFilters.type !== "All") parts.push(initialFilters.type);
+    if (initialFilters.style && initialFilters.style !== "All") parts.push(initialFilters.style);
+    if (initialFilters.size && initialFilters.size !== "All") parts.push(initialFilters.size);
+    if (initialFilters.material && initialFilters.material !== "All") parts.push(initialFilters.material);
+    if (initialFilters.color && initialFilters.color !== "All") parts.push(initialFilters.color);
+    if (parts.length > 0) {
+      return `Showing ${parts.join(", ")}`;
+    }
+    return "Filter and sort this collection";
+  };
 
   return (
     <div className="shop-scope">
@@ -127,10 +171,16 @@ export default function Collections() {
         <div className="listing-head">
           <div>
             <h2>{title}</h2>
-            <p>{list.length} thoughtfully made pieces</p>
+            <p>{baseList.length} thoughtfully made pieces</p>
           </div>
         </div>
-        <ProductBrowser key={slug} list={list} showSearch={false} summary="Filter and sort this collection" />
+        <ProductBrowser
+          key={slug}
+          list={baseList}
+          showSearch={false}
+          summary={getSubtitle()}
+          initialFilters={initialFilters}
+        />
       </section>
     </div>
   );

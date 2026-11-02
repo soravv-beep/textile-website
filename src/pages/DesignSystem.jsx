@@ -26,18 +26,19 @@ import Marquee from "../animations/Marquee.jsx";
 import SuccessCheck from "../animations/SuccessCheck.jsx";
 
 const COLOURS = [
-  { token: "--color-text", hex: "#3F3A38", name: "Beaver Gray", note: "Body text, headings, footer/nav chrome" },
-  { token: "--color-primary", hex: "#C8421F", name: "Burnt Orange", note: "Primary CTAs, active underline" },
-  { token: "--color-primary-hover", hex: "#A93617", name: "Burnt Orange (hover)", note: "Derived" },
-  { token: "--color-accent", hex: "#C08F4A", name: "Tan", note: "Labels, stars, accents" },
-  { token: "--color-tag", hex: "#EE8F80", name: "Light Coral", note: "Tags/badges (dark text)" },
-  { token: "--color-bg", hex: "#F0EBE3", name: "Mocha", note: "Page background" },
-  { token: "--color-surface", hex: "#FFFFFF", name: "Surface", note: "Cards and form cards" },
-  { token: "--color-border", hex: "#E2D9CC", name: "Border", note: "Soft beige hairline" },
-  { token: "--color-link", hex: "#5C9FAE", name: "Turquoise", note: "Links (large/bold text only)" },
-  { token: "--color-link-hover", hex: "#47808E", name: "Turquoise (dark)", note: "Body-size links — AA on Mocha" },
-  { token: "--color-muted", hex: "#6E6560", name: "Muted", note: "Secondary text" },
-  { token: "--color-chrome", hex: "#3F3A38", name: "Chrome", note: "Navbar + footer — never hardcode" }
+  { token: "--color-heading", hex: "#460707", name: "Velvet Crimson", note: "Headings, dark bands, navbar + footer chrome" },
+  { token: "--color-bg", hex: "#D7CBB6", name: "Champagne Silk", note: "Page background, text on dark chrome" },
+  { token: "--color-text", hex: "#3E2D22", name: "Espresso Brown", note: "Body copy" },
+  { token: "--color-primary", hex: "#5F2219", name: "Romance Red", note: "Primary CTAs, links, accents" },
+  { token: "--color-primary-hover", hex: "#460707", name: "Velvet Crimson (hover)", note: "Derived" },
+  { token: "--color-accent", hex: "#5F2219", name: "Romance Red", note: "Labels, stars, dividers" },
+  { token: "--color-tag", hex: "#E0A392", name: "Pale Romance", note: "Tags/badges (dark text), hover tints" },
+  { token: "--color-surface", hex: "#F3EDE2", name: "Surface", note: "Cards and form cards" },
+  { token: "--color-border", hex: "#C4B49B", name: "Border", note: "Champagne deepened — hairline" },
+  { token: "--color-link", hex: "#5F2219", name: "Romance Red", note: "Links (AA at body size)" },
+  { token: "--color-link-hover", hex: "#460707", name: "Velvet Crimson", note: "Body-size links — AA on Champagne" },
+  { token: "--color-muted", hex: "#5A4638", name: "Espresso (light)", note: "Secondary text" },
+  { token: "--color-chrome", hex: "#460707", name: "Chrome", note: "Navbar + footer — never hardcode" }
 ];
 
 const TYPE_SCALE = [
@@ -103,15 +104,16 @@ export default function DesignSystem() {
 
           <h3 className="ds-sub">Contrast checks (WCAG AA = 4.5:1 for body text)</h3>
           <ul className="ds-checks">
-            <li>Beaver Gray on Mocha — 9.4:1, passes AA and AAA.</li>
-            <li>White on Burnt Orange — 4.9:1, passes AA for all text.</li>
-            <li>Beaver Gray on Light Coral — 4.7:1, passes AA (that is why tags use dark text).</li>
+            <li>Espresso Brown on Champagne Silk — 8.2:1, passes AA and AAA.</li>
+            <li>White on Romance Red — 12.2:1, passes AA and AAA for all button text.</li>
+            <li>Espresso Brown on Pale Romance — 6.1:1, passes AA (that is why tags keep dark text).</li>
             <li>
-              Turquoise on Mocha — 2.6:1 at body size, so body links use the darker
-              <code> --color-link-hover</code> (3.7:1, "large text only" AA) and are always
-              underlined so colour is never the only signal.
+              Romance Red on Champagne Silk — 7.7:1, so body-size links no longer need the
+              "large text only" carve-out. They stay underlined anyway, so colour is never the
+              only signal, and <code>--color-link-hover</code> (Velvet Crimson, 10.2:1) darkens on hover.
             </li>
-            <li>Mocha on Chrome — 9.4:1, passes AA/AAA (nav + footer text).</li>
+            <li>Champagne Silk on Chrome — 10.2:1, passes AA/AAA (nav + footer text).</li>
+            <li>Muted Espresso on Champagne Silk — 5.6:1, passes AA for secondary copy.</li>
           </ul>
         </Container>
       </section>

@@ -1,7 +1,7 @@
 /**
  * <TrustStrip /> — the certification row that sits above <CategoryGrid />.
  *
- * No fill of its own: the fixed page-wide mandala background shows through, so
+ * No fill of its own: the fixed page-wide carpet background shows through, so
  * this reads as four items on the page rather than a coloured band. Each icon
  * keeps its own colour so the row reads the same way at a glance: safety blue,
  * fibres green, yarn ink, reach red.
@@ -13,10 +13,10 @@ import { Globe, Leaf, Recycle, ShieldCheck } from "lucide-react";
 
 /** Icon + ink colour per item. `tone` is `undefined` for the plain one. */
 const TRUST_ITEMS = [
-  { label: "Certified safe", Icon: ShieldCheck, tone: "#5aa9e6" },
-  { label: "Organic fibres", Icon: Leaf, tone: "#5fd08a" },
+  { label: "Certified safe", Icon: ShieldCheck, tone: "#f6cdb9" },
+  { label: "Organic fibres", Icon: Leaf, tone: "#cbd8b8" },
   { label: "Recycled yarn", Icon: Recycle },
-  { label: "18+ countries", Icon: Globe, tone: "#d93a2b" }
+  { label: "18+ countries", Icon: Globe, tone: "#dfd4c1" }
 ];
 
 export default function TrustStrip() {

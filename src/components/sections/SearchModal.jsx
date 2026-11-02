@@ -99,6 +99,7 @@ export default function SearchModal({ open, onClose }) {
       label="Search products"
       position="modal"
       scrim={true}
+      closeButton={false}
       className="search-modal-overlay"
     >
       <div className="search-modal" role="dialog" aria-modal="true" aria-label="Search products">

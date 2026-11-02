@@ -2,9 +2,9 @@ import { ChevronDown } from "lucide-react";
 import { colorSwatches } from "../../data/catalog.js";
 import { priceBuckets } from "../../utils/shop.js";
 
-function FilterGroup({ title, children }) {
+function FilterGroup({ title, children, className }) {
   return (
-    <details className="filter-group" open>
+    <details className={`filter-group ${className || ""}`} open>
       <summary>
         {title}
         <ChevronDown />
@@ -28,7 +28,18 @@ function Radios({ name, options, value, onChange }) {
   ));
 }
 
-export default function ProductFilters({ filters, setFilter, options, clear, namespace = "" }) {
+export default function ProductFilters({ filters, setFilter, options, clear, namespace = "", initialFilters }) {
+  const initial = initialFilters || {
+    category: "All",
+    material: "All",
+    color: "All",
+    size: "All",
+    type: "All",
+    style: "All",
+    price: "Any",
+    rating: "Any"
+  };
+
   return (
     <div className="filter-panel">
       <div className="filter-title">
@@ -46,12 +57,28 @@ export default function ProductFilters({ filters, setFilter, options, clear, nam
         </FilterGroup>
       )}
       <FilterGroup title="Material">
-<Radios
-           name={`${namespace ? namespace + "-" : ""}material`}
-           options={["All", ...options.materials]}
-           value={filters.material}
-           onChange={(v) => setFilter("material", v)}
-         />
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}material`}
+          options={["All", ...options.materials]}
+          value={filters.material}
+          onChange={(v) => setFilter("material", v)}
+        />
+      </FilterGroup>
+      <FilterGroup title="Type">
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}type`}
+          options={["All", ...options.types]}
+          value={filters.type}
+          onChange={(v) => setFilter("type", v)}
+        />
+      </FilterGroup>
+      <FilterGroup title="Style">
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}style`}
+          options={["All", ...options.styles]}
+          value={filters.style}
+          onChange={(v) => setFilter("style", v)}
+        />
       </FilterGroup>
       <FilterGroup title="Colour">
         <div className="swatches">
@@ -84,28 +111,28 @@ export default function ProductFilters({ filters, setFilter, options, clear, nam
         )}
       </FilterGroup>
       <FilterGroup title="Size">
-<Radios
-           name={`${namespace ? namespace + "-" : ""}size`}
-           options={["All", ...options.sizes]}
-           value={filters.size}
-           onChange={(v) => setFilter("size", v)}
-         />
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}size`}
+          options={["All", ...options.sizes, ...options.categorySizes]}
+          value={filters.size}
+          onChange={(v) => setFilter("size", v)}
+        />
       </FilterGroup>
       <FilterGroup title="Price">
-<Radios
-           name={`${namespace ? namespace + "-" : ""}price`}
-           options={priceBuckets.map(([label]) => label)}
-           value={filters.price}
-           onChange={(v) => setFilter("price", v)}
-         />
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}price`}
+          options={priceBuckets.map(([label]) => label)}
+          value={filters.price}
+          onChange={(v) => setFilter("price", v)}
+        />
       </FilterGroup>
       <FilterGroup title="Rating">
-<Radios
-           name={`${namespace ? namespace + "-" : ""}rating`}
-           options={["Any", "4★ & above", "4.5★ & above"]}
-           value={filters.rating}
-           onChange={(v) => setFilter("rating", v)}
-         />
+        <Radios
+          name={`${namespace ? namespace + "-" : ""}rating`}
+          options={["Any", "4★ & above", "4.5★ & above"]}
+          value={filters.rating}
+          onChange={(v) => setFilter("rating", v)}
+        />
       </FilterGroup>
     </div>
   );

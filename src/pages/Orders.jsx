@@ -15,12 +15,12 @@ const fmt = (n) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
 
 const STATUS_CONFIG = {
-  pending:    { color: "#e8a400", bg: "#fff8e1", label: "Pending"    },
-  confirmed:  { color: "#2d6bcf", bg: "#e3f0ff", label: "Confirmed"  },
-  processing: { color: "#9c27b0", bg: "#f3e5f5", label: "Processing" },
-  shipped:    { color: "#0097a7", bg: "#e0f7fa", label: "Shipped"    },
-  delivered:  { color: "#2e7d32", bg: "#e8f5e9", label: "Delivered"  },
-  cancelled:  { color: "#c62828", bg: "#ffebee", label: "Cancelled"  },
+  pending:    { color: "#9e4038", bg: "#f4e3dc", label: "Pending"    },
+  confirmed:  { color: "#5f2219", bg: "#e8cfc0", label: "Confirmed"  },
+  processing: { color: "#3e2d22", bg: "#e9e0d0", label: "Processing" },
+  shipped:    { color: "#460707", bg: "#dfd3bd", label: "Shipped"    },
+  delivered:  { color: "#35603f", bg: "#eaf1e6", label: "Delivered"  },
+  cancelled:  { color: "#a03018", bg: "#f7eae4", label: "Cancelled"  },
 };
 
 const TIMELINE_STEPS = ["pending", "confirmed", "processing", "shipped", "delivered"];
