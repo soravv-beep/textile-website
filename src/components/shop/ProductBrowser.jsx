@@ -21,16 +21,15 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { SlidersHorizontal, X } from "lucide-react";
 
+import EmptyProducts from "./EmptyProducts.jsx";
 import ProductFilters from "./ProductFilters.jsx";
 import SearchSuggest from "./SearchSuggest.jsx";
 import ProductGrid from "../product/ProductGrid.jsx";
 import { useShop } from "../../context/shopContext.js";
 import { useProgressiveRender } from "../../hooks/useProgressiveRender.js";
 import { getSizeClass, priceBuckets } from "../../utils/shop.js";
-import { ROUTES } from "../../constants/routes.js";
 
 const INITIAL_VISIBLE = 12;
 const BATCH_SIZE = 12;
@@ -346,24 +345,7 @@ export default function ProductBrowser({ list, initialSearch = "", showSearch = 
               {...cardHandlers}
             />
           ) : (
-            <div className="empty-state premium-empty">
-              <div className="empty-state__illustration" aria-hidden="true">
-                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
-                  <path d="M32 18V32L40 38" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-                </svg>
-              </div>
-              <h3>No textiles found</h3>
-              <p>There are currently no products matching your selection. We're working on bringing you more beautiful handwoven pieces soon.</p>
-              <div className="empty-state__actions">
-                <button type="button" className="button outline" onClick={clear}>
-                  Clear filters
-                </button>
-                <Link to={ROUTES.shop} className="button primary">
-                  Explore all products
-                </Link>
-              </div>
-            </div>
+            <EmptyProducts onClear={clear} />
           )}
           {pendingItems.length > 0 && <div className="load-more" ref={loadMoreRef} aria-hidden="true" />}
         </div>

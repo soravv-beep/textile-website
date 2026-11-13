@@ -10,6 +10,7 @@ import { Link, Navigate, useLocation, useParams, useSearchParams } from "react-r
 
 import PageMeta from "../components/PageMeta.jsx";
 import Breadcrumb from "../components/shop/Breadcrumb.jsx";
+import CollectionCategories from "../components/collections/CollectionCategories.jsx";
 import ProductBrowser from "../components/shop/ProductBrowser.jsx";
 import { ROUTES } from "../constants/routes.js";
 import { categories, collections, imageUrls, products } from "../data/catalog.js";
@@ -39,13 +40,13 @@ export default function Collections() {
       return <Navigate to={`${ROUTES.collections}/${anchor}`} replace />;
     }
     return (
-      <div className="shop-scope">
+      <div className="shop-scope collections-page">
         <PageMeta
           title="Collections | WovenHaat"
           description="Shop by category or explore seasonal and themed collections of handwoven home textiles."
         />
         <div className="page-main shell">
-          <Breadcrumb items={["Collections"]} />
+        
           <div className="page-title-row">
             <div>
               <p className="kicker">Curated by mood</p>
@@ -53,15 +54,7 @@ export default function Collections() {
               <p>Explore seasonal colour, natural materials and enduring craft.</p>
             </div>
           </div>
-          <h2 className="group-title">Shop by category</h2>
-          <div className="category-chips">
-            {categories.map((c) => (
-              <Link key={c.slug} to={`${ROUTES.collections}/${c.slug}`} className="category-chip">
-                <img src={c.image} alt="" loading="lazy" />
-                {c.name}
-              </Link>
-            ))}
-          </div>
+          <CollectionCategories categories={categories} />
           {["Seasonal", "Themed"].map((group) => (
             <section key={group}>
               <h2 className="group-title">{group} collections</h2>
@@ -84,7 +77,7 @@ export default function Collections() {
 
   if (!category && !collection) {
     return (
-      <div className="shop-scope">
+      <div className="shop-scope collections-page">
         <PageMeta title="Collection not found | WovenHaat" description="This collection does not exist." />
         <div className="page-main shell">
           <Breadcrumb items={["Collections"]} />

@@ -47,7 +47,7 @@ function Bestsellers() {
   const { cards, cardHandlers } = useShop();
 
   return (
-    <section className="section section--alt texture" aria-labelledby="best-h">
+    <section className="section" aria-labelledby="best-h">
       <Container>
         <SectionHeading
           id="best-h"
@@ -131,7 +131,7 @@ function BulkCta() {
 
 function JournalTeaser() {
   return (
-    <section className="section section--alt" aria-labelledby="journal-h">
+    <section className="section" aria-labelledby="journal-h">
       <Container>
         <SectionHeading
           id="journal-h"

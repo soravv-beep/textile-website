@@ -17,8 +17,8 @@ import { Link } from "react-router-dom";
 import { useReducedMotion } from "../../hooks/useReducedMotion.js";
 import { ROUTES } from "../../constants/routes.js";
 
-// Local video file copied to public/hero-video.mp4
-const HERO_VIDEO = "/hero-video.mp4";
+// H.264 3844×2160, 14.55 s — served from public/
+const HERO_VIDEO = "/hero-handwoven-08.mp4";
 
 export default function Hero() {
   const videoRef = useRef(null);

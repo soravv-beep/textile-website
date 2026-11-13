@@ -297,17 +297,17 @@ export default function Sustainability() {
       </section>
 
       {/* 8. Call to Action */}
-      <section className="section" style={{ background: "var(--color-chrome)", color: "#FFFFFF" }}>
+      <section className="section" style={{ background: "var(--color-chrome)", color: "#F3EDE2" }}>
         <Container>
           <div style={{ textAlign: "center", maxWidth: "680px", marginInline: "auto" }}>
             <Reveal>
               <span className="eyebrow" style={{ color: "var(--color-accent)" }}>
                 TRANSPARENT LUXURY
               </span>
-              <h2 style={{ color: "#FFFFFF", marginBottom: "var(--sp-4)" }}>
+              <h2 style={{ color: "#F3EDE2", marginBottom: "var(--sp-4)" }}>
                 Bring slow craftsmanship into your home
               </h2>
-              <p style={{ color: "#D1C7BD", fontSize: "1.1rem", lineHeight: 1.6, marginBottom: "var(--sp-6)" }}>
+              <p style={{ color: "#D7CBB6", fontSize: "1.1rem", lineHeight: 1.6, marginBottom: "var(--sp-6)" }}>
                 Every purchase directly finances health coverage, fair wages, and organic farming transitions
                 across our partner weaving communities.
               </p>

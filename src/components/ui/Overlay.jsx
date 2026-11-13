@@ -12,6 +12,8 @@
  * @param {string} props.label accessible name of the dialog
  * @param {"modal"|"drawer-right"|"drawer-left"|"drawer-bottom"} [props.position="modal"]
  * @param {boolean} [props.scrim=true] dim + click-outside to close
+ * @param {boolean} [props.closeButton=true] render the shared corner "×";
+ *   pass false when the child brings its own close control.
  * @param {string} [props.className]
  */
 import { useEffect, useRef } from "react";
@@ -25,6 +27,7 @@ export function Overlay({
   label,
   position = "modal",
   scrim = true,
+  closeButton = true,
   className = "",
   children
 }) {
@@ -90,11 +93,13 @@ export function Overlay({
         aria-label={label}
         tabIndex={-1}
       >
-        <button type="button" className="ui-overlay__close" aria-label="Close" onClick={onClose}>
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M6 6l12 12M18 6 6 18" />
-          </svg>
-        </button>
+        {closeButton && (
+          <button type="button" className="ui-overlay__close" aria-label="Close" onClick={onClose}>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          </button>
+        )}
         {children}
       </div>
     </div>

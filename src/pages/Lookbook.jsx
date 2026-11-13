@@ -60,7 +60,7 @@ export default function Lookbook() {
   };
 
   return (
-    <>
+    <div className="lookbook-page">
       <PageMeta
         title="Lookbook & Styled Spaces | WovenHaat"
         description="Explore curated living spaces styled with authentic handloom rugs, cushion sets, and artisanal throws. Shop the look with interactive hotspots."
@@ -85,31 +85,35 @@ export default function Lookbook() {
             {/* Room Filter Chips */}
             <div className="lb-filters-row">
               <span className="lb-filters-label">Room:</span>
-              {LOOKBOOK_ROOMS.map((room) => (
-                <button
-                  key={room}
-                  type="button"
-                  className={`lb-chip ${selectedRoom === room ? "is-active" : ""}`}
-                  onClick={() => setSelectedRoom(room)}
-                >
-                  {room}
-                </button>
-              ))}
+              <div className="lb-chips">
+                {LOOKBOOK_ROOMS.map((room) => (
+                  <button
+                    key={room}
+                    type="button"
+                    className={`lb-chip ${selectedRoom === room ? "is-active" : ""}`}
+                    onClick={() => setSelectedRoom(room)}
+                  >
+                    {room}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Style Filter Chips */}
             <div className="lb-filters-row">
               <span className="lb-filters-label">Aesthetic:</span>
-              {LOOKBOOK_STYLES.map((style) => (
-                <button
-                  key={style}
-                  type="button"
-                  className={`lb-chip lb-chip--style ${selectedStyle === style ? "is-active" : ""}`}
-                  onClick={() => setSelectedStyle(style)}
-                >
-                  {style}
-                </button>
-              ))}
+              <div className="lb-chips">
+                {LOOKBOOK_STYLES.map((style) => (
+                  <button
+                    key={style}
+                    type="button"
+                    className={`lb-chip lb-chip--style ${selectedStyle === style ? "is-active" : ""}`}
+                    onClick={() => setSelectedStyle(style)}
+                  >
+                    {style}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
@@ -324,6 +328,6 @@ export default function Lookbook() {
           </div>
         </Drawer>
       )}
-    </>
+    </div>
   );
 }
