@@ -43,7 +43,7 @@ const Sustainability = lazy(() => import("./pages/Sustainability.jsx"));
 const LoginPage = lazy(() => import("./pages/Login.jsx"));
 const AccountPage = lazy(() => import("./pages/Account.jsx"));
 const CartPage = lazy(() => import("./pages/Cart.jsx"));
-const CheckoutPage = lazy(() => import("./pages/Checkout.jsx"));
+const CheckoutPage = lazy(() => import("./pages/Payment/index.jsx"));
 const WishlistPage = lazy(() => import("./pages/Wishlist.jsx"));
 const OrdersPage = lazy(() => import("./pages/Orders.jsx"));
 

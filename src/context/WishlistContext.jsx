@@ -28,11 +28,15 @@ export function WishlistProvider({ children }) {
       if (prev.find((i) => i.slug === product.slug)) return prev;
       return [...prev, {
         slug: product.slug,
+        id: product.id || product.slug,
         name: product.name,
         price: product.price,
-        image: product.image || null,
+        oldPrice: product.oldPrice || product.compareAtPrice || null,
+        image: product.image || (product.images && product.images[0]) || null,
         variant: product.variant || null,
+        itemNo: product.itemNo || product.sku || (product.id ? `962${String(product.id).padStart(4, "0")}` : null),
         stock: product.stock ?? 99,
+        deliveryDays: product.deliveryDays || "4-7 working days",
         addedAt: new Date().toISOString(),
       }];
     });
@@ -51,11 +55,15 @@ export function WishlistProvider({ children }) {
       if (exists) return prev.filter((i) => i.slug !== product.slug);
       return [...prev, {
         slug: product.slug,
+        id: product.id || product.slug,
         name: product.name,
         price: product.price,
-        image: product.image || null,
+        oldPrice: product.oldPrice || product.compareAtPrice || null,
+        image: product.image || (product.images && product.images[0]) || null,
         variant: product.variant || null,
+        itemNo: product.itemNo || product.sku || (product.id ? `962${String(product.id).padStart(4, "0")}` : null),
         stock: product.stock ?? 99,
+        deliveryDays: product.deliveryDays || "4-7 working days",
         addedAt: new Date().toISOString(),
       }];
     });
