@@ -883,19 +883,10 @@ header.nav::after {
   }
 }
 
-/* Over the home hero (top of page, stage-1) the glass is hidden and only
-   appears on hover / keyboard focus; from stage-2 onward it is permanent. */
+/* Glass fades in/out smoothly if a stage ever toggles it; permanent everywhere. */
 header.nav::before,
 header.nav::after {
   transition: opacity 320ms ease;
-}
-header.nav:not(.solid).stage-1::before,
-header.nav:not(.solid).stage-1::after {
-  opacity: 0;
-}
-header.nav:not(.solid).stage-1:is(:hover, :focus-within)::before,
-header.nav:not(.solid).stage-1:is(:hover, :focus-within)::after {
-  opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
   header.nav::before,
@@ -2036,7 +2027,10 @@ header.nav:not(.solid).stage-1:is(:hover, :focus-within)::after {
    frame's left edge to the screen, 100% the right. At 34% the crop sits left of
    centre, so the plain wall that used to sit on the left of the hero slides out
    of view and the set dressing moves in from the right. On a wide desktop window
-   there is barely any cropped-away width left, so the same value is a no-op there. */
+   there is barely any cropped-away width left, so the same value is a no-op there.
+   Vertically it is pinned to the TOP: when the box is wider than 16:9 (every
+   desktop, since the hero is shortened by the navbar) the whole overflow is
+   cropped off the bottom of the shot, never the top. */
 .hero__video {
   position: absolute;
   z-index: -3;
@@ -2044,7 +2038,7 @@ header.nav:not(.solid).stage-1:is(:hover, :focus-within)::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 34% center;
+  object-position: 34% top;
 }
 
 /* Subtle film-grain texture — matches WOVENHAAT exactly */
@@ -3111,17 +3105,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Embroidered-maroon backdrop — every page, one fixed layer under the content,
-   shown raw with no wash on top. This artwork is dark: 86% of its pixels sit in
-   the bottom luminance decile, mean L 0.068, range 0.000–0.964 (near-black
-   maroon field, cream flowers). Everything that must be readable therefore has
-   to sit on its own opaque surface, not directly on the page. */
+/* Velvet-cushion backdrop — every page, one fixed layer under the content,
+   shown raw with no wash on top. This artwork is dark: mean L 0.061, range
+   0.000–0.964 (deep maroon field, champagne cushions left, gold-ringed discs
+   right). Everything that must be readable therefore has to sit on its own
+   opaque surface or block-26 scrim, not directly on the page. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url("/bg-maroon.jpg");
+  background-image: url("/bg-velvet.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -3130,8 +3124,8 @@ body::before {
   body::before { display: none; }
 }
 
-/* This artwork is a frame, not a field: the blooms hug the left and right
-   edges and the middle is deliberately empty. `cover` on a portrait viewport
+/* This artwork is a frame, not a field: the cushions hug the left edge, the
+   discs the right edge, and the middle is deliberately empty. `cover` on a portrait viewport
    scales to the height, so only the central ~26% of the width is ever visible
    and that slice is the empty middle — the page reads as flat colour with no
    art at all. Anchoring to the left edge puts a real part of the composition
@@ -3539,7 +3533,7 @@ textarea { min-height: 140px; resize: vertical; }
 /* ---------- 10. Category showcase — trust row + full-bleed grid ---------- */
 
 /*
- * The strip paints no background of its own: the fixed /bg-maroon.jpg layer
+ * The strip paints no background of its own: the fixed /bg-velvet.jpg layer
  * behind every page shows through it, so the row sits *in* the page instead of
  * being a band laid over it.
  */
@@ -4791,7 +4785,17 @@ textarea { min-height: 140px; resize: vertical; }
 
 /* ---- layout shell: fixed header offset ---- */
 .app-main { padding-top: var(--nav-offset); }
-.app-shell.has-hero .app-main { padding-top: 0; }   /* hero sits under the transparent nav */
+
+/* Home: the hero starts BELOW the fixed navbar instead of under it, and is
+   shortened by the same amount so the first screen is exactly nav + video.
+   --hero-nav = the measured stage-1 bar height at each breakpoint (not the
+   global --nav-offset, which is 142px everywhere and would leave a gap on
+   tablets/phones). */
+.app-shell.has-hero { --hero-nav: 143px; }
+@media (max-width: 991px) { .app-shell.has-hero { --hero-nav: 111px; } }
+@media (max-width: 575px) { .app-shell.has-hero { --hero-nav: 103px; } }
+.app-shell.has-hero .app-main { padding-top: var(--hero-nav); }
+.app-shell.has-hero .hero { height: calc(100svh - var(--hero-nav)); }
 
 /* anchor targets clear the fixed header */
 [id] { scroll-margin-top: calc(var(--nav-offset) + 12px); }
@@ -10134,7 +10138,7 @@ body.nav-locked { overflow: hidden; }
 
 /* The DEV 3 page roots (.cart-page, .co-page, .wl-page, .ord-page, .ac-page and
    the login .lp-form-panel) deliberately paint no background: the fixed
-   /bg-maroon.jpg layer behind every page shows through them, so these pages sit
+   /bg-velvet.jpg layer behind every page shows through them, so these pages sit
    *in* the site instead of covering it with a flat panel. */
 .cart-page { min-height: 100vh; padding-top: calc(var(--nav-height) + var(--sp-7)); padding-bottom: var(--sp-8); background: transparent; }
 .cart-page__title { font-family: var(--font-heading); font-size: clamp(1.6rem,4vw,2.4rem); margin: 0 0 var(--sp-6); color: var(--color-text); }
