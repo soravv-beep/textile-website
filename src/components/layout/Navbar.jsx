@@ -17,6 +17,7 @@ import { useState, useEffect } from 'react';
 import { MAIN_NAV, MEGA } from '../../data/navigation.js';
 import { CATEGORIES } from '../../data/collections.js';
 import { useCart } from '../../context/CartContext.jsx';
+import { useWishlist } from '../../context/WishlistContext.jsx';
 import SearchModal from '../sections/SearchModal.jsx';
 
 const MENU_IMAGES = {
@@ -49,6 +50,7 @@ const MENU_IMAGES = {
 
 export default function Navbar() {
   const { count } = useCart();
+  const { count: wishCount } = useWishlist();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -285,6 +287,19 @@ export default function Navbar() {
               <circle cx="12" cy="7.5" r="3.2" />
               <path d="M5.5 20c.3-4 2.7-6.1 6.5-6.1s6.2 2.1 6.5 6.1" />
             </svg>
+          </Link>
+
+          <Link
+            to="/wishlist"
+            className="wish-link"
+            aria-label={`Wishlist, ${wishCount} ${wishCount === 1 ? 'item' : 'items'}`}
+            onClick={go}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 20.4s-7-4.5-8.8-8.6A5.1 5.1 0 0 1 12 6.1a5.1 5.1 0 0 1 8.8 5.7c-1.8 4.1-8.8 8.6-8.8 8.6Z" />
+            </svg>
+
+            {wishCount > 0 && <span className="wish-count">{wishCount}</span>}
           </Link>
 
           <Link
@@ -557,6 +572,10 @@ export default function Navbar() {
             <div className="drawer-bottom">
               <Link to="/account" onClick={go}>
                 My Account
+              </Link>
+
+              <Link to="/wishlist" onClick={go}>
+                Wishlist ({wishCount})
               </Link>
 
               <Link to="/cart" onClick={go}>

@@ -609,13 +609,15 @@ header.nav {
   stroke-linejoin: round;
 }
 
-/* Shopping bag counter */
+/* Shopping bag + wishlist counters */
 
-.bag-link {
+.bag-link,
+.wish-link {
   position: relative;
 }
 
-.bag-count {
+.bag-count,
+.wish-count {
   position: absolute;
   top: 4px;
   right: -3px;
@@ -1385,7 +1387,7 @@ header.nav::after {
 
 @media (max-width: 991px) {
   .navin {
-    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-columns: 44px minmax(0, 1fr) 132px;
     grid-template-rows: auto;
     min-height: 76px;
     padding-top: 0;
@@ -1434,7 +1436,7 @@ header.nav::after {
      permanently frosted glass. */
 
   header.nav.stage-1 .navin {
-    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-columns: 44px minmax(0, 1fr) 132px;
     grid-template-rows: auto;
     min-height: 76px;
     padding-top: 0;
@@ -1453,7 +1455,7 @@ header.nav::after {
   /* Stage 2 */
 
   header.nav.stage-2 .navin {
-    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-columns: 44px minmax(0, 1fr) 132px;
     grid-template-rows: auto;
     min-height: 76px;
     padding-top: 0;
@@ -1472,7 +1474,7 @@ header.nav::after {
   /* Stage 3: compact mobile header */
 
   header.nav.stage-3 .navin {
-    grid-template-columns: 44px minmax(0, 1fr) 90px;
+    grid-template-columns: 44px minmax(0, 1fr) 132px;
     grid-template-rows: auto;
     min-height: 76px;
     padding-top: 0;
@@ -1530,7 +1532,7 @@ header.nav::after {
   }
 
   .navin {
-    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-columns: 38px minmax(0, 1fr) 112px;
     grid-template-rows: auto;
     min-height: 68px;
     gap: 0 5px;
@@ -1549,6 +1551,7 @@ header.nav::after {
     letter-spacing: 0.13em;
   }
 
+  /* Four 21px icons + 8px gaps = 108px — see the 991px block above. */
   .icons {
     gap: 8px;
   }
@@ -1568,7 +1571,7 @@ header.nav::after {
 
   header.nav.stage-1 .navin,
   header.nav.stage-2 .navin {
-    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-columns: 38px minmax(0, 1fr) 112px;
     grid-template-rows: auto;
     min-height: 68px;
     gap: 0 5px;
@@ -1579,7 +1582,7 @@ header.nav::after {
   /* Stage 3: compact controls remain usable */
 
   header.nav.stage-3 .navin {
-    grid-template-columns: 38px minmax(0, 1fr) 76px;
+    grid-template-columns: 38px minmax(0, 1fr) 112px;
     grid-template-rows: auto;
     min-height: 60px;
     gap: 0 5px;
