@@ -1,0 +1,186 @@
+/* ============================================================
+   "No products found" empty state.
+   Every colour is an existing project token (or a color-mix of
+   them); nothing here changes a global variable. Buttons mirror
+   .shop-scope .button (height, padding, radius, weight, hover lift
+   and the Romance Red primary), but use their own classes so the
+   page's backdrop-scrim rules for .button.outline don't recolour
+   the secondary action on this light panel.
+   ============================================================ */
+.empty-products {
+  --ep-ink: var(--espresso);
+  --ep-heading: var(--velvet);
+  --ep-muted: #5a4638;
+  --ep-primary: var(--romance);
+
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  text-align: center;
+  color: var(--ep-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Illustration ---------- */
+.empty-products__art {
+  display: block;
+  width: min(100%, 380px);
+  height: auto;
+  margin-bottom: var(--sp-5);
+  overflow: visible;
+}
+.empty-products__art .ep-arch {
+  fill: color-mix(in srgb, var(--color-tag) 38%, var(--color-surface));
+}
+.empty-products__art .ep-floor {
+  fill: url(#ep-floor-fade);
+}
+.empty-products__art .ep-floor-stop {
+  stop-color: color-mix(in srgb, var(--color-bg) 70%, var(--color-surface));
+}
+.empty-products__art .ep-floor-stop--clear {
+  stop-color: var(--color-surface);
+  stop-opacity: 0;
+}
+.empty-products__art .ep-shadow {
+  fill: color-mix(in srgb, var(--espresso) 14%, transparent);
+}
+.empty-products__art .ep-stem {
+  fill: none;
+  stroke: color-mix(in srgb, var(--romance) 60%, var(--color-surface));
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.empty-products__art .ep-leaf {
+  fill: color-mix(in srgb, var(--romance) 55%, var(--color-surface));
+}
+.empty-products__art .ep-vase {
+  fill: color-mix(in srgb, var(--color-tag) 45%, var(--color-bg));
+}
+.empty-products__art .ep-vase-shade {
+  fill: color-mix(in srgb, var(--color-tag) 55%, var(--color-border));
+  opacity: 0.55;
+}
+.empty-products__art .ep-fold {
+  fill: color-mix(in srgb, var(--color-bg) 62%, var(--color-surface));
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+.empty-products__art .ep-fold--top {
+  fill: color-mix(in srgb, var(--color-bg) 45%, var(--color-surface));
+}
+.empty-products__art .ep-drape {
+  fill: color-mix(in srgb, var(--color-surface) 70%, var(--color-bg));
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.empty-products__art .ep-weave {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+.empty-products__art .ep-fringe {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+.empty-products__art .ep-spark {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+/* ---------- Copy ---------- */
+.empty-products__title {
+  margin: 0 0 var(--sp-3);
+  color: var(--ep-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.empty-products__text {
+  max-width: 38ch;
+  margin: 0 auto var(--sp-5);
+  color: var(--ep-muted);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ---------- Actions ---------- */
+.empty-products__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  justify-content: center;
+}
+.empty-products__btn {
+  min-height: 50px;
+  padding: 0 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 180ms ease;
+}
+.empty-products__btn:hover {
+  transform: translateY(-2px);
+}
+.empty-products__btn:focus-visible {
+  outline: 2px solid var(--ep-primary);
+  outline-offset: 3px;
+}
+.empty-products__btn--primary {
+  background: var(--ep-primary);
+  border-color: var(--ep-primary);
+  color: #fff;
+}
+.empty-products__btn--primary:hover {
+  background: color-mix(in srgb, var(--ep-primary) 84%, var(--ep-ink));
+  border-color: color-mix(in srgb, var(--ep-primary) 84%, var(--ep-ink));
+}
+.empty-products__btn--secondary {
+  background: transparent;
+  border-color: var(--ep-ink);
+  color: var(--ep-ink);
+}
+.empty-products__btn--secondary:hover {
+  background: var(--color-bg);
+}
+
+@media (max-width: 560px) {
+  .empty-products {
+    min-height: 0;
+    padding: var(--sp-6) var(--sp-4) var(--sp-5);
+    border-radius: var(--radius-md);
+  }
+  .empty-products__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .empty-products__btn {
+    width: 100%;
+  }
+}
