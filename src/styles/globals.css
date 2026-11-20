@@ -2300,45 +2300,34 @@ header.nav::after {
 }
 
 /* ============================================================
-   TESTIMONIALS — one reviewer at a time
-   Built to the supplied mock-up: marigold rule + "Testimonials."
-   over a crimson-ringed portrait, a quote framed by two ghost
-   glyph tiles, and a pill pager between two round arrows.
-   Every value below is measured off the mock-up at 1:1.
+   TESTIMONIALS — slider built to the supplied mock-up
+   Centred heading, portrait on a brown block, quote glyph,
+   star row, quote, name/role, footer link + slide counter.
    ============================================================ */
 
 .tst {
-  --tst-crimson: #5f2219;      /* portrait ring + the disc behind it */
-  --tst-pink: #9e4038;         /* next arrow + the pagination pill */
-  /* the mock-up's role pink is #e0447b (3.98:1 on white). Darkened 7 % —
-     same hue, same read — to clear the 4.5:1 normal-text bar. */
-  --tst-role: #7a3325;
-  --tst-marigold: #d7cbb6;
-  --tst-ink: #3e2d22;
-  --tst-quote: #5a4638;
-  --tst-name: #6b5747;         /* 32 px bold = WCAG large text, 4.35:1 clears 3:1 */
-  --tst-tile: #f3ede2;
-  --tst-glyph: #c4b49b;
-  --tst-arrow-idle: #c4b49b;
-  --tst-ring: clamp(148px, 21vw, 190px);
-  --tst-gap: clamp(22px, 5vw, 52px);
-  --tst-pager: 76px;           /* band reserved under the card for the pill */
+  --tst-cream: #efe8e0;
+  --tst-brown: #8a5c40;
+  --tst-brown-deep: #6d4630;
+  --tst-ink: #3a2417;
+  --tst-quote: #523827;
+  --tst-role: #7a5540;
+  --tst-hairline: rgba(109, 70, 48, 0.22);
 
   background: transparent;
-  color: var(--tst-ink);
+  color: var(--tst-brown);
 }
 
 /* after .section in the cascade, so the band breathes on its own terms */
 .tst.section { padding-block: clamp(28px, 4vw, 56px); }
 
-/* The light surface hugs the content instead of running full-bleed:
-   620px stage + 76px arrow overhang each side + 40px breathing room. */
+/* the cream sheet hugging the content, like the mock-up's page background */
 .tst > .container {
-  width: min(852px, 100% - 32px);
+  width: min(1120px, 100% - 32px);
   max-width: none;
-  padding: clamp(44px, 6vw, 72px) 40px;
+  padding: clamp(38px, 5vw, 70px) clamp(20px, 4vw, 64px);
   border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  background: var(--tst-cream);
   box-shadow: var(--shadow);
 }
 
@@ -2346,48 +2335,42 @@ header.nav::after {
 
 .tst__head { text-align: center; }
 
-.tst__rule {
-  display: block;
-  width: 54px;
-  height: 4px;
-  margin: 0 auto 20px;
-  border-radius: 2px;
-  background: var(--tst-marigold);
-}
-
 .tst__title {
   margin: 0;
-  color: var(--tst-ink);
+  color: var(--tst-brown);
   font-family: var(--sans);
-  font-size: clamp(1.9rem, 4.4vw, 2.6rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 .tst__sub {
   margin: 12px 0 0;
-  color: #3e2d22;
+  color: var(--tst-brown);
   font-family: var(--sans);
-  font-size: clamp(1rem, 1.7vw, 1.15rem);
-  font-weight: 400;
+  font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
   line-height: 1.5;
+  text-transform: uppercase;
 }
 
-/* ---------- stage ---------- */
+/* ---------- stage + card ---------- */
 
-.tst__stage {
-  position: relative;
-  max-width: 620px;
-  margin: clamp(36px, 5vw, 56px) auto 0;
-  padding-bottom: var(--tst-pager);
+.tst__stage { margin-top: clamp(30px, 4vw, 54px); outline: none; }
+
+.tst__stage:focus-visible {
+  outline: 2px solid var(--tst-brown);
+  outline-offset: 8px;
 }
 
 .tst__card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr);
   align-items: center;
-  gap: var(--tst-gap);
+  gap: clamp(26px, 4vw, 64px);
   animation: tst-enter 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
@@ -2396,231 +2379,270 @@ header.nav::after {
   to { opacity: 1; transform: none; }
 }
 
-/* ---------- portrait ---------- */
+/* ---------- portrait on its brown block ---------- */
 
 .tst__media {
-  position: relative;
-  width: var(--tst-ring);
-  height: var(--tst-ring);
-  border-radius: 50%;
-  background: var(--tst-crimson);
-  padding: calc(var(--tst-ring) * 0.075);   /* 12 px ring at the mock-up's 160 px */
-  box-shadow: 0 18px 38px rgb(237 5 65 / 20%);
-}
-
-/* the solid disc peeking out at the upper-left. Same fill as the ring, so the
-   overlap needs no z-index dance — only the photo has to sit above it. */
-.tst__media::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: calc(var(--tst-ring) * -0.13);
-  left: calc(var(--tst-ring) * -0.156);
-  width: calc(var(--tst-ring) * 0.725);
-  height: calc(var(--tst-ring) * 0.725);
-  border-radius: 50%;
-  background: var(--tst-crimson);
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  max-height: 460px;
+  padding: clamp(12px, 1.8vw, 22px);
+  background: linear-gradient(180deg, #96674a 0%, #8a5c40 58%, #71462f 100%);
 }
 
 .tst__photo {
-  position: relative;
-  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  border: calc(var(--tst-ring) * 0.0375) solid #fff;   /* 6 px white gap */
-  border-radius: 50%;
   object-fit: cover;
-  background: var(--color-surface);
+  object-position: center 16%;
+  background: #e9e0d4;
 }
 
-/* ---------- quote ---------- */
+/* ---------- quote column ---------- */
 
-.tst__body { position: relative; padding-top: 52px; }
+.tst__body { min-width: 0; }
 
 .tst__mark {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  background: var(--tst-tile);
-  color: var(--tst-glyph);
-  font-family: var(--sans);
-  font-size: 5.4rem;
+  display: block;
+  margin-bottom: clamp(10px, 1.4vw, 18px);
+  color: var(--tst-brown);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(64px, 7vw, 92px);
   font-weight: 700;
-  line-height: 0.62;
-  user-select: none;
+  line-height: 0.55;
 }
 
-.tst__mark--open { top: 0; left: calc(var(--tst-gap) * -0.85); }
-.tst__mark--close { right: -10px; bottom: 16px; }
+.tst__stars {
+  display: flex;
+  gap: 6px;
+  margin: 0 0 clamp(14px, 1.8vw, 20px);
+}
+
+.tst__stars svg {
+  width: clamp(18px, 1.6vw, 22px);
+  height: auto;
+  fill: rgba(138, 92, 64, 0.26);
+}
+
+.tst__stars svg.is-on { fill: var(--tst-brown); }
 
 .tst__quote {
   margin: 0;
   color: var(--tst-quote);
   font-family: var(--sans);
-  font-size: clamp(0.98rem, 1.5vw, 1.05rem);
-  line-height: 1.65;
+  font-size: clamp(1.02rem, 1.45vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
 }
 
-/* keeps a long name clear of the closing glyph tile, which overhangs by 10 px */
-.tst__who { margin-top: clamp(18px, 2.6vw, 26px); padding-right: 52px; }
+.tst__who { margin-top: clamp(18px, 2.4vw, 30px); }
 
 .tst__name {
   margin: 0;
-  color: var(--tst-name);
+  color: var(--tst-ink);
   font-family: var(--sans);
-  font-size: clamp(1.6rem, 3.4vw, 2rem);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 .tst__role {
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: var(--tst-role);
   font-family: var(--sans);
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: clamp(0.7rem, 0.85vw, 0.8rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
+
+/* ---------- footer row ---------- */
+
+.tst__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: clamp(22px, 3vw, 38px);
+}
+
+.tst__all {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--tst-brown-deep);
+  font-family: var(--sans);
+  font-size: clamp(0.74rem, 0.95vw, 0.86rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.tst__all:hover,
+.tst__all:focus-visible {
+  border-bottom-color: currentColor;
+  color: var(--tst-ink);
+}
+
+.tst__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 clamp(18px, 2vw, 26px);
+  border-radius: var(--radius-pill);
+  background: var(--tst-brown);
+  color: #f6efe7;
+  font-family: var(--sans);
+  font-size: clamp(0.72rem, 0.9vw, 0.82rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+}
+
+/* ---------- "see all" list ---------- */
+
+.tst__list {
+  display: grid;
+  gap: clamp(26px, 3.6vw, 46px);
+  margin: clamp(30px, 4vw, 54px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tst__list-item + .tst__list-item {
+  padding-top: clamp(26px, 3.6vw, 46px);
+  border-top: 1px solid var(--tst-hairline);
+}
+
+.tst__list .tst__card { animation: none; }
+.tst__list .tst__media { max-height: 340px; }
 
 /* ---------- controls ---------- */
 
 .tst__nav {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 22px);
+  margin-top: clamp(26px, 3.4vw, 44px);
 }
 
 .tst__arrow {
-  position: absolute;
-  top: calc((100% - var(--tst-pager)) / 2);
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   padding: 0;
-  border: 0;
+  border: 1px solid var(--tst-hairline);
   border-radius: 50%;
-  color: #fff;
+  background: transparent;
+  color: var(--tst-brown-deep);
   cursor: pointer;
-  pointer-events: auto;
-  transform: translateY(-50%);
-  box-shadow: 0 8px 20px rgb(13 13 13 / 14%);
-  transition: transform 180ms ease, background-color 180ms ease;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .tst__arrow svg { width: 20px; height: 20px; }
 
-/* The mock-up paints the prev chevron white on #c4b49b — 1.25:1, effectively
-   invisible. Kept as drawn; swap the colour below for #6b5747 to make it show. */
-.tst__arrow--prev { left: clamp(-76px, -6vw, -34px); background: var(--tst-arrow-idle); }
-.tst__arrow--next { right: clamp(-76px, -6vw, -34px); background: var(--tst-pink); }
-
-.tst__arrow:hover { transform: translateY(-50%) scale(1.07); }
-.tst__arrow:active { transform: translateY(-50%) scale(0.96); }
-
-.tst__dots {
-  position: absolute;
-  left: 50%;
-  bottom: calc((var(--tst-pager) - 14px) / 2);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  height: 14px;
-  padding: 0 7px;
-  border-radius: var(--radius-pill);
-  background: var(--tst-pink);
-  pointer-events: auto;
+.tst__arrow:hover {
+  border-color: var(--tst-brown);
+  background: var(--tst-brown);
+  color: #f6efe7;
 }
 
-/* every dot owns a 20 px slot — 7 px painted + 6.5 px margin, or 20 px painted
-   with no margin — so the pill never changes width as the active one moves. */
+.tst__arrow:active { transform: scale(0.95); }
+
+.tst__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .tst__dot {
-  width: 7px;
-  height: 7px;
-  margin-inline: 6.5px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--tst-brown);
+  opacity: 0.3;
+  cursor: pointer;
+  transition: width 220ms ease, opacity 220ms ease;
+}
+
+.tst__dot:hover { opacity: 0.6; }
+.tst__dot.is-active { width: 26px; opacity: 1; }
+
+.tst__play {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--color-surface);
-  opacity: 0.55;
+  background: transparent;
+  color: var(--tst-brown-deep);
   cursor: pointer;
-  transition: width 220ms ease, height 220ms ease, opacity 220ms ease;
+  opacity: 0.75;
+  transition: opacity 180ms ease, background-color 180ms ease;
 }
 
-.tst__dot:hover { opacity: 0.85; }
+.tst__play svg { width: 14px; height: 14px; fill: currentColor; }
 
-.tst__dot.is-active {
-  width: 20px;
-  height: 20px;
-  margin-inline: 0;
+.tst__play:hover {
+  background: rgba(109, 70, 48, 0.1);
   opacity: 1;
-  box-shadow: 0 4px 10px rgb(13 13 13 / 20%);
 }
 
 .tst__arrow:focus-visible,
-.tst__dot:focus-visible {
-  outline: 3px solid var(--color-link);
+.tst__dot:focus-visible,
+.tst__play:focus-visible,
+.tst__all:focus-visible {
+  outline: 2px solid var(--tst-brown-deep);
   outline-offset: 3px;
 }
 
-/* ---------- one column, controls in a row ---------- */
+/* ---------- tablet ---------- */
+
+@media (max-width: 900px) {
+  .tst__card { gap: clamp(22px, 4vw, 40px); }
+  .tst__media { max-height: 380px; }
+}
+
+/* ---------- one column ---------- */
 
 @media (max-width: 767px) {
-  .tst > .container { padding-inline: 20px; }
-  .tst__stage { padding-bottom: 0; }
-
   .tst__card {
     grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    gap: 30px;
+    justify-items: stretch;
+    gap: 26px;
   }
-
-  .tst__body { width: 100%; padding-top: 44px; }
-  .tst__mark--open { left: 0; }
-  .tst__mark--close { right: 0; }
-
-  .tst__nav {
-    position: static;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 30px;
+  .tst__media {
+    width: min(100%, 320px);
+    max-height: none;
+    margin: 0 auto;
   }
-
-  .tst__arrow {
-    position: static;
-    width: 40px;
-    height: 40px;
-    transform: none;
-  }
-
-  .tst__arrow:hover,
-  .tst__arrow:active { transform: scale(1.04); }
-
-  .tst__dots {
-    position: static;
-    left: auto;
-    bottom: auto;
-    transform: none;
-  }
+  .tst__mark { font-size: 58px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tst__card { animation: none; }
   .tst__arrow,
-  .tst__dot { transition: none; }
+  .tst__dot,
+  .tst__play,
+  .tst__all { transition: none; }
 }
 
 @media print {
   .tst__nav { display: none; }
-  .tst__stage { padding-bottom: 0; }
 }
 
 /* ============================================================
@@ -3840,6 +3862,7 @@ textarea { min-height: 140px; resize: vertical; }
 }
 .cta-band h2 { color: var(--color-bg); margin-bottom: var(--sp-2); }
 .cta-band p { color: #cfc2a9; margin-bottom: 0; }
+.cta-band .eyebrow { color: #cfc2a9; }
 .cta-band .btn-group { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
 @media (min-width: 768px) {
   .cta-band { flex-direction: row; align-items: center; justify-content: space-between; }
@@ -3882,6 +3905,17 @@ textarea { min-height: 140px; resize: vertical; }
   background-position: center;
 }
 .cta-band--bulk > div:first-child { max-width: 620px; }
+/* Copy and its buttons are one left-aligned column: the buttons belong under
+   the paragraph, not floating in the carpet wall on the right. */
+.cta-band--bulk {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.cta-band--bulk .btn-group {
+  margin-top: var(--sp-5);
+  align-items: center;
+}
 
 @media (max-width: 767px) {
   /* Stacked, so the copy now covers the whole width — the ramp turns vertical. */
@@ -11829,312 +11863,132 @@ body.nav-locked { overflow: hidden; }
    The page used to paint its own red mandala field over the whole
    viewport and flip every exposed line of copy to white. That field
    is gone: About now sits on the shared page backdrop like every
-   other page, so the copy stays in the site's dark palette and only
-   the colours the cards and tiles sample from the mock-ups remain.
+   other page, so the copy stays in the site's dark palette and any
+   block that sits straight on the artwork carries its own scrim.
    ============================================================ */
 .about-page {
-  --ab-ochre: #5f2219;          /* card fill            */
-  --ab-cream: #d7cbb6;          /* card border + tints  */
-  --ab-maroon: #5f2219;         /* CTA fill             */
-  --ab-paper: #f3ede2;          /* arrow disc           */
-  --ab-ink: #3e2d22;            /* arrow glyph          */
-  --ab-radius: 40px;
-  --ab-tile-radius: var(--radius-lg);
-  --ab-gap: clamp(16px, 2.4vw, 34px);
-
   position: relative;
   isolation: isolate;
 }
 
-/* ---------- Who We Are: ochre banner + breaking-out collage ---------- */
-.about-band {
-  padding-block: clamp(40px, 6vw, 84px);
+/* ---------- Studio intro: split headline, studio photo, coil mark ---------- */
+/* Layout follows the reference: an oversized two-line serif headline top-left,
+   the studio photo top-right, the stacked-disc mark under the headline and two
+   columns of copy below. The reference is bare type on a dark field; our page
+   backdrop is artwork that runs from near-black to cream, so the whole intro
+   sits on the same scrim every other bare-art block uses and the type takes the
+   champagne tokens. */
+.about-intro {
+  padding-block: clamp(28px, 4vw, 56px) clamp(48px, 7vw, 104px);
 }
 
-.about-who {
-  padding-bottom: clamp(48px, 7vw, 96px);
+.about-intro__panel {
+  padding: clamp(24px, 3.6vw, 56px);
+  border: 1px solid var(--art-scrim-ring);
+  border-radius: clamp(20px, 2.6vw, 36px);
+  background: var(--art-scrim);
+  box-shadow: 0 18px 44px var(--art-scrim-glow);
 }
 
-/* Track widths are sampled from the mock-up: the headline column is the
-   narrowest, the folded-throw photo the widest. */
-.about-who__card {
+.about-intro__top {
   display: grid;
-  grid-template-columns: 0.92fr 1fr 1.15fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 4vw, 64px);
   align-items: start;
-  gap: var(--ab-gap);
-  padding: clamp(24px, 3.6vw, 52px);
-  border: 4px solid var(--ab-cream);
-  border-radius: var(--ab-radius);
-  background: var(--ab-ochre);
 }
 
-.about-who__lead {
-  min-width: 0;
-  padding-top: var(--sp-2);
+.about-intro__title {
+  margin: 0;
+  color: var(--on-art-head);
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
 }
 
-.about-who__eyebrow {
+.about-intro__title span {
   display: block;
-  margin-bottom: var(--sp-4);
-  color: #fff;
-  font-size: clamp(1rem, 1.7vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
 }
 
-.about-who__title {
+.about-intro__media {
   margin: 0;
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: clamp(2.4rem, 5.2vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  min-width: 0;
 }
 
-.about-who__tile {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  overflow: hidden;
-  border-radius: var(--ab-tile-radius);
-  box-shadow: 0 14px 34px rgba(62, 45, 34, 0.22);
-}
-
-.about-who__tile img {
+.about-intro__media img {
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
-/* The carpet wall is taller than the card, so its negative bottom margin
-   pulls the auto row up and lets the photo hang out below the border. */
-.about-who__tile--tall {
-  grid-column: 2;
-  aspect-ratio: 5 / 8;
-  margin-bottom: calc(-1 * clamp(200px, 30vw, 420px));
-}
-
-.about-who__tile--fold {
-  grid-column: 3;
-  aspect-ratio: 16 / 10;
-}
-
-/* Mirrors the card's tracks and insets by the card's padding, so the sofa
-   photo lines up under the headline and the note under the fold photo. */
-.about-who__below {
+/* Same two tracks as the top row, so the right-hand paragraph lines up under
+   the photo and the left-hand one under the headline. The mark gets row 1 to
+   itself: the paragraphs share row 2, so both start on the same line and the
+   discs read as sitting in the gap above the left one. */
+.about-intro__body {
   display: grid;
-  grid-template-columns: 0.92fr 1fr 1.15fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  column-gap: clamp(24px, 4vw, 64px);
   align-items: start;
-  gap: var(--ab-gap);
-  padding-inline: clamp(24px, 3.6vw, 52px);
-  margin-top: clamp(24px, 3vw, 44px);
+  margin-top: clamp(32px, 4.6vw, 72px);
 }
 
-.about-who__tile--sofa {
+.about-intro__mark {
   grid-column: 1;
-  aspect-ratio: 3 / 2;
+  grid-row: 1;
+  display: block;
+  width: clamp(56px, 6vw, 84px);
+  height: auto;
+  margin: 0 0 clamp(22px, 3vw, 44px);
+  color: var(--on-art-head);
 }
 
-.about-who__note {
-  grid-column: 3;
+.about-intro__col {
+  grid-row: 2;
   min-width: 0;
 }
 
-/* Sits on the page, not on the ochre card, so it uses the site's ink —
-   the white it had on the red field would vanish against the pale backdrop. */
-.about-who__note p {
+.about-intro__col--left {
+  grid-column: 1;
+}
+
+.about-intro__col--right {
+  grid-column: 2;
+}
+
+.about-intro__col p {
   margin: 0;
-  color: var(--color-text);
-  font-size: clamp(1.0625rem, 1.7vw, 1.45rem);
+  color: var(--on-art);
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
   font-weight: 500;
   line-height: 1.65;
 }
 
-.about-who__handle {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(16px, 2vw, 28px);
-  margin-top: clamp(20px, 2.6vw, 36px);
-  color: var(--color-text);
-  font-size: clamp(1.1rem, 1.75vw, 1.5rem);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.about-who__arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(40px, 3.4vw, 50px);
-  height: clamp(40px, 3.4vw, 50px);
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--ab-paper);
-  color: var(--ab-ink);
-  transition: transform 0.22s ease, background-color 0.22s ease;
-}
-
-.about-who__handle:hover .about-who__arrow,
-.about-who__handle:focus-visible .about-who__arrow {
-  transform: translateX(4px);
-  background: var(--color-surface);
-}
-
-.about-who__handle:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 4px;
-  border-radius: var(--radius-sm);
-}
-
-/* ---------- Our story: ochre text card + loom photo ---------- */
-/* The mock-up leaves a wide channel between the text card and the loom
-   photo — the page backdrop shows through it, so it is deliberate. */
-.about-story__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
-  gap: clamp(24px, 8vw, 130px);
-  align-items: stretch;
-}
-
-.about-story__card {
-  display: flex;
-  flex-direction: column;
-  padding: clamp(24px, 3.2vw, 48px);
-  border: 4px solid var(--ab-cream);
-  border-radius: var(--ab-radius);
-  background: var(--ab-ochre);
-}
-
-.about-story__eyebrow {
-  display: block;
-  margin-bottom: var(--sp-4);
-  color: #fff;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
-  font-weight: 700;
-}
-
-.about-story__card h2 {
-  margin: 0 0 var(--sp-5);
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: clamp(1.9rem, 3.6vw, 3rem);
-  font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-}
-
-.about-story__card p {
-  margin: 0 0 var(--sp-4);
-  color: #fff;
-  font-size: clamp(1rem, 1.4vw, 1.3rem);
-  font-weight: 500;
-  line-height: 1.62;
-}
-
-.about-story__card p:last-child {
-  margin-bottom: 0;
-}
-
-/* Flex column + space-between keeps the CTA pinned to the bottom edge of the
-   text card, whichever of the two columns is taller. */
-.about-story__media {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(18px, 2.4vw, 28px);
-  min-width: 0;
-}
-
-.about-story__media img {
-  width: 100%;
-  aspect-ratio: 20 / 21;
-  object-fit: cover;
-  border-radius: var(--ab-tile-radius);
-  box-shadow: 0 14px 34px rgba(62, 45, 34, 0.22);
-}
-
-/* Two classes so this beats .btn-secondary regardless of source order. */
-.about-band .about-story__cta {
-  justify-self: end;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: var(--ab-maroon);
-  color: #fff;
-  font-family: var(--font-condensed);
-  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  padding: clamp(0.85rem, 1.5vw, 1.15rem) clamp(1.5rem, 2.6vw, 2.4rem);
-}
-
-.about-band .about-story__cta:hover,
-.about-band .about-story__cta:focus-visible {
-  background: #460707;
-  color: #fff;
-  transform: none;
-}
-
-/* ---------- Tablet + mobile ---------- */
-@media (max-width: 980px) {
-  .about-who__card,
-  .about-who__below {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 860px) {
+  .about-intro__top,
+  .about-intro__body {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .about-who__lead {
-    grid-column: 1 / -1;
+  /* The photo follows the headline instead of sitting beside it. */
+  .about-intro__top {
+    gap: clamp(20px, 4vw, 32px);
   }
 
-  /* Two-up photos: the tall one no longer bleeds, so it drops to a portrait. */
-  .about-who__tile--tall {
-    grid-column: 1;
-    aspect-ratio: 3 / 4;
-    margin-bottom: 0;
+  .about-intro__body {
+    margin-top: clamp(24px, 5vw, 40px);
   }
 
-  .about-who__tile--fold {
-    grid-column: 2;
-  }
-
-  .about-who__tile--sofa,
-  .about-who__note {
-    grid-column: auto;
-  }
-
-  .about-story__inner {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-band {
-    --ab-radius: 28px;
-  }
-
-  .about-who__card,
-  .about-who__below {
-    grid-template-columns: 1fr;
-  }
-
-  .about-who__tile--tall,
-  .about-who__tile--fold,
-  .about-who__tile--sofa,
-  .about-who__note {
+  /* One column: mark, then the two paragraphs in reading order. */
+  .about-intro__mark,
+  .about-intro__col {
     grid-column: 1;
   }
 
-  .about-who__tile--tall {
-    aspect-ratio: 4 / 3;
-  }
-
-  .about-story__media img {
-    aspect-ratio: 4 / 3;
-  }
-
-  .about-band .about-story__cta {
-    justify-self: stretch;
+  .about-intro__col--right {
+    grid-row: 3;
   }
 }
 
@@ -12276,7 +12130,7 @@ body.nav-locked { overflow: hidden; }
 }
 
 /* A. Section heads and page-title copy on a transparent section. */
-.section:not(.section--alt) :is(.section-head, div:has(> .eyebrow), div:has(> .kicker)):not(.craft-banner *, .sus-hero *, .page-hero *, .card *, .product-card *),
+.section:not(.section--alt) :is(.section-head, div:has(> .eyebrow), div:has(> .kicker)):not(.craft-banner *, .sus-hero *, .page-hero *, .card *, .product-card *, .cta-band *),
 .page-main div:has(> .kicker),
 .shop-scope :is(.group-title, .breadcrumbs, .result-line, .sale-subtitle, .sort-select):not(.collection-hero *),
 .shop-scope .page-title-row > span,
@@ -12284,8 +12138,6 @@ body.nav-locked { overflow: hidden; }
 .shop-scope .listing-head > div,
 .shop-scope .result-count,
 .cat-strip__item,
-.about-who__note > p,
-.about-who__handle,
 .lb-filters-row,
 /* the share bar's label carries no class, only a ghost button next to it */
 .section:not(.section--alt) div:has(> .btn-ghost) > span:not(.btn__label) {
@@ -12434,4 +12286,110 @@ body.nav-locked { overflow: hidden; }
   --orange: var(--romance);
   --btn-ink: #fff;
   color: var(--espresso);
+}
+
+/* ============================================================
+   MOBILE & TABLET POLISH
+   Small-screen readability and touch-target fixes. Everything
+   here is scoped to <= 900px (plus one pointer-based rule), so
+   the desktop composition is untouched.
+   ============================================================ */
+
+/* Announcement strip — 9.1px on phones sat below the readable floor. */
+@media (max-width: 575px) {
+  .announcement-bar {
+    font-size: 0.66rem;
+    letter-spacing: 0.03em;
+  }
+}
+
+/* ---- Hero: readable CTAs, real touch targets ------------------ */
+@media (max-width: 1000px) {
+  .hero__button {
+    min-height: 48px;
+    padding-inline: 26px;
+    font-size: 11px;
+  }
+  .hero__lookbook {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__actions {
+    right: 20px;
+    left: 20px;
+    gap: 12px 18px;
+  }
+  .hero__button {
+    min-height: 48px;
+    padding-inline: 24px;
+    letter-spacing: 0.08em;
+  }
+  .hero__lookbook {
+    min-height: 44px;
+    letter-spacing: 0.08em;
+  }
+  .hero__bottom-left,
+  .hero__copyright {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero__actions {
+    right: 16px;
+    left: 16px;
+  }
+  .hero__button {
+    min-height: 46px;
+    padding-inline: 20px;
+    font-size: 10.5px;
+  }
+  .hero__lookbook {
+    font-size: 10.5px;
+  }
+  .hero__bottom-left,
+  .hero__copyright {
+    font-size: 9px;
+  }
+}
+
+/* ---- Shop toolbar --------------------------------------------- */
+/* The select sits on a white field but inherited the light on-scrim
+   ink, so the selected option was almost invisible. */
+.shop-scope .sort-select select {
+  /* --ink is remapped to the light on-scrim ink inside .shop-scope,
+     so name the dark tone directly. */
+  color: var(--espresso);
+}
+
+@media (max-width: 900px) {
+  .shop-scope .shop-tools {
+    gap: 14px;
+  }
+  .shop-scope .shop-search {
+    height: 52px;
+  }
+  .shop-scope .sort-select select,
+  .shop-scope .filter-mobile {
+    height: 50px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shop-scope .shop-tools {
+    gap: 12px;
+  }
+  .shop-scope .sort-select {
+    font-size: 0.75rem;
+  }
+}
+
+/* Touch pointers have no hover state, so the zoom hint never applies. */
+@media (hover: none) {
+  .shop-scope .zoom-hint {
+    display: none;
+  }
 }

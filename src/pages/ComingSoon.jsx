@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import Button from "../components/ui/Button.jsx";
 import { Container } from "../components/ui/index.js";
+import PageMeta from "../components/PageMeta.jsx";
 import { ROUTES } from "../constants/routes.js";
 
 export default function ComingSoon({ title, owner = "the team", note }) {
@@ -16,6 +17,10 @@ export default function ComingSoon({ title, owner = "the team", note }) {
 
   return (
     <section className="section coming-soon" aria-labelledby="cs-h">
+      <PageMeta
+        title={`${title} — Coming soon | WovenHaat`}
+        description={`${title} is still being built. Explore handwoven rugs, cushions and throws in the meantime.`}
+      />
       <Container>
         <span className="eyebrow">Coming soon</span>
         <h1 id="cs-h">{title}</h1>

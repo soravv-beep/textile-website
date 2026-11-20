@@ -776,7 +776,7 @@ const deriveProductType = (product) => {
 
 /** Map a product to its style based on category + material + color + name. */
 const deriveStyle = (product) => {
-  const { category, material, color, name } = product;
+  const { material, color, name } = product;
   const lowerName = name.toLowerCase();
 
   // Classic: neutral colors, traditional materials, simple names

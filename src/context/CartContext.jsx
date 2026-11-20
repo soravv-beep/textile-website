@@ -12,6 +12,17 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 const CartContext = createContext(null);
 const STORAGE_KEY = "wovenhaat_cart";
 
+/**
+ * Lines the cart page used to inject as demo content. They are not in the
+ * catalogue, so anything saved under these slugs is leftover demo data and is
+ * dropped on load instead of sitting in the cart forever.
+ */
+const DEMO_SLUGS = new Set([
+  "kutchi-embroidered-table-runner",
+  "bhujodi-wool-throw-indigo",
+  "handwoven-jute-placemats-set4",
+]);
+
 /** Identity of one cart line — slug + size, whitespace-free so pages can use it in an id. */
 export const lineKey = (item) =>
   `${item.slug}-${(item.size ?? "default").replace(/\s+/g, "-")}`;
@@ -19,7 +30,15 @@ export const lineKey = (item) =>
 function loadCart() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    const cleaned = parsed.filter((item) => item && !DEMO_SLUGS.has(item.slug));
+    // rewrite once, so the demo lines are gone from storage too
+    if (cleaned.length !== parsed.length) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
+    }
+    return cleaned;
   } catch {
     return [];
   }

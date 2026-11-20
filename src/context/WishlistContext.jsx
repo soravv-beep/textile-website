@@ -7,10 +7,24 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 const WishlistContext = createContext(null);
 const STORAGE_KEY = "wovenhaat_wishlist";
 
+/**
+ * Rows the wishlist page used to inject as demo content. They are not in the
+ * catalogue, so anything saved under these slugs is leftover demo data and is
+ * dropped on load instead of showing up permanently in the list.
+ */
+const DEMO_SLUGS = new Set([
+  "jaipuri-block-print-bedsheet",
+  "kashmiri-pashmina-stole-natural",
+  "hand-tufted-wool-rug-terracotta",
+]);
+
 function loadWishlist() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item) => item && !DEMO_SLUGS.has(item.slug));
   } catch {
     return [];
   }

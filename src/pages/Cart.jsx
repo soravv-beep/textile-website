@@ -2,7 +2,7 @@
  * Cart Page — WovenHaat (Dev 3 / Manav Chotai)
  * Dummy products pre-loaded · Auth guard on wishlist save · No emojis
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, lineKey } from "../context/CartContext.jsx";
@@ -17,37 +17,6 @@ const SHIPPING_COST = 99;
 const PROMO_CODES = { HAAT10: 10, WEAVE20: 20, FIRST15: 15 };
 const fmt = (n) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
-
-/* Dummy products to pre-populate the cart for demo with reliable local product images */
-const DEMO_PRODUCTS = [
-  {
-    slug: "kutchi-embroidered-table-runner",
-    name: "Kutchi Embroidered Table Runner",
-    variant: "Ivory / 14x72 inches",
-    price: 1499,
-    qty: 1,
-    stock: 8,
-    image: "/product-images-v2/sanganeri-table-runner.webp",
-  },
-  {
-    slug: "bhujodi-wool-throw-indigo",
-    name: "Bhujodi Wool Throw — Indigo",
-    variant: "Indigo Blue / 50x60 inches",
-    price: 3249,
-    qty: 1,
-    stock: 5,
-    image: "/product-images-v2/kutch-handwoven-throw.webp",
-  },
-  {
-    slug: "handwoven-jute-placemats-set4",
-    name: "Handwoven Jute Placemats (Set of 4)",
-    variant: "Natural / 13x18 inches",
-    price: 849,
-    qty: 2,
-    stock: 20,
-    image: "/product-images-v2/terracotta-linen-placemat-set.webp",
-  },
-];
 
 /* ── Heart icon ── */
 function HeartIcon({ filled }) {
@@ -212,21 +181,12 @@ function EmptyCart() {
 
 /* ── Main ── */
 export default function CartPage() {
-  const { items, addItem, removeItem, updateQty, clear, count } = useCart();
+  const { items, removeItem, updateQty, clear, count } = useCart();
   const { isAuthenticated } = useAuth();
   const { items: wishlistItems, addItem: addToWishlist, remove: removeFromWishlist } = useWishlist();
   const navigate = useNavigate();
   const [discountPct, setDiscountPct] = useState(0);
   const [promoCode, setPromoCode] = useState("");
-  const [demoLoaded, setDemoLoaded] = useState(false);
-
-  /* Pre-load demo items once on first mount */
-  useEffect(() => {
-    if (!demoLoaded && items.length === 0) {
-      DEMO_PRODUCTS.forEach((p) => addItem(p, p.qty));
-      setDemoLoaded(true);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const discountAmt = Math.round((subtotal * discountPct) / 100);

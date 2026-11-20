@@ -8,18 +8,31 @@
  *   `wh-recent`), same keys as the original shop build.
  * - Renders the toast and the compare bar so no layout file needs to change.
  */
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { ShopContext } from "./shopContext.js";
 import { useCart } from "./CartContext.jsx";
+import { useWishlist } from "./WishlistContext.jsx";
 import { products } from "../data/catalog.js";
 import { getUnitPrice, toCardProps } from "../utils/shop.js";
 import Toast from "../components/shop/Toast.jsx";
 import CompareBar from "../components/shop/CompareBar.jsx";
 
 const productById = new Map(products.map((product) => [product.id, product]));
+const productBySlug = new Map(products.map((product) => [product.slug, product]));
 const MAX_QTY = 99;
 const MAX_COMPARE = 3;
+
+/** Catalogue product → the shape WishlistContext stores. */
+const toWishlistItem = (product) => ({
+  slug: product.slug,
+  id: product.id,
+  name: product.name,
+  price: getUnitPrice(product, product.sizes?.[0]) ?? product.price ?? 0,
+  oldPrice: product.oldPrice ?? null,
+  image: product.image || (product.images && product.images[0]) || null,
+  stock: product.stock ?? 99
+});
 
 const readStorage = (key, fallback) => {
   try {
@@ -52,7 +65,22 @@ const validIds = (ids, limit = Infinity) => {
 
 export function ShopProvider({ children }) {
   const { addItem, items } = useCart();
-  const [wishlist, setWishlist] = useState(() => new Set(validIds(readStorage("wh-wishlist", []))));
+  // The wishlist lives in WishlistContext (the navbar badge, /wishlist and the
+  // account page all read that one), so cards only derive the saved ids here.
+  const {
+    items: wishlistItems,
+    addItem: addWishlistItem,
+    remove: removeWishlistItem,
+    toggle: toggleWishlistItem
+  } = useWishlist();
+  const wishlist = useMemo(() => {
+    const ids = new Set();
+    wishlistItems.forEach((item) => {
+      const id = productBySlug.get(item.slug)?.id ?? item.id;
+      if (typeof id === "number") ids.add(id);
+    });
+    return ids;
+  }, [wishlistItems]);
   const [compare, setCompare] = useState([]);
   const [recent, setRecent] = useState(() => validIds(readStorage("wh-recent", []), 8));
   const [toast, setToast] = useState("");
@@ -63,7 +91,24 @@ export function ShopProvider({ children }) {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  useEffect(() => writeStorage("wh-wishlist", [...wishlist]), [wishlist]);
+  // One-time lift of the old `wh-wishlist` id list (written by this provider
+  // before the wishlist was unified) into WishlistContext.
+  const migratedWishlist = useRef(false);
+  useEffect(() => {
+    if (migratedWishlist.current) return;
+    migratedWishlist.current = true;
+    const legacy = validIds(readStorage("wh-wishlist", []));
+    if (!legacy.length) return;
+    legacy.forEach((id) => {
+      const product = productById.get(id);
+      if (product) addWishlistItem(toWishlistItem(product));
+    });
+    try {
+      localStorage.removeItem("wh-wishlist");
+    } catch {
+      /* storage unavailable — nothing to clean up */
+    }
+  }, [addWishlistItem]);
 
   const notify = useCallback((message) => setToast(message), []);
   const clearCompare = useCallback(() => setCompare([]), []);
@@ -71,15 +116,10 @@ export function ShopProvider({ children }) {
   const toggleWish = useCallback(
     (product) => {
       const wasWished = wishlist.has(product.id);
-      setWishlist((current) => {
-        const next = new Set(current);
-        if (next.has(product.id)) next.delete(product.id);
-        else next.add(product.id);
-        return next;
-      });
+      toggleWishlistItem(toWishlistItem(product));
       notify(wasWished ? "Removed from wishlist." : "Saved to your wishlist.");
     },
-    [wishlist, notify]
+    [wishlist, toggleWishlistItem, notify]
   );
 
   const toggleCompare = useCallback(
@@ -130,15 +170,11 @@ export function ShopProvider({ children }) {
     (product, size) => {
       if (!wishlist.has(product.id)) return false;
       if (!addToCart(product, 1, size, true)) return false;
-      setWishlist((current) => {
-        const next = new Set(current);
-        next.delete(product.id);
-        return next;
-      });
+      removeWishlistItem(product.slug);
       notify(`${product.name} moved to cart.`);
       return true;
     },
-    [wishlist, addToCart, notify]
+    [wishlist, addToCart, removeWishlistItem, notify]
   );
 
   /** Catalogue products → props for the shared <ProductCard />. */

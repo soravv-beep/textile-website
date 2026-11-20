@@ -79,8 +79,8 @@ export default function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <ShopProvider>
-          <WishlistProvider>
+        <WishlistProvider>
+          <ShopProvider>
             <AddressProvider>
               <OrdersProvider>
                 <Routes>
@@ -122,8 +122,8 @@ export default function App() {
               </Routes>
               </OrdersProvider>
             </AddressProvider>
-          </WishlistProvider>
-        </ShopProvider>
+          </ShopProvider>
+        </WishlistProvider>
       </CartProvider>
     </AuthProvider>
   );

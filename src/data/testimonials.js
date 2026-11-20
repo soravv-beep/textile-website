@@ -13,7 +13,7 @@ export const TESTIMONIALS = [
       "Amazing quality! The bedsheet is so soft and adds a premium feel to my room. Will definitely shop again.",
     name: "Simran Kaur",
     place: "Homeowner · Delhi",
-    avatar: "/avatars/simran.svg",
+    avatar: "/testimonials/simran.jpg",
     alt: "Portrait of Simran Kaur",
     productImage: "/product-images-v2/white-linen-cushion-cover.webp",
     productAlt: "Premium white linen cushion cover on neutral bedding"
@@ -25,7 +25,7 @@ export const TESTIMONIALS = [
       "The fabric is breathable and perfect for everyday use. The colors are vibrant and exactly as shown.",
     name: "Arjun Mehta",
     place: "Homeowner · Mumbai",
-    avatar: "/avatars/arjun.svg",
+    avatar: "/testimonials/arjun.jpg",
     alt: "Portrait of Arjun Mehta",
     productImage: "/product-images-v2/turquoise-cotton-summer-throw.webp",
     productAlt: "Turquoise cotton summer throw draped over sofa"
@@ -37,7 +37,7 @@ export const TESTIMONIALS = [
       "I loved the variety and the quality is top-notch. It truly feels like luxury.",
     name: "Kavya Iyer",
     place: "Interior Designer · Bangalore",
-    avatar: "/avatars/kavya.svg",
+    avatar: "/testimonials/kavya.jpg",
     alt: "Portrait of Kavya Iyer",
     productImage: "/product-images-v2/jaipur-handwoven-cotton-rug.webp",
     productAlt: "Jaipur handwoven cotton rug in living room setting"

@@ -3,7 +3,7 @@
  * "My Wish and Comparison List" style list design matching reference mockup
  * Desktop & Mobile fully responsive list layout with compare toggle, SKU, stock indicator, price discount, and share
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWishlist } from "../context/WishlistContext.jsx";
@@ -16,46 +16,6 @@ import PageMeta from "../components/PageMeta.jsx";
 
 const fmt = (n) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
-
-/* Realistic demo wishlist items with SKU and local fallback images */
-const DEMO_WISHLIST = [
-  {
-    slug: "jaipuri-block-print-bedsheet",
-    id: 101,
-    itemNo: "9621285",
-    name: "Jaipuri Block Print Bedsheet — King",
-    variant: "Rust & White / 100x108 inches",
-    price: 2799,
-    oldPrice: 3499,
-    stock: 12,
-    deliveryDays: "4-7 working days",
-    image: "/product-images-v2/jaipur-handwoven-cotton-rug.webp",
-  },
-  {
-    slug: "kashmiri-pashmina-stole-natural",
-    id: 102,
-    itemNo: "9621154",
-    name: "Kashmiri Pashmina Stole — Natural Ivory",
-    variant: "Natural Ivory / 28x80 inches",
-    price: 4499,
-    oldPrice: 5999,
-    stock: 4,
-    deliveryDays: "4-7 working days",
-    image: "/product-images-v2/kutch-handwoven-throw.webp",
-  },
-  {
-    slug: "hand-tufted-wool-rug-terracotta",
-    id: 103,
-    itemNo: "9945440",
-    name: "Hand-Tufted Wool Rug — Terracotta",
-    variant: "Terracotta / 4x6 ft",
-    price: 6199,
-    oldPrice: 7299,
-    stock: 6,
-    deliveryDays: "4-7 working days",
-    image: "/product-images-v2/terracotta-wool-blanket.webp",
-  },
-];
 
 /* ── Close icon ── */
 function CloseIcon() {
@@ -193,21 +153,12 @@ function EmptyWishlist() {
 
 /* ── Main ── */
 export default function WishlistPage() {
-  const { items, addItem: addToWl, remove, clear } = useWishlist();
+  const { items, remove, clear } = useWishlist();
   const { addItem: addToCart } = useCart();
   const { isAuthenticated } = useAuth();
   const shop = useShop();
   const navigate = useNavigate();
-  const [demoLoaded, setDemoLoaded] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  /* Pre-load demo items once if user wishlist is empty */
-  useEffect(() => {
-    if (!demoLoaded && items.length === 0) {
-      DEMO_WISHLIST.forEach((p) => addToWl(p));
-      setDemoLoaded(true);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleMoveToCart = (item) => {
     if (!isAuthenticated) {

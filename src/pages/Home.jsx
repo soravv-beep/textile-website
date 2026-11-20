@@ -113,16 +113,16 @@ function BulkCta() {
           <h2 id="bulk-h">Bulk &amp; custom orders</h2>
           <p>
             Custom sizes, DMC-matched colourways and volume pricing — with samples
-            before you commit.
+            before you commit and all the same OEKO-TEX, GOTS and GRS certifications as our retail products. this is a placeholder text for bulk and custom orders. Please contact us for more information.
           </p>
-        </div>
-        <div className="btn-group">
-          <Button as={Link} to={ROUTES.bulkOrders} variant="primary" arrow>
-            Request a quote
-          </Button>
-          <Button as={Link} to={ROUTES.contact} variant="outline" className="btn-outline-light">
-            Talk to us
-          </Button>
+          <div className="btn-group">
+            <Button as={Link} to={ROUTES.bulkOrders} variant="primary" arrow>
+              Request a quote
+            </Button>
+            <Button as={Link} to={ROUTES.contact} variant="outline" className="btn-outline-light">
+              Talk to us
+            </Button>
+          </div>
         </div>
       </div>
     </section>
