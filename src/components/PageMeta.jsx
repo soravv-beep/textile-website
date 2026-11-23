@@ -30,14 +30,18 @@ function upsertMeta(attr, key, content) {
   tag.setAttribute("content", content);
   return () => {
     if (created) tag.remove();
-    else tag.setAttribute("content", previous ?? "");
+    // Only roll back if this component's value is still the one on the tag —
+    // otherwise a page that unmounts after the next one mounted would wipe
+    // the incoming page's meta.
+    else if (tag.getAttribute("content") === content) tag.setAttribute("content", previous ?? "");
   };
 }
 
 export default function PageMeta({ title, description, image }) {
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = title ? `${title}` : SITE_NAME;
+    const appliedTitle = title ? `${title}` : SITE_NAME;
+    document.title = appliedTitle;
 
     const cleanups = [
       upsertMeta("name", "description", description),
@@ -53,7 +57,7 @@ export default function PageMeta({ title, description, image }) {
     ].filter(Boolean);
 
     return () => {
-      document.title = previousTitle;
+      if (document.title === appliedTitle) document.title = previousTitle;
       cleanups.forEach((fn) => fn?.());
     };
   }, [title, description, image]);

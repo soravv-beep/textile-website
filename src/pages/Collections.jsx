@@ -46,7 +46,7 @@ export default function Collections() {
           description="Shop by category or explore seasonal and themed collections of handwoven home textiles."
         />
         <div className="page-main shell">
-        
+          <Breadcrumb items={["Collections"]} />
           <div className="page-title-row">
             <div>
               <p className="kicker">Curated by mood</p>

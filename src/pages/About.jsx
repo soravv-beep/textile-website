@@ -21,13 +21,8 @@ import Reveal from "../animations/Reveal.jsx";
 import { ROUTES } from "../constants/routes.js";
 import { unsplash } from "../utils/images.js";
 
-/** The four photographs in the brand band's collage. */
-const TILES = {
-  carpets: "/bulk-order-carpets.jpg",
-  throws: unsplash("photo-1616486338812-3dadae4b4ace", 900),
-  sofa: unsplash("photo-1616627561839-074385245ff6", 900),
-  loom: unsplash("photo-1591195853828-11db59a44f6b", 1200)
-};
+/** Studio photo in the intro — carpet wall in the Panipat workshop. */
+const STUDIO_IMAGE = "/bulk-order-carpets.jpg";
 
 const NUMBERS = [
   { value: "18+", label: "Countries shipped" },
@@ -122,111 +117,65 @@ export default function About() {
       />
 
       {/* ============================================================
-          BRAND BAND — studio intro + origin story.
-          The page paints no backdrop of its own; the site-wide carpet
-          layer shows through, so this band only carries its top/bottom
-          spacing. Palette is sampled from the Canva mock-ups.
+          STUDIO INTRO — split headline, studio photo, coil mark and the
+          two-column origin story, laid out like the reference page but on
+          our own backdrop, palette and type.
           ============================================================ */}
-      <div className="about-band">
-        {/* WHO WE ARE — ochre banner card with a three-photo collage that
-            breaks out of the card's bottom edge. */}
-        <section className="about-who" aria-labelledby="who-h">
-          <Container>
-            <div className="about-who__card">
-              <div className="about-who__lead">
-                <span className="about-who__eyebrow">WovenHaat Studio</span>
-                <h1 id="who-h" className="about-who__title">Who We Are&nbsp;?</h1>
-              </div>
+      <section className="about-intro" aria-labelledby="about-h">
+        <Container>
+          <div className="about-intro__panel">
+            <div className="about-intro__top">
+              <h1 id="about-h" className="about-intro__title" aria-label="About WovenHaat">
+                <span>About</span>
+                <span>WovenHaat</span>
+              </h1>
 
-              {/* Tall carpet wall: the spine of the collage, deliberately
-                  allowed to overflow the card below its border. */}
-              <figure className="about-who__tile about-who__tile--tall">
+              <figure className="about-intro__media">
                 <img
-                  src={TILES.carpets}
-                  alt="Rolls of handwoven carpet standing against a hanging rug in the studio"
-                  width="900"
-                  height="1200"
-                  decoding="async"
-                />
-              </figure>
-
-              <figure className="about-who__tile about-who__tile--fold">
-                <img
-                  src={TILES.throws}
-                  alt="Handwoven throws and cushions neatly folded in sunlight"
-                  width="900"
-                  height="600"
-                  loading="lazy"
+                  src={STUDIO_IMAGE}
+                  alt="Rolls of handwoven carpets stacked in the WovenHaat studio"
+                  width="1200"
+                  height="900"
                   decoding="async"
                 />
               </figure>
             </div>
 
-            <div className="about-who__below">
-              <figure className="about-who__tile about-who__tile--sofa">
-                <img
-                  src={TILES.sofa}
-                  alt="Living room sofa styled with layered cushions and a mocha throw"
-                  width="900"
-                  height="640"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
+            <div className="about-intro__body">
+              {/* The mark owns row 1, so both paragraphs start on the same
+                  line and the discs sit in the space above the left one. */}
+              <svg
+                className="about-intro__mark"
+                viewBox="0 0 120 92"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <ellipse cx="60" cy="18" rx="46" ry="14" fill="currentColor" />
+                <ellipse cx="60" cy="52" rx="46" ry="14" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <ellipse cx="60" cy="72" rx="46" ry="14" fill="none" stroke="currentColor" strokeWidth="1.6" />
+              </svg>
 
-              <div className="about-who__note">
+              <div className="about-intro__col about-intro__col--left">
                 <p>
-                  Every thread has a name behind it. WovenHaat was born from a simple
-                  belief: when something is made by hand, its story deserves to reach
-                  your home.
+                  Since its founding in 2019, WovenHaat has been the studio behind
+                  handwoven home textiles for rooms that ask for texture. Its work
+                  ranges from rugs and dhurries to cushions, throws, table linen and
+                  curtains — designed in Jaipur, woven in Panipat, Bhuj and Kannur.
                 </p>
-                <Link className="about-who__handle" to={ROUTES.shop}>
-                  @madebysorav
-                  <span className="about-who__arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M4 12h15m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </Link>
+              </div>
+
+              <div className="about-intro__col about-intro__col--right">
+                <p>
+                  WovenHaat works with 48 artisan families and ships to buyers in 18+
+                  countries. Every piece is OEKO-TEX, GOTS or GRS certified, made on
+                  handlooms with no power looms on the floor, and every order carries
+                  the name of the family that wove it.
+                </p>
               </div>
             </div>
-          </Container>
-        </section>
-
-        {/* OUR STORY — ochre text card on the left, loom photo and the
-            maroon CTA stacked on the right. */}
-        <section className="about-story" aria-labelledby="story-h">
-          <Container className="about-story__inner">
-            <Reveal from="left" className="about-story__card">
-              <span className="about-story__eyebrow">Our story</span>
-              <h2 id="story-h">From Panipat&rsquo;s looms to your living room</h2>
-              <p>
-                In 2019 we started with a small weaving unit in Panipat — three pit looms,
-                one dye house, and one uncompromising rule: never compromise on quality,
-                and always pay fairly for the work.
-              </p>
-              <p>
-                Today our network spans 48 artisan families across Bhuj, Bhadohi and
-                Kannur, crafting rugs, cushions and throws on traditional handlooms. Every
-                order carries their name and their handcraft.
-              </p>
-            </Reveal>
-
-            <div className="about-story__media">
-              <img
-                src={TILES.loom}
-                alt="Weaver working at an authentic wooden pit loom in Bhujodi"
-                width="1200"
-                height="900"
-                decoding="async"
-              />
-              <Button as={Link} to={ROUTES.shop} variant="secondary" className="about-story__cta">
-                See what they make
-              </Button>
-            </div>
-          </Container>
-        </section>
-      </div>
+          </div>
+        </Container>
+      </section>
 
       {/* NUMBERS */}
       <section className="section section--alt texture" aria-label="WovenHaat by the numbers">
@@ -346,9 +295,9 @@ export default function About() {
             <span className="eyebrow">A note from the founder</span>
             <h2 id="founder-h">We measure success in looms still running</h2>
             <p>
-              "We started WovenHaat because the weavers we grew up around were being
+              &ldquo;We started WovenHaat because the weavers we grew up around were being
               priced out by power looms. Seven years later, 48 families still work from
-              their own looms, on their own terms. That is the number we protect."
+              their own looms, on their own terms. That is the number we protect.&rdquo;
             </p>
             <footer className="founder-card__sign">
               <strong>Sorav</strong>

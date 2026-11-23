@@ -7,10 +7,24 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 const WishlistContext = createContext(null);
 const STORAGE_KEY = "wovenhaat_wishlist";
 
+/**
+ * Rows the wishlist page used to inject as demo content. They are not in the
+ * catalogue, so anything saved under these slugs is leftover demo data and is
+ * dropped on load instead of showing up permanently in the list.
+ */
+const DEMO_SLUGS = new Set([
+  "jaipuri-block-print-bedsheet",
+  "kashmiri-pashmina-stole-natural",
+  "hand-tufted-wool-rug-terracotta",
+]);
+
 function loadWishlist() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item) => item && !DEMO_SLUGS.has(item.slug));
   } catch {
     return [];
   }
@@ -28,11 +42,15 @@ export function WishlistProvider({ children }) {
       if (prev.find((i) => i.slug === product.slug)) return prev;
       return [...prev, {
         slug: product.slug,
+        id: product.id || product.slug,
         name: product.name,
         price: product.price,
-        image: product.image || null,
+        oldPrice: product.oldPrice || product.compareAtPrice || null,
+        image: product.image || (product.images && product.images[0]) || null,
         variant: product.variant || null,
+        itemNo: product.itemNo || product.sku || (product.id ? `962${String(product.id).padStart(4, "0")}` : null),
         stock: product.stock ?? 99,
+        deliveryDays: product.deliveryDays || "4-7 working days",
         addedAt: new Date().toISOString(),
       }];
     });
@@ -51,11 +69,15 @@ export function WishlistProvider({ children }) {
       if (exists) return prev.filter((i) => i.slug !== product.slug);
       return [...prev, {
         slug: product.slug,
+        id: product.id || product.slug,
         name: product.name,
         price: product.price,
-        image: product.image || null,
+        oldPrice: product.oldPrice || product.compareAtPrice || null,
+        image: product.image || (product.images && product.images[0]) || null,
         variant: product.variant || null,
+        itemNo: product.itemNo || product.sku || (product.id ? `962${String(product.id).padStart(4, "0")}` : null),
         stock: product.stock ?? 99,
+        deliveryDays: product.deliveryDays || "4-7 working days",
         addedAt: new Date().toISOString(),
       }];
     });

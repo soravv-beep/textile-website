@@ -2,7 +2,7 @@
  * Cart Page — WovenHaat (Dev 3 / Manav Chotai)
  * Dummy products pre-loaded · Auth guard on wishlist save · No emojis
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, lineKey } from "../context/CartContext.jsx";
@@ -17,37 +17,6 @@ const SHIPPING_COST = 99;
 const PROMO_CODES = { HAAT10: 10, WEAVE20: 20, FIRST15: 15 };
 const fmt = (n) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
-
-/* Dummy products to pre-populate the cart for demo */
-const DEMO_PRODUCTS = [
-  {
-    slug: "kutchi-embroidered-table-runner",
-    name: "Kutchi Embroidered Table Runner",
-    variant: "Ivory / 14x72 inches",
-    price: 1499,
-    qty: 1,
-    stock: 8,
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&auto=format&fit=crop",
-  },
-  {
-    slug: "bhujodi-wool-throw-indigo",
-    name: "Bhujodi Wool Throw — Indigo",
-    variant: "Indigo Blue / 50x60 inches",
-    price: 3249,
-    qty: 1,
-    stock: 5,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&auto=format&fit=crop",
-  },
-  {
-    slug: "handwoven-jute-placemats-set4",
-    name: "Handwoven Jute Placemats (Set of 4)",
-    variant: "Natural / 13x18 inches",
-    price: 849,
-    qty: 2,
-    stock: 20,
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&auto=format&fit=crop",
-  },
-];
 
 /* ── Heart icon ── */
 function HeartIcon({ filled }) {
@@ -140,48 +109,52 @@ function CartItemRow({ item, onQtyChange, onRemove, onMoveToWishlist, isInWishli
       transition={{ duration: 0.25 }}
       className="ci-row"
     >
-      <Link to={`/product/${item.slug}`} className="ci-row__thumb-link">
-        <div className="ci-row__thumb">
-          {item.image
-            ? <img src={item.image} alt={item.name} loading="lazy" />
-            : <span className="ci-row__ph">–</span>}
-        </div>
-      </Link>
-      <div className="ci-row__info">
-        <Link to={`/product/${item.slug}`} className="ci-row__name">{item.name}</Link>
-        {item.variant && <p className="ci-row__variant">{item.variant}</p>}
-        {item.size && <p className="ci-row__variant">Size: {item.size}</p>}
-        <p className="ci-row__price">{fmt(item.price)}</p>
-        <div className="ci-row__actions">
-          <button
-            className={`ci-row__wl${isInWishlist ? " ci-row__wl--saved" : ""}`}
-            onClick={() => onMoveToWishlist(item)}
-            title={isInWishlist ? "Remove from wishlist" : "Save to wishlist"}
-            id={`cart-wl-${rowKey}`}
-          >
-            <HeartIcon filled={isInWishlist} />
-            {isInWishlist ? "Saved" : "Save for later"}
-          </button>
-          <button className="ci-row__remove" onClick={() => onRemove(item.slug, item.size)} id={`cart-remove-${rowKey}`}>
-            <TrashIcon /> Remove
-          </button>
+      <div className="ci-row__main">
+        <Link to={`/product/${item.slug}`} className="ci-row__thumb-link">
+          <div className="ci-row__thumb">
+            {item.image
+              ? <img src={item.image} alt={item.name} loading="lazy" />
+              : <span className="ci-row__ph">–</span>}
+          </div>
+        </Link>
+        <div className="ci-row__info">
+          <Link to={`/product/${item.slug}`} className="ci-row__name">{item.name}</Link>
+          {item.variant && <p className="ci-row__variant">{item.variant}</p>}
+          {item.size && <p className="ci-row__variant">Size: {item.size}</p>}
+          <p className="ci-row__price">{fmt(item.price)}</p>
+          <div className="ci-row__actions">
+            <button
+              className={`ci-row__wl${isInWishlist ? " ci-row__wl--saved" : ""}`}
+              onClick={() => onMoveToWishlist(item)}
+              title={isInWishlist ? "Remove from wishlist" : "Save to wishlist"}
+              id={`cart-wl-${rowKey}`}
+            >
+              <HeartIcon filled={isInWishlist} />
+              {isInWishlist ? "Saved" : "Save for later"}
+            </button>
+            <button className="ci-row__remove" onClick={() => onRemove(item.slug, item.size)} id={`cart-remove-${rowKey}`}>
+              <TrashIcon /> Remove
+            </button>
+          </div>
         </div>
       </div>
-      <div className="ci-row__qty-wrap">
-        <div className="ci-row__qty">
-          <button
-            className="ci-row__qty-btn"
-            onClick={() => onQtyChange(item.slug, item.qty - 1, item.size)}
-            disabled={item.qty <= 1}
-            aria-label="Decrease quantity"
-          >–</button>
-          <span className="ci-row__qty-num">{item.qty}</span>
-          <button
-            className="ci-row__qty-btn"
-            onClick={() => onQtyChange(item.slug, item.qty + 1, item.size)}
-            disabled={item.qty >= (item.stock || 99)}
-            aria-label="Increase quantity"
-          >+</button>
+      <div className="ci-row__footer">
+        <div className="ci-row__qty-wrap">
+          <div className="ci-row__qty">
+            <button
+              className="ci-row__qty-btn"
+              onClick={() => onQtyChange(item.slug, item.qty - 1, item.size)}
+              disabled={item.qty <= 1}
+              aria-label="Decrease quantity"
+            >–</button>
+            <span className="ci-row__qty-num">{item.qty}</span>
+            <button
+              className="ci-row__qty-btn"
+              onClick={() => onQtyChange(item.slug, item.qty + 1, item.size)}
+              disabled={item.qty >= (item.stock || 99)}
+              aria-label="Increase quantity"
+            >+</button>
+          </div>
         </div>
         <p className="ci-row__total">{fmt(item.price * item.qty)}</p>
       </div>
@@ -208,21 +181,12 @@ function EmptyCart() {
 
 /* ── Main ── */
 export default function CartPage() {
-  const { items, addItem, removeItem, updateQty, clear, count } = useCart();
+  const { items, removeItem, updateQty, clear, count } = useCart();
   const { isAuthenticated } = useAuth();
   const { items: wishlistItems, addItem: addToWishlist, remove: removeFromWishlist } = useWishlist();
   const navigate = useNavigate();
   const [discountPct, setDiscountPct] = useState(0);
   const [promoCode, setPromoCode] = useState("");
-  const [demoLoaded, setDemoLoaded] = useState(false);
-
-  /* Pre-load demo items once on first mount */
-  useEffect(() => {
-    if (!demoLoaded && items.length === 0) {
-      DEMO_PRODUCTS.forEach((p) => addItem(p, p.qty));
-      setDemoLoaded(true);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const discountAmt = Math.round((subtotal * discountPct) / 100);

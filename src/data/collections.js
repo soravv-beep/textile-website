@@ -3,8 +3,6 @@
  * with additional fields needed for the WOVENHAAT-style mega menu.
  * Each category includes types, sizes, care guides, and tagline for the mega menu.
  */
-import { categories as catalogCategories } from './catalog.js';
-
 // Extended category data for mega menu — derived from catalog categories
 // with WOVENHAAT-style navigation structure
 export const CATEGORIES = [

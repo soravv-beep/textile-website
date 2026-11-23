@@ -214,7 +214,7 @@ export default function ProductDetail() {
         </div>
         <div className="tab-content">
           <div role="tabpanel" id="panel-description" aria-labelledby="tab-description" hidden={tab !== "Description"}>
-            <p>{product.longDescription || product.description}</p>
+            <p>Designed for everyday use, this piece combines natural fibres, visible texture and durable hand finishing. Subtle variations in tone and weave make each one unique.</p>
           </div>
           <div role="tabpanel" id="panel-specifications" aria-labelledby="tab-specifications" hidden={tab !== "Specifications"}>
             <dl>{specs.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
