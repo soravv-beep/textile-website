@@ -53,7 +53,7 @@ const validIds = (ids, limit = Infinity) => {
 export function ShopProvider({ children }) {
   const { addItem, items } = useCart();
   const [wishlist, setWishlist] = useState(() => new Set(validIds(readStorage("wh-wishlist", []))));
-  const [compare, setCompare] = useState([]);
+  const [compare, setCompare] = useState(() => validIds(readStorage("wh-compare", []), MAX_COMPARE));
   const [recent, setRecent] = useState(() => validIds(readStorage("wh-recent", []), 8));
   const [toast, setToast] = useState("");
 
@@ -64,6 +64,7 @@ export function ShopProvider({ children }) {
   }, [toast]);
 
   useEffect(() => writeStorage("wh-wishlist", [...wishlist]), [wishlist]);
+  useEffect(() => writeStorage("wh-compare", compare), [compare]);
 
   const notify = useCallback((message) => setToast(message), []);
   const clearCompare = useCallback(() => setCompare([]), []);

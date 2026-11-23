@@ -32,6 +32,7 @@ import NotFound from "./pages/NotFound.jsx";
 const Shop = lazy(() => import("./pages/Shop.jsx"));
 const Collections = lazy(() => import("./pages/Collections.jsx"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail.jsx"));
+const Compare = lazy(() => import("./pages/Compare.jsx"));
 
 // Content pages (Dev 5) — long-form editorial, split out of the home chunk.
 const Journal = lazy(() => import("./pages/Journal.jsx"));
@@ -95,10 +96,7 @@ export default function App() {
                   <Route path={ROUTES.collections} element={withLoading(<Collections />)} />
                   <Route path={ROUTES.collectionDetail} element={withLoading(<Collections />)} />
                   <Route path={ROUTES.product} element={withLoading(<ProductDetail />)} />
-                  <Route
-                    path={ROUTES.compare}
-                    element={<ComingSoon title="Compare products" owner="Dev 2" note="Side-by-side product comparison is coming soon. Your selection stays in the compare bar." />}
-                  />
+                  <Route path={ROUTES.compare} element={withLoading(<Compare />)} />
 
                   {/* Account side (Dev 3) — everything except /login needs a session */}
                   <Route path={ROUTES.login} element={withLoading(<LoginPage />)} />

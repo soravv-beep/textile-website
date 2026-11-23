@@ -7747,7 +7747,7 @@ body.nav-locked { overflow: hidden; }
 }
 .shop-scope .desktop-filters {
   position: sticky;
-  top: 55px;
+  top: 71px;
   align-self: start;
   max-height: calc(100vh - 60px);
   overflow-y: auto;

@@ -1,0 +1,387 @@
+/* ============================================================
+   Compare page. Scoped to .cmp / .cmp-empty / .cmp-btn; reuses the
+   project's existing tokens only. The page sits on the patterned
+   backdrop, so the comparison paints its own opaque surface and
+   re-states the light-page ink tokens (same approach as the other
+   shop panels).
+   ============================================================ */
+.cmp,
+.cmp-empty {
+  --cmp-ink: var(--espresso);
+  --cmp-heading: var(--velvet);
+  --cmp-muted: #5a4638;
+  --cmp-primary: var(--romance);
+  --cmp-label-w: 132px;
+
+  color: var(--cmp-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Toolbar ---------- */
+.cmp__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+.cmp__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+}
+.cmp__toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--cmp-primary);
+}
+.cmp__clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cmp-primary);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---------- Table (scrolls inside this box only) ---------- */
+.cmp__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.cmp__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.cmp__table th,
+.cmp__table td {
+  padding: var(--sp-4) var(--sp-4);
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  overflow-wrap: anywhere;
+}
+.cmp__table tbody th[scope="row"],
+.cmp__corner {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: var(--cmp-label-w);
+  border-left: 0;
+  background: var(--color-surface);
+  color: var(--cmp-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cmp__table tbody tr:last-child th,
+.cmp__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Product header cell */
+.cmp__head {
+  font-weight: 400;
+}
+.cmp__remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 var(--sp-3) auto;
+  padding: 0;
+  float: right;
+  border: 0;
+  background: none;
+  color: var(--cmp-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.cmp__remove svg {
+  width: 14px;
+  height: 14px;
+}
+.cmp__remove:hover {
+  color: var(--cmp-primary);
+}
+.cmp__media {
+  display: block;
+  clear: both;
+  aspect-ratio: 4 / 5;
+  margin-bottom: var(--sp-3);
+  overflow: hidden;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+.cmp__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+.cmp__media:hover img {
+  transform: scale(1.04);
+}
+.cmp__cat {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--cmp-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.cmp__name {
+  color: var(--cmp-heading);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  line-height: 1.25;
+  text-decoration: none;
+}
+.cmp__name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Cells */
+.cmp__price strong {
+  color: var(--cmp-heading);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.cmp__price s {
+  margin-left: var(--sp-2);
+  color: var(--cmp-muted);
+  font-size: 0.88rem;
+}
+.cmp__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.cmp__rating svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--cmp-primary);
+  stroke: var(--cmp-primary);
+}
+.cmp__rating small {
+  color: var(--cmp-muted);
+  font-size: 0.82rem;
+}
+.cmp__long {
+  color: var(--cmp-muted);
+  font-size: 0.88rem;
+}
+.cmp__select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 var(--sp-3);
+  color: var(--cmp-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+.cmp__select:focus-visible {
+  outline: 2px solid var(--cmp-primary);
+  outline-offset: 2px;
+}
+
+/* Add-product slot (header tile + tinted filler cells down the column) */
+.cmp__table td.cmp__fill {
+  padding: 0;
+  background: color-mix(in srgb, var(--color-bg) 35%, var(--color-surface));
+}
+.cmp__table td.cmp__slot {
+  padding: var(--sp-4);
+  background: color-mix(in srgb, var(--color-bg) 35%, var(--color-surface));
+}
+.cmp__add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  height: 100%;
+  min-height: 260px;
+  padding: var(--sp-5) var(--sp-4);
+  color: var(--cmp-ink);
+  text-align: center;
+  text-decoration: none;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.cmp__add:hover,
+.cmp__add:focus-visible {
+  border-color: var(--cmp-primary);
+  background: var(--color-surface);
+}
+.cmp__add-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--cmp-primary);
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.cmp__add-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.cmp__add small {
+  max-width: 22ch;
+  color: var(--cmp-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* Action buttons — mirror .shop-scope .button, own classes so the page's
+   backdrop-scrim rules for .button.outline don't recolour them. */
+.cmp__actions td {
+  display: table-cell;
+}
+.cmp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 var(--sp-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 180ms ease;
+}
+.cmp-btn + .cmp-btn {
+  margin-top: var(--sp-2);
+}
+.cmp-btn:hover {
+  transform: translateY(-2px);
+}
+.cmp-btn:focus-visible {
+  outline: 2px solid var(--cmp-primary);
+  outline-offset: 3px;
+}
+.cmp-btn--primary {
+  background: var(--cmp-primary);
+  border-color: var(--cmp-primary);
+  color: #fff;
+}
+.cmp-btn--primary:hover {
+  background: color-mix(in srgb, var(--cmp-primary) 84%, var(--cmp-ink));
+  border-color: color-mix(in srgb, var(--cmp-primary) 84%, var(--cmp-ink));
+}
+.cmp-btn--secondary {
+  background: transparent;
+  border-color: var(--cmp-ink);
+  color: var(--cmp-ink);
+}
+.cmp-btn--secondary:hover {
+  background: var(--color-bg);
+}
+
+/* ---------- Empty state ---------- */
+.cmp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-6);
+  text-align: center;
+}
+.cmp-empty__art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+.cmp-empty__art img {
+  display: block;
+  width: clamp(74px, 14vw, 120px);
+  aspect-ratio: 6 / 7;
+  object-fit: cover;
+  border-radius: 999px 999px var(--radius-sm) var(--radius-sm);
+  box-shadow: 0 0 0 3px var(--color-surface), 0 0 0 4px var(--color-border);
+}
+.cmp-empty__art img:nth-child(2) {
+  width: clamp(88px, 17vw, 144px);
+}
+.shop-scope .cmp-empty__title {
+  margin: 0 0 var(--sp-3);
+  color: var(--cmp-heading);
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.cmp-empty__text {
+  max-width: 46ch;
+  margin: 0 auto var(--sp-5);
+  color: var(--cmp-muted);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .cmp {
+    --cmp-label-w: 112px;
+  }
+  .cmp__table th,
+  .cmp__table td {
+    padding: var(--sp-3);
+  }
+  .cmp__toolbar {
+    padding: var(--sp-3) var(--sp-4);
+  }
+}
+@media (max-width: 640px) {
+  .cmp {
+    --cmp-label-w: 92px;
+  }
+  .cmp__table {
+    min-width: 640px;
+    font-size: 0.86rem;
+  }
+  .cmp__table tbody th[scope="row"],
+  .cmp__corner {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+  .cmp__name {
+    font-size: 1.05rem;
+  }
+  .cmp-btn {
+    min-height: 48px;
+  }
+  .cmp-empty {
+    padding: var(--sp-6) var(--sp-4);
+  }
+}

@@ -2,13 +2,15 @@ import { X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { products } from "../../data/catalog.js";
+import { ROUTES } from "../../constants/routes.js";
 import { useShop } from "../../context/shopContext.js";
 
 /** Floating bar listing the products picked with the card's Compare button. */
 export default function CompareBar({ clear }) {
   const { compare, toggleCompare } = useShop();
   const { pathname } = useLocation();
-  if (!compare.length) return null;
+  // The Compare page shows the same selection in full, so the floating bar steps aside there.
+  if (!compare.length || pathname === ROUTES.compare) return null;
   const lifted = pathname.startsWith("/product/");
   const items = products.filter((p) => compare.includes(p.id));
   return (
@@ -29,7 +31,7 @@ export default function CompareBar({ clear }) {
           <button type="button" className="text-link" onClick={clear}>
             Clear
           </button>
-          <Link to="/compare" className="button primary">
+          <Link to={ROUTES.compare} className="button primary">
             Compare ({compare.length})
           </Link>
         </div>
