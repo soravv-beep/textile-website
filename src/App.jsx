@@ -40,6 +40,12 @@ const JournalPost = lazy(() => import("./pages/JournalPost.jsx"));
 const Lookbook = lazy(() => import("./pages/Lookbook.jsx"));
 const Sustainability = lazy(() => import("./pages/Sustainability.jsx"));
 
+// Admin pages — code-split so admin bundle only loads when needed
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx"));
+const AdminProducts = lazy(() => import("./pages/admin/AdminProducts.jsx"));
+const AdminCollections = lazy(() => import("./pages/admin/AdminCollections.jsx"));
+const AdminJournal = lazy(() => import("./pages/admin/AdminJournal.jsx"));
+
 // Account side (Dev 3) — nothing here is needed until a shopper signs in.
 const LoginPage = lazy(() => import("./pages/Login.jsx"));
 const AccountPage = lazy(() => import("./pages/Account.jsx"));
@@ -115,7 +121,16 @@ export default function App() {
                   <Route path={ROUTES.journal} element={withLoading(<Journal />)} />
                   <Route path={ROUTES.journalPost} element={withLoading(<JournalPost />)} />
 
-                  <Route path="*" element={<NotFound />} />
+                    {/* Admin routes */}
+                    <Route path={ROUTES.adminDashboard} element={withLoading(<AdminDashboard />)} />
+                    <Route path={ROUTES.adminProducts} element={withLoading(<AdminProducts />)} />
+                    <Route path={`${ROUTES.adminProducts}/*`} element={withLoading(<AdminProducts />)} />
+                    <Route path={ROUTES.adminCollections} element={withLoading(<AdminCollections />)} />
+                    <Route path={`${ROUTES.adminCollections}/*`} element={withLoading(<AdminCollections />)} />
+                    <Route path={ROUTES.adminJournal} element={withLoading(<AdminJournal />)} />
+                    <Route path={`${ROUTES.adminJournal}/*`} element={withLoading(<AdminJournal />)} />
+
+                    <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
               </OrdersProvider>

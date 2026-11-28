@@ -37,7 +37,13 @@ export const ROUTES = {
   about: "/about",
   contact: "/contact",
   /** hidden live style guide — linked from docs/DESIGN_SYSTEM.md only */
-  designSystem: "/design-system"
+  designSystem: "/design-system",
+
+  // Admin routes
+  adminDashboard: "/admin",
+  adminProducts: "/admin/products",
+  adminCollections: "/admin/collections",
+  adminJournal: "/admin/journal",
 };
 
 /** Build the real path for a single product. */

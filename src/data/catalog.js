@@ -33,7 +33,7 @@ const photos = [
 // curtains: a complete matching panel hung from a plain rod.
 // Matched local WebP assets live in public/product-images-v2/. Only this existing code file changes.
 // Existing product IDs/slugs are retained for saved carts, routes and lookbook links.
-const productPhotos = {
+export const productPhotos = {
   "1": "/product-images-v2/jaipur-handwoven-cotton-rug-room-image.jpg",
   "2": "/product-images-v2/malwa-textured-cushion.jpg",
   "3": "/product-images-v2/kutch-handwoven-throw.jpg",

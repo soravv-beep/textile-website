@@ -111,9 +111,9 @@ export const JOURNAL_POSTS = [
     author: {
       name: "Rameshbhai Patel",
       role: "Master Weaver · Bhujodi",
-      avatar: unsplash("photo-1507003211169-0a1dd7228f2d", 200)
+      avatar: unsplash("photo-1600166898405-da9535204843", 200)
     },
-    cover: unsplash("photo-1591195853828-11db59a44f6b", 1200),
+    cover: unsplash("photo-1600166898405-da9535204843", 1200),
     alt: "Weaver working at an authentic wooden pit loom in Bhujodi",
     tags: ["Pit Loom", "Panipat", "Slow Living", "Organic Cotton"],
     productIds: ["wh-001", "wh-003", "wh-005"],
@@ -153,7 +153,7 @@ export const JOURNAL_POSTS = [
           "Extra-weft patterning is where human artistry outclasses machinery. Every floral jaal or geometric diamond is inserted with individual small wooden bobbins by hand.",
           "Because the artisan monitors the tension with every pass, the weave retains structural memory: it settles flat on your hardwood or stone floor without curling corners."
         ],
-        image: unsplash("photo-1596755094514-f87e34085b2c", 900),
+        image: unsplash("photo-1600166898405-da9535204843", 900),
         imageCaption: "Raw organic cotton fibers being spun into yarn on traditional charkhas"
       },
       {

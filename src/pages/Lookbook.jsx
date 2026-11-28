@@ -3,21 +3,19 @@ import { Link } from "react-router-dom";
 
 import PageMeta from "../components/PageMeta.jsx";
 import Button from "../components/ui/Button.jsx";
-import Tag from "../components/ui/Tag.jsx";
 import Container from "../components/ui/Container.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
-import { Drawer } from "../components/ui/Overlay.jsx";
 import Reveal from "../animations/Reveal.jsx";
 import { useCart } from "../context/CartContext.jsx";
-import { productPath, CONTACT } from "../constants/routes.js";
-import { formatINR } from "../utils/format.js";
-import { MOCK_PRODUCTS } from "../data/mockProducts.js";
+import { CONTACT } from "../constants/routes.js";
+import { shareLinks } from "../utils/shareLinks.js";
 import {
   LOOKBOOK_ROOMS,
   LOOKBOOK_STYLES,
   LOOKBOOK_ITEMS,
   UGC_COMMUNITY_GALLERY
 } from "../data/lookbookData.js";
+import LookbookRoomModal from "../components/lookbook/LookbookRoomModal.jsx";
 
 export default function Lookbook() {
   const [selectedRoom, setSelectedRoom] = useState("All Rooms");
@@ -35,17 +33,6 @@ export default function Lookbook() {
       return matchRoom && matchStyle;
     });
   }, [selectedRoom, selectedStyle]);
-
-  const activeLookProducts = useMemo(() => {
-    if (!activeLook) return [];
-    const productMap = new Map(MOCK_PRODUCTS.map((p) => [p.id, p]));
-    return activeLook.hotspots
-      .map((h) => ({
-        ...h,
-        product: productMap.get(h.productId)
-      }))
-      .filter((h) => Boolean(h.product));
-  }, [activeLook]);
 
   const handleShare = () => {
     navigator.clipboard?.writeText?.(window.location.href);
@@ -142,47 +129,41 @@ export default function Lookbook() {
               {filteredLooks.map((look) => (
                 <div key={look.id} className="lb-card">
                   <div className="lb-card__media">
-                    <img
-                      src={look.image}
-                      alt={look.title}
-                      className="lb-card__img"
-                      loading="lazy"
-                    />
+                    <button
+                      type="button"
+                      className="lb-card__trigger"
+                      onClick={() => setActiveLook(look)}
+                      aria-label={`View ${look.title}`}
+                    >
+                      <img
+                        src={look.image}
+                        alt={look.title}
+                        className="lb-card__img"
+                        loading="lazy"
+                      />
 
-                    {/* Hotspot Pins */}
-                    {look.hotspots.map((spot, sIdx) => (
-                      <button
-                        key={`${look.id}-spot-${sIdx}`}
-                        type="button"
-                        className="lb-hotspot-pin"
-                        style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
-                        aria-label={`Shop ${spot.label}`}
-                        title={spot.label}
-                        onClick={() => setActiveLook(look)}
-                      >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <circle cx="12" cy="12" r="3" />
-                          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-                        </svg>
-                      </button>
-                    ))}
+                      {/* Hotspot Pins */}
+                      {look.hotspots.map((spot, sIdx) => (
+                        <button
+                          key={`${look.id}-spot-${sIdx}`}
+                          type="button"
+                          className="lb-hotspot-pin"
+                          style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
+                          aria-label={`Shop ${spot.label}`}
+                          title={spot.label}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveLook(look);
+                          }}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+                          </svg>
+                        </button>
+                      ))}
 
-                    {/* Hover Overlay */}
-                    <div className="lb-card__overlay">
-                      <div className="lb-card__badges">
-                        <Tag tone="coral">{look.room}</Tag>
-                        <Tag tone="tan">{look.style}</Tag>
-                      </div>
-                      <h3 className="lb-card__title">{look.title}</h3>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        className="lb-card__shop-btn"
-                        onClick={() => setActiveLook(look)}
-                      >
-                        Shop This Look ({look.hotspots.length} pieces)
-                      </Button>
-                    </div>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -256,78 +237,12 @@ export default function Lookbook() {
         </Container>
       </section>
 
-      {/* 6. Shop The Look Drawer */}
-      {activeLook && (
-        <Drawer
-          open={Boolean(activeLook)}
-          onClose={() => setActiveLook(null)}
-          title={`Shop: ${activeLook.title}`}
-          side="right"
-        >
-          <div className="lb-drawer-content">
-            <div className="lb-drawer-hero">
-              <img src={activeLook.image} alt={activeLook.title} />
-            </div>
-
-            <p className="lb-drawer-narrative">
-              "{activeLook.narrative}"
-            </p>
-
-            <h3 className="lb-drawer-heading">Featured Handwoven Pieces:</h3>
-
-            <div className="lb-drawer-products">
-              {activeLookProducts.map(({ product, label }) => {
-                const isJustAdded = addedItemSlug === product.slug;
-                return (
-                  <div key={product.id} className="lb-product-mini">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="lb-product-mini__thumb"
-                    />
-                    <div className="lb-product-mini__info">
-                      <div style={{ fontSize: "0.75rem", color: "var(--color-accent)", fontWeight: 600 }}>
-                        {label}
-                      </div>
-                      <h4 className="lb-product-mini__name">
-                        <Link
-                          to={productPath(product.slug)}
-                          onClick={() => setActiveLook(null)}
-                        >
-                          {product.name}
-                        </Link>
-                      </h4>
-                      <p className="lb-product-mini__price">
-                        {formatINR(product.price)}
-                      </p>
-                    </div>
-
-                    <Button
-                      variant={isJustAdded ? "secondary" : "primary"}
-                      size="sm"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      {isJustAdded ? "✓ Added" : "Add to Cart"}
-                    </Button>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div style={{ marginTop: "var(--sp-6)", textAlign: "center" }}>
-              <Button
-                as={Link}
-                to="/shop"
-                variant="outline"
-                block
-                onClick={() => setActiveLook(null)}
-              >
-                Browse All Handcrafted Products
-              </Button>
-            </div>
-          </div>
-        </Drawer>
-      )}
+      {/* 6. Shop The Look Modal with Hotspots - Premium Redesign */}
+      <LookbookRoomModal
+        look={activeLook}
+        isOpen={Boolean(activeLook)}
+        onClose={() => setActiveLook(null)}
+      />
     </div>
   );
 }

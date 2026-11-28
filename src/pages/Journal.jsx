@@ -8,6 +8,7 @@ import Container from "../components/ui/Container.jsx";
 import SectionHeading from "../components/ui/SectionHeading.jsx";
 import Reveal from "../animations/Reveal.jsx";
 import Newsletter from "../components/sections/Newsletter.jsx";
+import JournalCard from "../components/common/JournalCard.jsx";
 import { journalPath } from "../constants/routes.js";
 import { JOURNAL_CATEGORIES, JOURNAL_POSTS } from "../data/journalContent.js";
 
@@ -156,35 +157,7 @@ export default function Journal() {
             <div className="jn-grid">
               {filteredPosts.map((post, idx) => (
                 <Reveal key={post.slug} delay={(idx % 3) * 0.1}>
-                  <article className="jn-card">
-                    <div className="jn-card__media">
-                      <img
-                        src={post.cover}
-                        alt={post.alt}
-                        className="jn-card__img"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="jn-card__body">
-                      <div className="jn-card__category">
-                        <Tag tone="coral">{post.category}</Tag>
-                      </div>
-                      <h3 className="jn-card__title">
-                        <Link to={journalPath(post.slug)}>
-                          {post.title}
-                        </Link>
-                      </h3>
-                      <p className="jn-card__excerpt">
-                        {post.excerpt}
-                      </p>
-                      <div className="jn-card__foot">
-                        <span>{post.date} · {post.readMinutes} min read</span>
-                        <Link to={journalPath(post.slug)} className="jn-card__link">
-                          Read story →
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
+                  <JournalCard post={post} />
                 </Reveal>
               ))}
             </div>

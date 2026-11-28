@@ -11,7 +11,7 @@ import Newsletter from "../components/sections/Newsletter.jsx";
 import Reveal from "../animations/Reveal.jsx";
 import { ROUTES, journalPath } from "../constants/routes.js";
 import { JOURNAL_POSTS, JOURNAL_SWATCHES } from "../data/journalContent.js";
-import { MOCK_PRODUCTS } from "../data/mockProducts.js";
+import { products } from "../data/catalog.js";
 
 export default function JournalPost() {
   const { slug } = useParams();
@@ -28,13 +28,46 @@ export default function JournalPost() {
   const prevPost = currentIndex > 0 ? JOURNAL_POSTS[currentIndex - 1] : null;
   const nextPost = currentIndex < JOURNAL_POSTS.length - 1 ? JOURNAL_POSTS[currentIndex + 1] : null;
 
-  // Linked related products
+  // Transform real product (from catalog.js) to ProductCard format
+  const adaptProductForCard = (product) => ({
+    id: String(product.id),
+    slug: product.slug,
+    name: product.name,
+    images: [product.image, product.altImage].filter(Boolean),
+    price: product.price,
+    compareAtPrice: product.oldPrice,
+    saleEndsAt: undefined, // No rolling countdown - use real sale data
+    badge: product.badge ? { label: product.badge } : undefined,
+    ecoLabel: product.fabric?.material === "Wool" ? "Handloom" : product.fabric?.material === "Linen" ? "GOTS Certified" : "Handcrafted",
+    meta: `${product.sizes?.[0] || ""} · ${product.material}`.trim(),
+    inStock: true,
+    isWishlisted: false,
+    rating: product.rating,
+    reviewCount: product.reviews,
+  });
+
+  // Map mock product IDs to real product IDs from catalog.js
+  const mockToRealProductMap = useMemo(() => ({
+    "wh-001": 1,    // Bhujodi Terracotta Rug → Jaipur Handwoven Cotton Rug
+    "wh-002": 19,   // Coral Loom Cushion Set → Terracotta Cotton Cushion Cover
+    "wh-003": 9,    // Mocha Handloom Throw → Himalayan Wool Throw
+    "wh-004": 4,    // Turquoise Ribbed Bath Mat → Dhurrie Bath Mat
+    "wh-005": 16,   // Kannur Midnight Rug → Charcoal Wool Area Rug
+    "wh-006": 5,    // Bhadohi Sage Table Linen → Sanganeri Table Runner
+    "wh-007": 22,   // Coral Loom Coverlet → Turquoise Cotton Summer Throw
+    "wh-008": 25,   // Panipat Ivory Bath Set → White Cotton Loop Bath Mat
+  }), []);
+
+  // Linked related products - use real products from catalog, adapted for ProductCard
   const relatedProducts = useMemo(() => {
-    if (!post?.productIds?.length) return MOCK_PRODUCTS.slice(0, 3);
-    const set = new Set(post.productIds);
-    const matched = MOCK_PRODUCTS.filter((p) => set.has(p.id));
-    return matched.length ? matched : MOCK_PRODUCTS.slice(0, 3);
-  }, [post]);
+    if (!post?.productIds?.length) return products.slice(0, 3).map(adaptProductForCard);
+    const realIds = post.productIds
+      .map((mockId) => mockToRealProductMap[mockId])
+      .filter(Boolean);
+    const productMap = new Map(products.map((p) => [p.id, p]));
+    const matched = realIds.map((id) => productMap.get(id)).filter(Boolean);
+    return matched.length ? matched.map(adaptProductForCard) : products.slice(0, 3).map(adaptProductForCard);
+  }, [post, mockToRealProductMap]);
 
   const handleCopy = () => {
     navigator.clipboard?.writeText?.(window.location.href);

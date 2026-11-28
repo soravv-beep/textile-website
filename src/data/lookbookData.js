@@ -1,4 +1,5 @@
 import { unsplash } from "../utils/images.js";
+import { productPhotos } from "../data/catalog.js";
 
 export const LOOKBOOK_ROOMS = [
   "All Rooms",
@@ -23,21 +24,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Sunlit Terracotta Living Studio",
     room: "Living Room",
     style: "Boho Warmth",
-    image: unsplash("photo-1600166898405-da9535204843", 900),
+    image: productPhotos["1"], // Jaipur Handwoven Cotton Rug
     aspectRatio: "4/5",
     narrative: "Layering natural wool fibers with warm terracotta clay accents. The extra-weft geometric rug grounds the raw teak coffee table.",
     hotspots: [
       {
         x: 42,
         y: 74,
-        productId: "wh-001",
-        label: "Bhujodi Terracotta Rug"
+        productId: 1,
+        label: "Jaipur Handwoven Cotton Rug"
       },
       {
         x: 68,
         y: 48,
-        productId: "wh-002",
-        label: "Coral Loom Cushion Set"
+        productId: 21,
+        label: "Coral Chenille Floor Cushion"
       }
     ]
   },
@@ -46,21 +47,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Mocha Minimalist Bedroom Suite",
     room: "Bedroom",
     style: "Earthy Minimal",
-    image: unsplash("photo-1616486338812-3dadae4b4ace", 900),
+    image: productPhotos["9"], // Himalayan Wool Throw
     aspectRatio: "3/4",
     narrative: "Tonal serenity styled with undyed organic cotton and textured wool blends for slow morning rituals.",
     hotspots: [
       {
         x: 52,
         y: 65,
-        productId: "wh-003",
-        label: "Mocha Handloom Throw"
+        productId: 9,
+        label: "Himalayan Wool Throw"
       },
       {
         x: 32,
         y: 40,
-        productId: "wh-007",
-        label: "Coral Loom Coverlet"
+        productId: 3,
+        label: "Kutch Handwoven Throw"
       }
     ]
   },
@@ -69,21 +70,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Coastal Turquoise Powder Room",
     room: "Bath & Spa",
     style: "Earthy Minimal",
-    image: unsplash("photo-1620626011761-996317b8d101", 900),
+    image: productPhotos["4"], // Dhurrie Bath Mat
     aspectRatio: "1/1",
     narrative: "High-absorbency organic ring-spun cotton brings soft tactility and cool turquoise calm to stone tiles.",
     hotspots: [
       {
         x: 48,
         y: 68,
-        productId: "wh-004",
-        label: "Turquoise Ribbed Bath Mat"
+        productId: 4,
+        label: "Dhurrie Bath Mat"
       },
       {
         x: 75,
         y: 35,
-        productId: "wh-008",
-        label: "Panipat Ivory Bath Set"
+        productId: 27,
+        label: "Tan Premium Cotton Spa Mat"
       }
     ]
   },
@@ -92,21 +93,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Heritage Midnight Library",
     room: "Living Room",
     style: "Heritage Classic",
-    image: unsplash("photo-1600607686527-6fb886090705", 900),
+    image: productPhotos["16"], // Charcoal Wool Area Rug
     aspectRatio: "3/4",
     narrative: "Deep natural indigo and midnight tones anchored by hand-knotted wool pile. Built for acoustic depth and quiet reading hours.",
     hotspots: [
       {
         x: 50,
         y: 80,
-        productId: "wh-005",
-        label: "Kannur Midnight Rug"
+        productId: 16,
+        label: "Charcoal Wool Area Rug"
       },
       {
         x: 65,
         y: 52,
-        productId: "wh-003",
-        label: "Mocha Handloom Throw"
+        productId: 9,
+        label: "Himalayan Wool Throw"
       }
     ]
   },
@@ -115,15 +116,15 @@ export const LOOKBOOK_ITEMS = [
     title: "Botanical Garden Dining Table",
     room: "Dining & Nook",
     style: "Festive Luxe",
-    image: unsplash("photo-1617806118233-18e1de247200", 900),
+    image: productPhotos["5"], // Sanganeri Table Runner
     aspectRatio: "4/5",
     narrative: "Pure combed cotton table linen naturally dyed with botanical sage extracts. Finished with subtle hemstitch details.",
     hotspots: [
       {
         x: 45,
         y: 60,
-        productId: "wh-006",
-        label: "Bhadohi Sage Table Linen"
+        productId: 5,
+        label: "Sanganeri Table Runner"
       }
     ]
   },
@@ -132,21 +133,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Wabi-Sabi Daybed Nook",
     room: "Living Room",
     style: "Earthy Minimal",
-    image: unsplash("photo-1584100936595-c0654b55a2e2", 900),
+    image: productPhotos["21"], // Coral Chenille Floor Cushion
     aspectRatio: "1/1",
     narrative: "Playful juxtaposition of coral hues with neutral limestone plaster. Designed for afternoon reading and tea.",
     hotspots: [
       {
         x: 40,
         y: 55,
-        productId: "wh-002",
-        label: "Coral Loom Cushion Set"
+        productId: 21,
+        label: "Coral Chenille Floor Cushion"
       },
       {
         x: 70,
         y: 62,
-        productId: "wh-003",
-        label: "Mocha Handloom Throw"
+        productId: 9,
+        label: "Himalayan Wool Throw"
       }
     ]
   },
@@ -155,21 +156,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Breezy Cane Verandah Lounge",
     room: "Balcony & Verandah",
     style: "Boho Warmth",
-    image: unsplash("photo-1522708323590-d24dbb6b0267", 900),
+    image: productPhotos["3"], // Kutch Handwoven Throw
     aspectRatio: "4/5",
     narrative: "Breathable open-weave cottons that withstand shaded outdoor breezes while providing plush barefoot comfort.",
     hotspots: [
       {
         x: 55,
         y: 70,
-        productId: "wh-007",
-        label: "Coral Loom Coverlet"
+        productId: 3,
+        label: "Kutch Handwoven Throw"
       },
       {
         x: 35,
         y: 45,
-        productId: "wh-002",
-        label: "Coral Loom Cushion Set"
+        productId: 21,
+        label: "Coral Chenille Floor Cushion"
       }
     ]
   },
@@ -178,21 +179,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Monsoon Breakfast Solarium",
     room: "Dining & Nook",
     style: "Heritage Classic",
-    image: unsplash("photo-1513694203232-719a280e022f", 900),
+    image: productPhotos["5"], // Sanganeri Table Runner
     aspectRatio: "3/4",
     narrative: "Rich earthy textures harmonised with lush indoor greenery and warm morning sunlight filtering through linen.",
     hotspots: [
       {
         x: 48,
         y: 66,
-        productId: "wh-006",
-        label: "Bhadohi Sage Table Linen"
+        productId: 5,
+        label: "Sanganeri Table Runner"
       },
       {
         x: 72,
         y: 45,
-        productId: "wh-001",
-        label: "Bhujodi Terracotta Rug"
+        productId: 1,
+        label: "Jaipur Handwoven Cotton Rug"
       }
     ]
   },
@@ -201,21 +202,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Master Ensuite Linen Spa",
     room: "Bath & Spa",
     style: "Festive Luxe",
-    image: unsplash("photo-1584622650111-993a426fbf0a", 900),
+    image: productPhotos["27"], // Tan Premium Cotton Spa Mat
     aspectRatio: "1/1",
     narrative: "Double-woven zero-twist cotton loops that elevate daily skincare routines into five-star sensory moments.",
     hotspots: [
       {
         x: 50,
         y: 72,
-        productId: "wh-008",
-        label: "Panipat Ivory Bath Set"
+        productId: 27,
+        label: "Tan Premium Cotton Spa Mat"
       },
       {
         x: 25,
         y: 40,
-        productId: "wh-004",
-        label: "Turquoise Ribbed Bath Mat"
+        productId: 4,
+        label: "Dhurrie Bath Mat"
       }
     ]
   },
@@ -224,21 +225,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Artisan Loom Living Pavilion",
     room: "Living Room",
     style: "Festive Luxe",
-    image: unsplash("photo-1598928506311-c55ded91a20c", 900),
+    image: productPhotos["1"], // Jaipur Handwoven Cotton Rug
     aspectRatio: "4/5",
     narrative: "Curated with our signature DMC Burnt Orange and Turquoise accents, creating celebratory warmth without visual clutter.",
     hotspots: [
       {
         x: 58,
         y: 75,
-        productId: "wh-001",
-        label: "Bhujodi Terracotta Rug"
+        productId: 1,
+        label: "Jaipur Handwoven Cotton Rug"
       },
       {
         x: 30,
         y: 48,
-        productId: "wh-004",
-        label: "Turquoise Ribbed Bath Mat"
+        productId: 4,
+        label: "Dhurrie Bath Mat"
       }
     ]
   },
@@ -247,15 +248,15 @@ export const LOOKBOOK_ITEMS = [
     title: "Japandi Meditation Alcove",
     room: "Bedroom",
     style: "Earthy Minimal",
-    image: unsplash("photo-1540518614846-7ede433c4ef7", 900),
+    image: productPhotos["9"], // Himalayan Wool Throw
     aspectRatio: "3/4",
     narrative: "Low tatami-inspired floor seating draped with tactile mocha throws and organic washed cotton bolsters.",
     hotspots: [
       {
         x: 46,
         y: 65,
-        productId: "wh-003",
-        label: "Mocha Handloom Throw"
+        productId: 9,
+        label: "Himalayan Wool Throw"
       }
     ]
   },
@@ -264,21 +265,21 @@ export const LOOKBOOK_ITEMS = [
     title: "Courtyard Sunset Verandah",
     room: "Balcony & Verandah",
     style: "Heritage Classic",
-    image: unsplash("photo-1512917774080-9991f1c4c750", 900),
+    image: productPhotos["16"], // Charcoal Wool Area Rug
     aspectRatio: "16/9",
     narrative: "Open sky and heritage stone arches brought together with traditional punja dhurries woven to withstand decades.",
     hotspots: [
       {
         x: 40,
         y: 70,
-        productId: "wh-005",
-        label: "Kannur Midnight Rug"
+        productId: 16,
+        label: "Charcoal Wool Area Rug"
       },
       {
         x: 65,
         y: 50,
-        productId: "wh-002",
-        label: "Coral Loom Cushion Set"
+        productId: 21,
+        label: "Coral Chenille Floor Cushion"
       }
     ]
   }
